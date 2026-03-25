@@ -44,7 +44,7 @@ async def create_product(product: schemas.ProductCreate, db: AsyncSession = Depe
     return await catalog_service.create_product(db, product)
 
 @router.put("/products/{product_id}", response_model=schemas.ProductResponse)
-async def update_product(product_id: int, product: schemas.ProductCreate, db: AsyncSession = Depends(get_db)):
+async def update_product(product_id: int, product: schemas.ProductUpdate, db: AsyncSession = Depends(get_db)):
     result = await catalog_service.update_product(db, product_id, product)
     if not result:
         raise HTTPException(status_code=404, detail="Producto no encontrado")

@@ -8,6 +8,7 @@ const SYSTEM_MODULES = [
     { id: 'pos_force_cash_unlock', name: 'Forzar Desbloqueo de Caja', icon: '💰🔐' },
     { id: 'pos_retail', name: 'Punto de Venta IA', icon: '🛒' },
     { id: 'inventory', name: 'Gestión de Productos', icon: '📦' },
+    { id: 'inventory_delete', name: 'Eliminar Productos', icon: '🗑️' },
     { id: 'warehouse', name: 'Gestión de Almacenes', icon: '🏬' },
     { id: 'vision_train', name: 'Entrenamiento IA', icon: '👁️' },
     { id: 'production', name: 'Maestro Panadero', icon: '🍞' },
@@ -22,7 +23,7 @@ const SYSTEM_MODULES = [
     { id: 'auditoria', name: 'Auditoría y Control', icon: '📋' },
 ];
 
-export const PerfilesAccessSuite = ({ onClose }) => {
+export const PerfilesAccessSuite = ({ onClose, onPermissionsUpdate }) => {
     const [profiles, setProfiles] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -45,8 +46,8 @@ export const PerfilesAccessSuite = ({ onClose }) => {
             const resp = await fetch(`${API_BASE}/security/profiles`);
             const data = await resp.json();
             
-            // Ordenamiento Maestro: ADMIN -> MANAGER -> CAJERO -> OTROS
-            const priorityMap = { 'ADMIN': 1, 'MANAGER': 2, 'CAJERO': 3 };
+            // Ordenamiento Maestro: ADMINISTRADOR -> MANAGER -> CAJERO -> OTROS
+            const priorityMap = { 'ADMIN': 1, 'ADMINISTRADOR': 1, 'MANAGER': 2, 'CAJERO': 3 };
             const sortedData = data.sort((a, b) => {
                 const priorityA = priorityMap[a.name] || 99;
                 const priorityB = priorityMap[b.name] || 99;
@@ -103,6 +104,10 @@ export const PerfilesAccessSuite = ({ onClose }) => {
                     title: 'Sincronización Exitosa',
                     message: 'Los privilegios del perfil han sido actualizados en la colmena central.'
                 });
+                // Sincronización en caliente si es el usuario actual
+                if (onPermissionsUpdate) {
+                    onPermissionsUpdate(updatedProfile);
+                }
             } else {
                 const errorData = await resp.json();
                 setStatusModal({
@@ -306,6 +311,25 @@ export const PerfilesAccessSuite = ({ onClose }) => {
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-white/20 font-black uppercase tracking-[0.3em] text-[8px]">Módulos del Sistema</h3>
                             <span className="text-[7px] font-black text-[#c1d72e] bg-[#c1d72e]/10 px-2 py-0.5 rounded-full uppercase tracking-widest">Control IA</span>
+                        </div>
+
+                        {/* Master Access Switch - AGREGADO PARA TOTAL TRANSPARENCIA */}
+                        <div 
+                            onClick={() => handleTogglePermission('all')}
+                            className={`p-6 mb-4 rounded-[32px] border-2 transition-all duration-700 cursor-pointer group flex items-center justify-between ${editData.permissions.all === 'full' ? 'bg-[#f97316]/5 border-[#f97316]/40 shadow-[0_0_50px_-10px_rgba(249,115,22,0.2)]' : 'bg-white/[0.01] border-white/5 opacity-40 hover:opacity-100 hover:border-white/20'}`}
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl transition-all duration-700 border-2 ${editData.permissions.all === 'full' ? 'bg-[#f97316] text-white border-[#f97316] shadow-[0_0_20px_#f97316] rotate-3' : 'bg-black/40 text-white/20 border-white/5 group-hover:rotate-6'}`}>
+                                    🛡️
+                                </div>
+                                <div>
+                                    <p className={`font-black uppercase tracking-[0.2em] text-[13px] transition-colors ${editData.permissions.all === 'full' ? 'text-white' : 'text-gray-500 group-hover:text-white'}`}>ADMINISTRADOR TOTAL (Master Access)</p>
+                                    <p className="text-[9px] font-bold text-[#f97316]/60 uppercase tracking-tighter mt-1">Habilita acceso absoluto a todas las funciones sin restricciones</p>
+                                </div>
+                            </div>
+                            <div className={`w-10 h-5 rounded-full p-1 transition-all duration-500 shrink-0 ${editData.permissions.all === 'full' ? 'bg-[#f97316]' : 'bg-white/10'}`}>
+                                <div className={`w-3 h-3 bg-white rounded-full shadow-lg transition-transform duration-500 ${editData.permissions.all === 'full' ? 'translate-x-5' : 'translate-x-0'}`}></div>
+                            </div>
                         </div>
                         
                         <div className="grid grid-cols-2 gap-2.5">

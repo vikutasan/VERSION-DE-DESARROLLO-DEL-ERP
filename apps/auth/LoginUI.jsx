@@ -26,6 +26,7 @@ export const LoginUI = ({ onLogin }) => {
                 id: userData.id,
                 role: userData.role,
                 name: userData.name,
+                profile_id: userData.profile_id,
                 permissions: userData.profile?.permissions || {}
             });
         } catch (err) {

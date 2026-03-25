@@ -67,7 +67,7 @@ class CatalogService:
         )
         return result.scalar_one()
 
-    async def update_product(self, db: AsyncSession, product_id: int, product: schemas.ProductCreate):
+    async def update_product(self, db: AsyncSession, product_id: int, product: schemas.ProductUpdate):
         result = await db.execute(
             select(models.Product).where(models.Product.id == product_id)
         )
@@ -75,7 +75,7 @@ class CatalogService:
         if not db_product:
             return None
             
-        product_data = product.model_dump(exclude={"technical_data"})
+        product_data = product.model_dump(exclude={"technical_data"}, exclude_unset=True)
         for key, value in product_data.items():
             setattr(db_product, key, value)
             
@@ -83,7 +83,10 @@ class CatalogService:
         await db.refresh(db_product)
         
         if product.technical_data is not None:
-            tech_data = prod_schemas.TechnicalSheetCreate(product_id=product_id, **product.technical_data)
+            # Evitar colisión de product_id si viene en technical_data
+            t_data = product.technical_data.copy()
+            t_data.pop("product_id", None)
+            tech_data = prod_schemas.TechnicalSheetCreate(product_id=product_id, **t_data)
             await prod_service.upsert_technical_sheet(db, tech_data)
 
         result = await db.execute(

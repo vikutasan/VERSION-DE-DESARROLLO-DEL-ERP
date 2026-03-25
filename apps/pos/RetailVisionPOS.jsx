@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { OpenAccountsCorkboard } from './OpenAccountsCorkboard';
 import { posService } from './services/POSService';
 import { useCart } from './hooks/useCart';
@@ -64,16 +64,21 @@ export const RetailVisionPOS = ({ currentUser, onForceLogout }) => {
             try {
                 const catData = await posService.getCategories();
                 const normalized = catData
-                    .filter(c => c.name !== 'TODOS')
+                    .filter(c => c.name !== 'TODOS' && c.name !== 'DESCONTINUADOS')
                     .map(c => {
                         const original = INITIAL_CATEGORIES.find(ic => ic.name === c.name);
-                        return { ...c, icon: c.icon || (original ? original.icon : 'ðŸ“¦') };
+                        return { ...c, icon: c.icon || (original ? original.icon : '📦') };
                     });
                 setCategories(normalized);
                 if (normalized.length > 0 && !activeCategory) setActiveCategory(normalized[0].name);
 
                 const prodData = await posService.getProducts();
-                setInitialProducts(prodData);
+                // Ocultar productos que estén en el Limbo (DESCONTINUADOS)
+                const activeProducts = prodData.filter(p => {
+                    const catName = p.category ? (typeof p.category === 'string' ? p.category : p.category.name) : '';
+                    return catName !== 'DESCONTINUADOS';
+                });
+                setInitialProducts(activeProducts);
             } catch (error) {
                 console.error("Fetch error:", error);
                 alert("Error conectando con el ERP. Verifique que el servidor este activo.");

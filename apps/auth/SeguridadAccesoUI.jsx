@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GestionPersonal } from '../pos/components/GestionPersonal';
 import { PerfilesAccessSuite } from './PerfilesAccessSuite';
 
-export const SeguridadAccesoUI = () => {
+export const SeguridadAccesoUI = ({ onPermissionsUpdate }) => {
     const [showProfileSuite, setShowProfileSuite] = useState(false);
 
     return (
@@ -42,7 +42,10 @@ export const SeguridadAccesoUI = () => {
             </div>
 
             {showProfileSuite && (
-                <PerfilesAccessSuite onClose={() => setShowProfileSuite(false)} />
+                <PerfilesAccessSuite 
+                    onClose={() => setShowProfileSuite(false)} 
+                    onPermissionsUpdate={onPermissionsUpdate}
+                />
             )}
 
             <style>{`

@@ -37,7 +37,7 @@ const INITIAL_INGREDIENTS = [
     { id: 'ing_leche', name: 'Leche Entera', unit: 'lt', costPerUnit: 24.5 },
 ];
 
-export const ProductMasterUI = () => {
+export const ProductMasterUI = ({ userPermissions = {} }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState('TODOS');
     const [editingProduct, setEditingProduct] = useState(null);
@@ -58,6 +58,7 @@ export const ProductMasterUI = () => {
     const [productToUnlink, setProductToUnlink] = useState(null);
     const [showPermanentDeleteConfirm, setShowPermanentDeleteConfirm] = useState(false);
     const [productToDeletePermanently, setProductToDeletePermanently] = useState(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     const API_BASE = "http://localhost:3001/api/v1/catalog";
@@ -131,8 +132,15 @@ export const ProductMasterUI = () => {
 
     const handleSaveProduct = async (updatedProduct) => {
         try {
-            const catName = updatedProduct.categories[0];
-            const dbCat = categories.find(c => c.name === catName);
+            if (!updatedProduct) return;
+            console.log("Iniciando guardado de:", updatedProduct);
+            
+            const catName = (updatedProduct.categories && updatedProduct.categories[0]) ? updatedProduct.categories[0].trim() : null;
+            const dbCat = categories.find(c => c && c.name && c.name.trim().toUpperCase() === catName?.toUpperCase());
+            
+            if (catName && !dbCat) {
+                console.warn("Categoría solicitada no encontrada:", catName);
+            }
             
             // Sanitización de technical_data
             const techData = { ...(updatedProduct.technical_data || {}) };
@@ -168,13 +176,25 @@ export const ProductMasterUI = () => {
             }
 
             if (res.ok) {
+                console.log("Producto guardado exitosamente");
                 await refreshProducts();
                 setEditingProduct(null);
+                // Notificación visual
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-10 right-10 bg-[#c1d72e] text-black px-8 py-4 rounded-full font-black uppercase tracking-widest z-[1000] shadow-2xl animate-in slide-in-from-right-10 duration-500';
+                notification.innerText = `✅ ${updatedProduct.name} Guardado`;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 3000);
             } else {
-                alert("Error al guardar el producto");
+                const errorData = await res.json();
+                const errorMsg = Array.isArray(errorData.detail) 
+                    ? errorData.detail.map(e => `${e.loc.join('.')}: ${e.msg}`).join('\n')
+                    : errorData.detail || 'Error desconocido';
+                alert(`Error al guardar producto:\n${errorMsg}`);
             }
         } catch (err) {
             console.error("Save error:", err);
+            alert(`Error CRÍTICO al guardar:\n${err.message}`);
         }
     };
 
@@ -196,17 +216,64 @@ export const ProductMasterUI = () => {
     };
 
     const handlePermanentDelete = async (product) => {
-        if (!product.id) return;
+        if (!product || !product.id) return;
+
+        // Defensa en Profundidad: Verificar permisos antes de ejecutar
+        if (userPermissions?.inventory_delete !== 'full' && userPermissions?.all !== 'full') {
+            alert("Acceso Denegado: Tu perfil no tiene permiso para eliminar productos.");
+            return;
+        }
+
         try {
             const res = await fetch(`${API_BASE}/products/${product.id}`, { method: 'DELETE' });
             if (res.ok) {
                 await refreshProducts();
-                setShowPermanentDeleteConfirm(false);
+                setShowDeleteConfirm(false);
                 setProductToDeletePermanently(null);
                 setEditingProduct(null);
             }
         } catch (err) {
             console.error("Delete error:", err);
+        }
+    };
+
+    const handleQuitarProduct = async (product) => {
+        if (!product || !product.id) return;
+        
+        const discontinuedCat = categories.find(c => c.name === 'DESCONTINUADOS');
+        if (!discontinuedCat) {
+            alert("Error: No se encontró la categoría de sistema 'DESCONTINUADOS'.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/products/${product.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    category_id: discontinuedCat.id
+                })
+            });
+
+            if (res.ok) {
+                console.log("Producto movido a DESCONTINUADOS exitosamente");
+                await refreshProducts();
+                setEditingProduct(null);
+                // Notificación visual de éxito
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-[#c1d72e] text-black px-8 py-4 rounded-full font-black uppercase tracking-widest z-[1000] shadow-2xl animate-bounce';
+                notification.innerText = `📥 ${product.name} movido a DESCONTINUADOS`;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 3000);
+            } else {
+                const errorData = await res.json();
+                const errorMsg = Array.isArray(errorData.detail) 
+                    ? errorData.detail.map(e => `${e.loc.join('.')}: ${e.msg}`).join('\n')
+                    : errorData.detail || 'Error desconocido';
+                alert(`Error al mover producto:\n${errorMsg}`);
+            }
+        } catch (err) {
+            console.error("Quitar error:", err);
         }
     };
 
@@ -242,6 +309,20 @@ export const ProductMasterUI = () => {
         reader.readAsText(file);
     };
 
+    const handleExportJSON = () => {
+        const dataStr = JSON.stringify({ products }, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        const dateStr = new Date().toISOString().split('T')[0];
+        link.download = `productos_rderico_${dateStr}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     const handleAddCategory = async () => {
         if (!newCategory.name) return;
         try {
@@ -268,6 +349,13 @@ export const ProductMasterUI = () => {
     const handleDeleteCategory = async () => {
         const cat = categories.find(c => c.name === categoryToDelete);
         if (!cat) return;
+
+        // Defensa en Profundidad: Verificar permisos antes de ejecutar
+        if (userPermissions?.inventory_delete !== 'full' && userPermissions?.all !== 'full') {
+            alert("No tienes autoridad para eliminar categorías del sistema.");
+            return;
+        }
+
         try {
             const res = await fetch(`${API_BASE}/categories/${cat.id}`, { method: 'DELETE' });
             if (res.ok) {
@@ -283,7 +371,6 @@ export const ProductMasterUI = () => {
 
     return (
         <div className="bg-[#050505]/60 backdrop-blur-xl min-h-screen text-white p-8 font-sans flex gap-8">
-            
             {/* Modal de Eliminación de Categoría */}
             {categoryToDelete && ReactDOM.createPortal(
                 <div className="fixed inset-0 z-[200] flex items-start justify-center p-6 pt-20">
@@ -305,6 +392,39 @@ export const ProductMasterUI = () => {
                                 className="flex-1 py-4 bg-red-600 rounded-2xl text-[10px] font-black uppercase hover:scale-105 active:scale-95 transition-all font-bold"
                             >
                                 Confirmar Borrado
+                            </button>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
+
+            {/* Modal de Advertencia Crítica para Eliminación de Producto */}
+            {showDeleteConfirm && ReactDOM.createPortal(
+                <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
+                    <div className="absolute inset-0 bg-black/95 backdrop-blur-2xl" onClick={() => setShowDeleteConfirm(false)} />
+                    <div className="relative w-full max-w-md bg-[#0a0a0a] border border-red-900/50 rounded-[40px] p-10 shadow-[0_0_100px_-20px_rgba(220,38,38,0.3)] text-center animate-in zoom-in-95 duration-500">
+                        <div className="w-20 h-20 bg-red-600/20 border-2 border-red-600 rounded-3xl mx-auto mb-8 flex items-center justify-center text-5xl animate-pulse">
+                            ⚠️
+                        </div>
+                        <h3 className="text-3xl font-black uppercase italic tracking-tighter text-red-500 mb-4">¡ALERTA CRÍTICA!</h3>
+                        <p className="text-xs text-gray-400 font-bold uppercase tracking-widest leading-loose mb-10">
+                            Estás a punto de eliminar permanentemente el producto:<br/>
+                            <span className="text-white text-sm block mt-2">"{productToDeletePermanently?.name}"</span>
+                            <span className="text-red-400/60 text-[10px] block mt-4 italic">Esta acción no se puede deshacer y afectará inventarios y reportes históricos.</span>
+                        </p>
+                        <div className="flex gap-4">
+                            <button 
+                                onClick={() => setShowDeleteConfirm(false)}
+                                className="flex-1 py-4 bg-gray-800 rounded-2xl text-[10px] font-black uppercase hover:bg-gray-700 transition-all font-bold"
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                onClick={() => handlePermanentDelete(productToDeletePermanently)}
+                                className="flex-1 py-4 bg-red-600 rounded-2xl text-[10px] font-black uppercase hover:scale-105 active:scale-95 transition-all font-bold shadow-xl shadow-red-600/30"
+                            >
+                                Confirmar Destrucción
                             </button>
                         </div>
                     </div>
@@ -580,12 +700,36 @@ export const ProductMasterUI = () => {
 
                         <div className="flex gap-4">
                             {editingProduct.id && (
-                                <button 
-                                    onClick={() => handlePermanentDelete(editingProduct)}
-                                    className="px-6 py-4 bg-red-600/10 border border-red-500/20 text-red-500 rounded-2xl text-[10px] font-black uppercase hover:bg-red-600 hover:text-white transition-all"
-                                >
-                                    Eliminar
-                                </button>
+                                <>
+                                    {/* Caso 1: Producto Activo -> Botón Quitar (Limbo) */}
+                                    {editingProduct.categories[0] !== 'DESCONTINUADOS' ? (
+                                        <button 
+                                            onClick={() => handleQuitarProduct(editingProduct)}
+                                            className="px-6 py-4 bg-orange-600/10 border border-orange-500/20 text-orange-500 rounded-2xl text-[10px] font-black uppercase hover:bg-orange-600 hover:text-white transition-all group relative overflow-hidden"
+                                        >
+                                            <span className="relative z-10 flex items-center gap-2">
+                                                <span className="text-sm">📥</span> Quitar del Catálogo
+                                            </span>
+                                            <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-amber-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </button>
+                                    ) : (
+                                        /* Caso 2: Producto en Limbo -> Botón Eliminar Permanente (Restringido) */
+                                        (userPermissions.inventory_delete === 'full' || userPermissions.all === 'full') && (
+                                            <button 
+                                                onClick={() => {
+                                                    setProductToDeletePermanently(editingProduct);
+                                                    setShowDeleteConfirm(true);
+                                                }}
+                                                className="px-6 py-4 bg-red-600/10 border border-red-500/20 text-red-500 rounded-2xl text-[10px] font-black uppercase hover:bg-red-600 hover:text-white transition-all group relative overflow-hidden"
+                                            >
+                                                <span className="relative z-10 flex items-center gap-2">
+                                                    <span className="text-sm">💀</span> Eliminación Permanente
+                                                </span>
+                                                <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-rose-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                            </button>
+                                        )
+                                    )}
+                                </>
                             )}
                             <div className="flex-1 flex gap-4">
                                 <button 
@@ -616,6 +760,7 @@ export const ProductMasterUI = () => {
                     </div>
                     
                     <div className="flex gap-3">
+                        {/* Botón Importar JSON */}
                         <label className="cursor-pointer bg-gray-900 border border-gray-800 px-6 py-4 rounded-2xl flex items-center gap-3 hover:border-indigo-500 transition-all group">
                             <span className="text-lg">📥</span>
                             <div className="text-left font-bold">
@@ -624,6 +769,18 @@ export const ProductMasterUI = () => {
                             </div>
                             <input type="file" className="hidden" accept=".json" onChange={handleImportData} />
                         </label>
+
+                        {/* Botón Exportar JSON */}
+                        <button 
+                            onClick={handleExportJSON}
+                            className="bg-indigo-600 border border-indigo-500 px-6 py-4 rounded-2xl flex items-center gap-3 hover:bg-indigo-500 transition-all group"
+                        >
+                            <span className="text-lg">📤</span>
+                            <div className="text-left font-bold">
+                                <p className="text-[10px] font-black uppercase italic leading-none mb-1 text-white">Exportar JSON</p>
+                                <p className="text-[7px] text-indigo-200 font-black uppercase tracking-widest">Respaldo Local</p>
+                            </div>
+                        </button>
                     </div>
                 </header>
 
@@ -656,7 +813,9 @@ export const ProductMasterUI = () => {
                         >
                             <span>{cat.icon}</span>
                             {cat.name}
-                            <span onClick={(e) => { e.stopPropagation(); setCategoryToDelete(cat.name); }} className="ml-2 hover:text-red-500">✕</span>
+                            {cat.name !== 'DESCONTINUADOS' && cat.name !== 'TODOS' && (
+                                <span onClick={(e) => { e.stopPropagation(); setCategoryToDelete(cat.name); }} className="ml-2 hover:text-red-500">✕</span>
+                            )}
                         </button>
                     ))}
                     
