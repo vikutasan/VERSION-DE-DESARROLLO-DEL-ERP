@@ -83,7 +83,7 @@ export const ExperimentCenterUI = () => {
 
     const allModules = [
         { id: 'pos_retail', name: 'Punto de Venta IA', color: 'bg-orange-600', icon: '🛒', access: ['ADMIN', 'MANAGER'] },
-        { id: 'inventory', name: 'Gestión de Productos', color: 'bg-indigo-600', icon: '📦', access: ['ADMIN', 'MANAGER'] },
+        { id: 'inventory', name: 'Gestión de Productos', color: 'bg-indigo-600', icon: '🥐', access: ['ADMIN', 'MANAGER'] },
         { id: 'warehouse', name: 'Gestión de Almacenes', color: 'bg-slate-700', icon: '🏬', access: ['ADMIN', 'MANAGER'] },
         { id: 'vision_train', name: 'Entrenamiento IA', color: 'bg-[#c1d72e]', icon: '👁️', access: ['ADMIN', 'MANAGER'] },
         { id: 'production', name: 'Maestro Panadero', color: 'bg-amber-800', icon: '🍞', access: ['ADMIN', 'BAKER'] },
