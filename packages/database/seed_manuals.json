@@ -1,0 +1,89 @@
+[
+    {
+        "role": "BAKER",
+        "dayOfWeek": 1,
+        "activities": [
+            {
+                "name": "Recepción de Materia Prima y Pesaje",
+                "startTime": "05:00",
+                "durationMinutes": 20,
+                "endTime": "05:20",
+                "procedure": "Verificar calidad de harina, levadura y mantequilla. Pesar ingredientes según la receta del día (MRP).",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            },
+            {
+                "name": "Amasado y Primera Fermentación",
+                "startTime": "05:20",
+                "durationMinutes": 40,
+                "endTime": "06:00",
+                "procedure": "Iniciar las amasadoras industriales. Controlar la temperatura del agua para una fermentación óptima.",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            },
+            {
+                "name": "Encendido de Hornos y Precalentado",
+                "startTime": "06:00",
+                "durationMinutes": 30,
+                "endTime": "06:30",
+                "procedure": "Encender hornos de convección a 180°C. Revisar vaporizadores y niveles de gas.",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            },
+            {
+                "name": "Formado de Pan y Horneado (Tandas 1 y 2)",
+                "startTime": "06:30",
+                "durationMinutes": 120,
+                "endTime": "08:30",
+                "procedure": "Bolear conchas y formar bolillos. Barnizar según tipo. Meter al horno por tandas de 24 piezas.",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            },
+            {
+                "name": "Limpieza Express de Mesa de Trabajo",
+                "startTime": "08:30",
+                "durationMinutes": 30,
+                "endTime": "09:00",
+                "procedure": "Retirar restos de harina y masa. Sanitizar con solución al 10%.",
+                "priority": "SKIPPABLE",
+                "isRecurring": true
+            },
+            {
+                "name": "Producción de Pedidos Especiales y Repostería",
+                "startTime": "09:00",
+                "durationMinutes": 60,
+                "endTime": "10:00",
+                "procedure": "Preparar pasteles artesanales y pedidos registrados en el POS/MRP para entrega vespertina.",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            },
+            {
+                "name": "Revisión de Niveles de Stock de Insumos",
+                "startTime": "10:00",
+                "durationMinutes": 30,
+                "endTime": "10:30",
+                "procedure": "Reportar faltantes de harina o azúcar al Gerente Operativo mediante comando de voz.",
+                "priority": "SKIPPABLE",
+                "isRecurring": true
+            },
+            {
+                "name": "Preparación de Masas de Larga Fermentación",
+                "startTime": "10:30",
+                "durationMinutes": 90,
+                "endTime": "12:00",
+                "procedure": "Preparar prefermentos (masa madre o poolish) para la producción del día siguiente.",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            },
+            {
+                "name": "Limpieza Profunda y Entrega de Turno",
+                "startTime": "12:00",
+                "durationMinutes": 60,
+                "endTime": "13:00",
+                "procedure": "Limpiar hornos, amasadoras y pisos. Llenar bitácora de mermas y entrega de turno al panadero vespertino.",
+                "priority": "FUNDAMENTAL",
+                "isRecurring": true
+            }
+        ]
+    }
+]

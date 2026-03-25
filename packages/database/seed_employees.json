@@ -1,0 +1,52 @@
+[
+    {
+        "id": "emp-001",
+        "firstName": "Gerardo",
+        "lastName": "Ramos",
+        "email": "gramos@rderico.com",
+        "role": "BAKER", // Maestro Panadero
+        "branch": "TOLUCA",
+        "salary": 18000.00,
+        "isActive": true
+    },
+    {
+        "id": "emp-002",
+        "firstName": "Elena",
+        "lastName": "Martínez",
+        "email": "emartinez@rderico.com",
+        "role": "PIZZA_CHEF", // Pizzero
+        "branch": "TOLUCA",
+        "salary": 15500.00,
+        "isActive": true
+    },
+    {
+        "id": "emp-003",
+        "firstName": "Carlos",
+        "lastName": "Velázquez",
+        "email": "cvelazquez@rderico.com",
+        "role": "BARISTA", // Barra de Café
+        "branch": "TOLUCA",
+        "salary": 13000.00,
+        "isActive": true
+    },
+    {
+        "id": "emp-004",
+        "firstName": "Sofía",
+        "lastName": "Soto",
+        "email": "ssoto@rderico.com",
+        "role": "WAITER", // Mesero
+        "branch": "TOLUCA",
+        "salary": 11000.00,
+        "isActive": true
+    },
+    {
+        "id": "emp-005",
+        "firstName": "Miguel",
+        "lastName": "Ángel",
+        "email": "mangel@rderico.com",
+        "role": "LOGISTICS", // Reparto
+        "branch": "PLANTA_CENTRAL",
+        "salary": 12500.00,
+        "isActive": true
+    }
+]

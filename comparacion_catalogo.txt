@@ -1,0 +1,91 @@
+﻿RESUMEN
+Sisytec: 345 | ERP: 315
+Coinciden: 263
+Precio diferente: 50
+Faltan en ERP: 32
+
+== PRECIO DIFERENTE ==
+BAGUETTE GRANDE | Sisytec: $24 vs ERP: $22
+BARQUILLO DE CHANTILLY | Sisytec: $14 vs ERP: $12
+BARQUILLO DE CREMA PASTELERA | Sisytec: $14 vs ERP: $12
+BARRA DE MANTECA | Sisytec: $8 vs ERP: $7
+CAMPECHANA | Sisytec: $8 vs ERP: $7
+CANASTA DE FRUTAS | Sisytec: $19 vs ERP: $17
+CHIRIMOYA | Sisytec: $8 vs ERP: $7
+CONCHA AMARILLA | Sisytec: $8 vs ERP: $7
+CONCHA AMARILLA CON BOLITA | Sisytec: $8 vs ERP: $7
+CONCHA BLANCA | Sisytec: $8 vs ERP: $7
+CONCHA CAFE | Sisytec: $8 vs ERP: $7
+CUADRO DE COCO | Sisytec: $8 vs ERP: $9
+CUERNO | Sisytec: $9 vs ERP: $8
+ELOTE | Sisytec: $8 vs ERP: $7
+ESPOLVOREADO | Sisytec: $31 vs ERP: $30
+FLAUTAS | Sisytec: $8 vs ERP: $7
+GALLETA DE CARITA | Sisytec: $8 vs ERP: $7
+HIGO | Sisytec: $36 vs ERP: $35
+HOJALDRA DE CANELA | Sisytec: $18 vs ERP: $23
+HUESO DE MANTEQUILLA | Sisytec: $8 vs ERP: $10
+LAUREL | Sisytec: $8 vs ERP: $7
+MANTECADAS | Sisytec: $8 vs ERP: $7
+MINIS | Sisytec: $31 vs ERP: $30
+NEVADA | Sisytec: $14 vs ERP: $17
+NUEZ | Sisytec: $41 vs ERP: $40
+OJO DE VENADO | Sisytec: $8 vs ERP: $10
+PANADEROS | Sisytec: $8 vs ERP: $7
+PASAS | Sisytec: $31 vs ERP: $30
+PASTISETAS | Sisytec: $3 vs ERP: $4
+PASTEL DE ELOTE | Sisytec: $35 vs ERP: $23
+PLUMA | Sisytec: $8 vs ERP: $7
+RUEDA DE MANTECA | Sisytec: $8 vs ERP: $7
+TEJAMANI DE MANTECA CON AZUCAR | Sisytec: $8 vs ERP: $7
+TOSTADA DE CANELA | Sisytec: $8 vs ERP: $7
+TRONCO DE CANELA | Sisytec: $8 vs ERP: $7
+LECHE ALPURA SEMI DE UN LITRO | Sisytec: $30 vs ERP: $28
+LECHE ALPURA SEMI DESLACTOSADA DE UN LITRO | Sisytec: $30 vs ERP: $28
+LECHE SANTA CLARA DESLACTOSADA DE UN LITRO | Sisytec: $30 vs ERP: $28
+LECHE SANTA CLARA ENTERA DE UN LITRO | Sisytec: $30 vs ERP: $28
+NUTRI DE UN LITRO | Sisytec: $22 vs ERP: $21
+BARRA VIEJA NATURAL | Sisytec: $30 vs ERP: $20
+BARRA VIEJA RELLENA CON QUESO PHILADELPHIA | Sisytec: $55 vs ERP: $45
+HOT DOGS | Sisytec: $8 vs ERP: $7
+PAN INTEGRAL | Sisytec: $8 vs ERP: $7
+ALMOHADA | Sisytec: $8 vs ERP: $7
+COLADERAS | Sisytec: $8 vs ERP: $7
+EMPANADA UNTADA CON RELLENO DE FRESA | Sisytec: $8 vs ERP: $7
+HOJALDRA CHICA 1600 BASTON (50g) | Sisytec: $8 vs ERP: $7
+NIDO CON AZUCAR Y MERMELADA DE FRESA AL CENTRO | Sisytec: $8 vs ERP: $7
+TABLETA CHOCOLATE ABUELITA 90G | Sisytec: $24 vs ERP: $18
+
+== FALTAN EN ERP ==
+CHAROLA DE PAN | Cat: 1.-EMPAQUE Y PAN BLANCO | Precio: $20
+CAJA DE PAN | Cat: 1.-EMPAQUE Y PAN BLANCO | Precio: $30
+BARRITA DE PIÑA O FRESA | Cat: 2.-A - B | Precio: $8
+CANASTA DE PIÑA | Cat: 3.-C - D | Precio: $9
+CHURRO PROMOCIÓN | Cat: 3.-C - D | Precio: $10
+CONDE | Cat: 3.-C - D | Precio: $12
+DEDO CON RELLENO DE PIÑA Y AZUCAR GLASS | Cat: 3.-C - D | Precio: $9
+EMPANADA MADRILEÑA CON CREMA PASTELERA | Cat: 4.-E - K | Precio: $15
+EMPANADA TABASQUEÑA CON RELLENO DE PIÑA | Cat: 4.-E - K | Precio: $9
+FIGURA ESPAÑOLA | Cat: 4.-E - K | Precio: $8
+MOÑO | Cat: 5.-L - M | Precio: $8
+MULTI COCO MOKA | Cat: 5.-L - M | Precio: $14
+NEVADA DE NUTELLA | Cat: 6.-N - P | Precio: $14
+PALILLO SALADO | Cat: 6.-N - P | Precio: $3
+PAMBAZO DE PILONCILLO CON ANÍS | Cat: 6.-N - P | Precio: $5
+PAN DE MUERTO MUÑECO | Cat: 6.-N - P | Precio: $18
+PAN DE ELOTE MEDIANO | Cat: 6.-N - P | Precio: $25
+PAN DE ELOTE CHICO | Cat: 6.-N - P | Precio: $20
+RIEL DE FRESA O PIÑA | Cat: 7.-R - S | Precio: $9
+ROLLO DE FRESA CON AVENA | Cat: 7.-R - S | Precio: $11
+ROLLO DE PIÑA CON SALVADO | Cat: 7.-R - S | Precio: $11
+TABASQUEÑO | Cat: 8.-T - Z | Precio: $8
+VIENESA DE CREMA; COCO; HIGO Y NUEZ | Cat: 8.-T - Z | Precio: $17
+LECHE SANTA CLARA SABOR 180 ML | Cat: 9.-LACTEOS | Precio: $13
+LECHE SABOR ALPURA | Cat: 9.-LACTEOS | Precio: $11
+BUÑUELOS | Cat: 11.-ESPORADICOS | Precio: $8
+NIÑO ENVUELTO | Cat: 11.-ESPORADICOS | Precio: $25
+NESCAFE CAPUCHINO 20g | Cat: 12.-CAFES Y CHOCOLATES | Precio: $15
+HELADO 4 LITROS UN SABOR | Cat: 14.-HELADOS | Precio: $560
+HELADO 5 LITROS UN SABOR | Cat: 14.-HELADOS | Precio: $700
+HELADO 4 LITROS VARIOS SABORES | Cat: 14.-HELADOS | Precio: $680
+HELADO 5 LITROS VARIOS SABORES | Cat: 14.-HELADOS | Precio: $850

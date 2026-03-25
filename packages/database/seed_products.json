@@ -1,0 +1,76 @@
+[
+    {
+        "id": "prod-001",
+        "name": "Concha de Vainilla Artesanal",
+        "category": "Panadería",
+        "price": 18.00,
+        "recipe": [
+            {
+                "ingredientId": "ing-001",
+                "amount": 0.045,
+                "unit": "kg"
+            },
+            {
+                "ingredientId": "ing-002",
+                "amount": 0.015,
+                "unit": "kg"
+            },
+            {
+                "ingredientId": "ing-003",
+                "amount": 0.010,
+                "unit": "kg"
+            },
+            {
+                "ingredientId": "ing-004",
+                "amount": 0.005,
+                "unit": "kg"
+            }
+        ]
+    },
+    {
+        "id": "prod-002",
+        "name": "Pizza Pepperoni Grande",
+        "category": "Pizzería",
+        "price": 285.00,
+        "recipe": [
+            {
+                "ingredientId": "ing-001",
+                "amount": 0.350,
+                "unit": "kg"
+            },
+            {
+                "ingredientId": "ing-005",
+                "amount": 0.220,
+                "unit": "kg"
+            },
+            {
+                "ingredientId": "ing-006",
+                "amount": 0.150,
+                "unit": "lt"
+            },
+            {
+                "ingredientId": "ing-010",
+                "amount": 0.015,
+                "unit": "lt"
+            }
+        ]
+    },
+    {
+        "id": "prod-003",
+        "name": "Cappuccino Doble Especialidad",
+        "category": "Cafetería",
+        "price": 65.00,
+        "recipe": [
+            {
+                "ingredientId": "ing-007",
+                "amount": 0.018,
+                "unit": "kg"
+            },
+            {
+                "ingredientId": "ing-008",
+                "amount": 0.240,
+                "unit": "lt"
+            }
+        ]
+    }
+]

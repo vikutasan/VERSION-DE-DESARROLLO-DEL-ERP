@@ -1,0 +1,31 @@
+{
+  "camera": {
+    "name": "Industrial USB Camera (Sony IMX179)",
+    "resolution": {
+      "width": 3840,
+      "height": 2160,
+      "fps": 60
+    },
+    "calibration": {
+      "exposure": "auto",
+      "whiteBalance": "manual",
+      "focus": "infinity"
+    }
+  },
+  "detection": {
+    "confidenceThreshold": 0.85,
+    "maxObjectsPerFrame": 20,
+    "labels": [
+      "concha_chocolate",
+      "concha_vainilla",
+      "bolillo",
+      "dona_chocolate",
+      "ojo_de_buey",
+      "panquecito"
+    ]
+  },
+  "lighting_compensation": {
+    "warm_filter": true,
+    "glass_vignette_fix": true
+  }
+}

@@ -1,0 +1,92 @@
+[
+    {
+        "id": "ing-001",
+        "name": "Harina de Trigo Extra Fina",
+        "category": "Panadería",
+        "unit": "kg",
+        "costPerUnit": 18.50,
+        "stock": 100.0,
+        "minStock": 25.0
+    },
+    {
+        "id": "ing-002",
+        "name": "Azúcar Blanca Estándar",
+        "category": "Panadería",
+        "unit": "kg",
+        "costPerUnit": 24.00,
+        "stock": 50.0,
+        "minStock": 10.0
+    },
+    {
+        "id": "ing-003",
+        "name": "Mantequilla Artesanal",
+        "category": "Lácteos",
+        "unit": "kg",
+        "costPerUnit": 145.00,
+        "stock": 20.0,
+        "minStock": 5.0
+    },
+    {
+        "id": "ing-004",
+        "name": "Levadura Seca Instantánea",
+        "category": "Insumos",
+        "unit": "kg",
+        "costPerUnit": 85.00,
+        "stock": 10.0,
+        "minStock": 2.0
+    },
+    {
+        "id": "ing-005",
+        "name": "Queso Mozzarella Premium",
+        "category": "Pizzería",
+        "unit": "kg",
+        "costPerUnit": 165.00,
+        "stock": 40.0,
+        "minStock": 10.0
+    },
+    {
+        "id": "ing-006",
+        "name": "Salsa de Tomate Base R de Rico",
+        "category": "Pizzería",
+        "unit": "lt",
+        "costPerUnit": 45.00,
+        "stock": 30.0,
+        "minStock": 5.0
+    },
+    {
+        "id": "ing-007",
+        "name": "Café de Especialidad (Grano)",
+        "category": "Cafetería",
+        "unit": "kg",
+        "costPerUnit": 380.00,
+        "stock": 15.0,
+        "minStock": 3.0
+    },
+    {
+        "id": "ing-008",
+        "name": "Leche Entera Local",
+        "category": "Lácteos",
+        "unit": "lt",
+        "costPerUnit": 22.00,
+        "stock": 60.0,
+        "minStock": 12.0
+    },
+    {
+        "id": "ing-009",
+        "name": "Chocolate para Panadería",
+        "category": "Panadería",
+        "unit": "kg",
+        "costPerUnit": 120.00,
+        "stock": 12.0,
+        "minStock": 3.0
+    },
+    {
+        "id": "ing-010",
+        "name": "Aceite de Oliva Extra Virgen",
+        "category": "Pizzería",
+        "unit": "lt",
+        "costPerUnit": 190.00,
+        "stock": 8.0,
+        "minStock": 2.0
+    }
+]

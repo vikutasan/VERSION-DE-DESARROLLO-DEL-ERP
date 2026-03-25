@@ -1,0 +1,1005 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Productos (Panadería, Pizzas, Helados, Abarrotes, etc.)
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  
+  // Retail & Identificación
+  sku         String?  @unique
+  barcode     String?  @unique
+  imageUrl    String?
+  unit        String   @default("pza")
+  
+  // Inventario & Control
+  stock       Float    @default(0)
+  minStock    Float    @default(5)
+  
+  // Visión Artificial
+  visionLabel String?  
+  isVisualAI  Boolean  @default(false)
+
+  // Ruteo de Comandas
+  printAt     PrintLocation @default(BAKERY)
+
+  // Sistema de Lealtad
+  generaPuntos Boolean @default(true) // false para productos de reventa o en promoción
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  transactionItems TransactionItem[]
+  ventaItems       VentaItem[]
+  recipe           Recipe?
+  modGroups        ProductModifierGroup[]
+  priceHistory     PriceHistory[]
+  specialOrderItems SpecialOrderItem[]
+  planItems        ProductionPlanItem[]
+  manualActivities  Activity[] // Actividades vinculadas a este producto si aplica
+  b2bOrderItems     B2BOrderItem[]
+  stockLevels       StockLevel[]
+  inventoryMovements InventoryMovement[]
+}
+
+model Ingredient {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  unit        String   
+  costPerUnit Decimal  @db.Decimal(10, 2)
+  stock       Float    @default(0)
+  minStock    Float    @default(10)
+  
+  recipeItems RecipeItem[]
+}
+
+model Recipe {
+  id          String       @id @default(uuid())
+  productId   String       @unique
+  product     Product      @relation(fields: [productId], references: [id])
+  items       RecipeItem[]
+  lastCost    Decimal      @db.Decimal(10, 2) @default(0)
+  
+  unitsPerBatch Int        @default(1)
+}
+
+model RecipeItem {
+  id           String     @id @default(uuid())
+  recipeId     String
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  ingredientId String
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  quantity     Float      
+}
+
+model ModifierGroup {
+  id          String           @id @default(uuid())
+  name        String           
+  options     ModifierOption[]
+  products    ProductModifierGroup[]
+}
+
+model ModifierOption {
+  id              String        @id @default(uuid())
+  name            String
+  extraPrice      Decimal       @db.Decimal(10, 2) @default(0)
+  modifierGroupId String
+  modifierGroup   ModifierGroup @relation(fields: [modifierGroupId], references: [id])
+}
+
+model ProductModifierGroup {
+  productId       String
+  product         Product       @relation(fields: [productId], references: [id])
+  modifierGroupId String
+  modifierGroup   ModifierGroup @relation(fields: [modifierGroupId], references: [id])
+  @@id([productId, modifierGroupId])
+}
+
+model PriceHistory {
+  id            String    @id @default(uuid())
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id])
+  price         Decimal   @db.Decimal(10, 2)
+  effectiveFrom DateTime  @default(now())
+  effectiveTo   DateTime?
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// ─── MODELO LEGACY (se mantiene para compatibilidad, usar Venta en adelante) ───
+model Transaction {
+  id          String            @id @default(uuid())
+  total       Decimal           @db.Decimal(10, 2)
+  subtotal    Decimal           @db.Decimal(10, 2)
+  tax         Decimal           @db.Decimal(10, 2)
+  paymentType PaymentType       @default(CASH)
+  status      TransactionStatus @default(COMPLETED)
+  items       TransactionItem[]
+  employeeId  String?           
+  employee    Employee?         @relation(fields: [employeeId], references: [id])
+  createdAt   DateTime          @default(now())
+}
+
+model TransactionItem {
+  id            String      @id @default(uuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id])
+  quantity      Int
+  price         Decimal     @db.Decimal(10, 2)
+}
+
+// ─── NÚCLEO DE VENTAS MULTIMODAL ─────────────────────────────────────────────
+
+/// Venta: representa una transacción completa en el POS
+model Venta {
+  id              String        @id @default(uuid())
+  externalId      String        @unique // ID legible ej: V-2026-4821 (para comunicar a terminal)
+  subtotal        Decimal       @db.Decimal(10, 2)
+  taxAmount       Decimal       @db.Decimal(10, 2)
+  total           Decimal       @db.Decimal(10, 2)
+  totalPagado     Decimal       @db.Decimal(10, 2) @default(0)
+  cambio          Decimal       @db.Decimal(10, 2) @default(0)
+  status          VentaStatus   @default(PENDIENTE)
+  terminalId      String?       // ID de la terminal física (T1, T2, CAJA...)
+
+  // Cliente de lealtad (opcional)
+  clienteLealtadId String?
+  clienteLealtad  ClienteLealtad? @relation(fields: [clienteLealtadId], references: [id])
+
+  // Puntos
+  puntosGanados   Int           @default(0)
+  puntosUsados    Int           @default(0)
+
+  // Modo offline
+  esOffline       Boolean       @default(false)
+  sincronizado    Boolean       @default(true)
+
+  // Empleado que realizó la venta
+  empleadoId      String?
+  turnoId         String?       // Turno de caja activo
+  turno           TurnoCaja?    @relation(fields: [turnoId], references: [id])
+
+  items           VentaItem[]
+  pagos           PagoDetalle[]
+  fallasTerminal  FallaTerminal[]
+  historialLealtad HistorialLealtad[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+/// Ítems de la venta
+model VentaItem {
+  id              String    @id @default(uuid())
+  ventaId         String
+  venta           Venta     @relation(fields: [ventaId], references: [id])
+  productId       String
+  product         Product   @relation(fields: [productId], references: [id])
+  cantidad        Int
+  precioUnitario  Decimal   @db.Decimal(10, 2)
+  subtotalItem    Decimal   @db.Decimal(10, 2)
+  generaPuntos    Boolean   @default(true) // copiado del producto al momento de la venta
+}
+
+/// PagoDetalle: cada método de pago utilizado en una venta (soporte multimodal)
+model PagoDetalle {
+  id                      String         @id @default(uuid())
+  ventaId                 String
+  venta                   Venta          @relation(fields: [ventaId], references: [id])
+  metodoPago              MetodoPago     // EFECTIVO, TARJETA, PUNTOS, SPEI, OFFLINE_CARD
+  monto                   Decimal        @db.Decimal(10, 2)
+
+  // Campos para tarjeta (PCI Compliant — sin número completo)
+  ultimos4Digitos         String?        // Ej: "4521"
+  marcaTarjeta            String?        // VISA, MASTERCARD, AMEX, etc.
+  numeroAutorizacion      String?        // Código del banco aprobador
+  idTransaccionProcesador String?        // ID en el sistema de la terminal/API
+  referenciaTransaccion   String?        // Referencia interna o folio
+
+  // Para puntos
+  puntosUtilizados        Int?           // Puntos canjeados en este pago
+
+  // Estado de este pago específico
+  estadoPago              EstadoPago     @default(APROBADO)
+  motivoRechazo           String?        // Si fue rechazado
+
+  // Captura manual (cuando la terminal no responde)
+  esManual                Boolean        @default(false)
+
+  createdAt               DateTime       @default(now())
+}
+
+// ─── SISTEMA DE LEALTAD ───────────────────────────────────────────────────────
+
+/// Cliente del programa de lealtad
+model ClienteLealtad {
+  id              String          @id @default(uuid())
+  nombre          String
+  telefono        String          @unique // Identificador principal en caja
+  email           String?
+  saldoPuntos     Int             @default(0)
+  nivelCliente    NivelCliente    @default(BRONCE)
+  totalCompras    Decimal         @db.Decimal(12, 2) @default(0)
+  fechaAlta       DateTime        @default(now())
+  ultimaVisita    DateTime        @default(now())
+  isActive        Boolean         @default(true)
+
+  ventas          Venta[]
+  historial       HistorialLealtad[]
+}
+
+/// Reglas configurables del programa de puntos
+model ReglaPuntos {
+  id                      String    @id @default(uuid())
+  nombre                  String    @unique // Ej: "Regla Estándar 2026"
+  factorAcumulacion       Decimal   @db.Decimal(6, 4) // Puntos por $1 MXN gastado (ej: 1.0)
+  valorPunto              Decimal   @db.Decimal(6, 4) // $MXN que vale 1 punto (ej: 0.05)
+  limiteMaxRedenciónPct   Decimal   @db.Decimal(5, 2) @default(50) // Máx % de cuenta pagable con puntos
+  isActive                Boolean   @default(true)
+  createdAt               DateTime  @default(now())
+}
+
+/// Historial de movimientos de puntos
+model HistorialLealtad {
+  id              String               @id @default(uuid())
+  clienteId       String
+  cliente         ClienteLealtad       @relation(fields: [clienteId], references: [id])
+  ventaId         String?
+  venta           Venta?               @relation(fields: [ventaId], references: [id])
+  tipo            TipoMovimientoLealtad // ACUMULACION | REDENCION | AJUSTE | VENCIMIENTO
+  puntos          Int                  // Positivo = ganados, Negativo = canjeados
+  saldoAnterior   Int
+  saldoNuevo      Int
+  descripcion     String?
+  createdAt       DateTime             @default(now())
+}
+
+// ─── GESTIÓN DE CAJA ──────────────────────────────────────────────────────────
+
+/// Turno de Caja: desde apertura hasta corte
+model TurnoCaja {
+  id                  String        @id @default(uuid())
+  terminalId          String        // Ej: "CAJA", "T2"
+  empleadoId          String?
+  fondoApertura       Decimal       @db.Decimal(12, 2) // Monto con el que abre caja
+  fondoCierreReal     Decimal?      @db.Decimal(12, 2) // Lo que el cajero declara al cerrar
+  fondoCierreEsperado Decimal?      @db.Decimal(12, 2) // Lo que el sistema calcula
+  diferencia          Decimal?      @db.Decimal(12, 2) // fondoCierreReal - fondoCierreEsperado
+  status              StatusTurno   @default(ABIERTO)
+  comentarios         String?       // Notas del cajero al cerrar
+
+  // Resumen calculado al cierre
+  totalEfectivo       Decimal?      @db.Decimal(12, 2)
+  totalTarjeta        Decimal?      @db.Decimal(12, 2)
+  totalPuntos         Decimal?      @db.Decimal(12, 2)
+  totalSpei           Decimal?      @db.Decimal(12, 2)
+  totalOfflineCard    Decimal?      @db.Decimal(12, 2)
+  totalVentas         Decimal?      @db.Decimal(12, 2)
+  cantidadVentas      Int           @default(0)
+
+  ventas              Venta[]
+  movimientos         MovimientoCaja[]
+
+  abiertaEn           DateTime      @default(now())
+  cerradaEn           DateTime?
+}
+
+/// Entradas y salidas manuales de efectivo durante el turno
+model MovimientoCaja {
+  id          String          @id @default(uuid())
+  turnoId     String
+  turno       TurnoCaja       @relation(fields: [turnoId], references: [id])
+  tipo        TipoMovCaja     // INGRESO | EGRESO (gastos menores, cambio de caja)
+  monto       Decimal         @db.Decimal(12, 2)
+  concepto    String          // Ej: "Compra de bolsas", "Fondo para cambio"
+  empleadoId  String?
+  createdAt   DateTime        @default(now())
+}
+
+// ─── AUDITORÍA DE TERMINAL BANCARIA ───────────────────────────────────────────
+
+/// Registro de fallas de terminal para auditoría y reclamos al proveedor
+model FallaTerminal {
+  id              String          @id @default(uuid())
+  ventaId         String?
+  venta           Venta?          @relation(fields: [ventaId], references: [id])
+  montoIntentado  Decimal         @db.Decimal(10, 2)
+  errorType       ErrorTypeTerminal
+  descripcion     String?         // Mensaje técnico del error
+  resolucion      ResolucionFalla? // ¿Qué hizo el cajero?
+  codigoAuth      String?         // Si se validó manualmente
+  createdAt       DateTime        @default(now())
+}
+
+model BusinessClient {
+  id              String        @id @default(uuid())
+  contactName     String        // Persona de contacto
+  restaurantName  String        @unique
+  phone           String
+  address         String
+  googleMapsLink  String?
+  paymentTerm     Int           @default(0) // Días de crédito
+  preferredDay    Int?          // Día preferido de pedido (0-6)
+  orders          B2BOrder[]
+  createdAt       DateTime      @default(now())
+}
+
+model B2BOrder {
+  id              String        @id @default(uuid())
+  clientId        String
+  client          BusinessClient @relation(fields: [clientId], references: [id])
+  deliveryDate    DateTime
+  status          OrderStatus   @default(PENDING)
+  deliveryStatus  LogisticsStatus @default(PENDING)
+  paymentType     PaymentType   @default(CASH)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  terminalId      String?       // ID de la terminal física usada
+  totalAmount     Decimal       @db.Decimal(10, 2)
+  items           B2BOrderItem[]
+  routeId         String?
+  route           DeliveryRoute? @relation(fields: [routeId], references: [id])
+  createdAt       DateTime      @default(now())
+}
+
+model B2BOrderItem {
+  id              String    @id @default(uuid())
+  orderId         String
+  order           B2BOrder  @relation(fields: [orderId], references: [id])
+  productId       String
+  product         Product   @relation(fields: [productId], references: [id])
+  quantity        Int
+  price           Decimal   @db.Decimal(10, 2)
+}
+
+model SpecialOrder {
+  id              String        @id @default(uuid())
+  customerName    String
+  customerEmail   String?
+  customerPhone   String?
+  
+  deliveryDate    DateTime
+  deliveryAddress String?       // Dirección o Sucursal de Entrega
+  deliveryLatLng  String?       // Coordenadas para Google Maps (lat,lng)
+  isPickup        Boolean       @default(true)
+  
+  status          OrderStatus   @default(PENDING)
+  deliveryStatus  LogisticsStatus @default(PENDING) // Estatus Logístico
+  
+  paymentStatus   PaymentStatus @default(UNPAID)
+  paymentId       String?       // ID de Referencia Stripe/PayPal
+  totalAmount     Decimal       @db.Decimal(10, 2)
+  
+  routeId         String?       // ID de la Ruta asignada
+  route           DeliveryRoute? @relation(fields: [routeId], references: [id])
+  
+  items           SpecialOrderItem[]
+  createdAt       DateTime      @default(now())
+}
+
+
+
+model SpecialOrderItem {
+  id              String        @id @default(uuid())
+  specialOrderId  String
+  specialOrder    SpecialOrder  @relation(fields: [specialOrderId], references: [id])
+  productId       String
+  product         Product       @relation(fields: [productId], references: [id])
+  quantity        Int
+  
+  // Configuración de Pastel Personalizado (JSON)
+  // { base: 'Vainilla', filling: 'Frutos Rojos', topping: 'Crema', message: '¡HBD!', calories: 450 }
+  customization   Json?         
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+  REFUNDED
+}
+
+model DeliveryRoute {
+  id              String        @id @default(uuid())
+  routeName       String        // Ej: 'Ruta Metepec Norte', 'Ruta Toluca Centro'
+  date            DateTime      @default(now())
+  vehicleId       String?
+  vehicle         Vehicle?      @relation(fields: [vehicleId], references: [id])
+  driverId        String?
+  driver          Employee?     @relation("DriverRelation", fields: [driverId], references: [id])
+  status          RouteStatus   @default(DRAFT)
+  orders          SpecialOrder[]
+  b2bOrders       B2BOrder[]
+}
+
+
+model Vehicle {
+  id              String        @id @default(uuid())
+  plate           String        @unique // Placa
+  model           String        // Ej: 'Chevy Tornado', 'Hilux'
+  capacity        Int           // Capacidad en pasteles
+  isActive        Boolean       @default(true)
+  routes          DeliveryRoute[]
+}
+
+
+
+model ProductionPlan {
+  id              String        @id @default(uuid())
+  date            DateTime      @unique
+  status          PlanStatus    @default(DRAFT)
+  items           ProductionPlanItem[]
+  createdAt       DateTime      @default(now())
+}
+
+model ProductionPlanItem {
+  id                String         @id @default(uuid())
+  productionPlanId  String
+  productionPlan    ProductionPlan @relation(fields: [productionPlanId], references: [id])
+  productId         String
+  product           Product        @relation(fields: [productId], references: [id])
+  
+  suggestedBySales  Int            
+  customerOrders    Int            
+  totalRequired     Int            
+  batchesToProduce  Int            
+  actualProduced    Int           @default(0) // Unidades reales que salieron del horno
+  wasteQuantity     Int           @default(0) // Unidades descartadas (quemadas, mal estado)
+}
+
+// RRHH y Manuales Operativos
+model Employee {
+  id          String    @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String    @unique
+  phone       String?
+  role        Role      @default(WAITER)
+  branch      String    @default("TOLUCA")
+  salary      Decimal   @db.Decimal(10, 2)
+  isActive    Boolean   @default(true)
+  photoUrl    String?
+  
+  // Seguridad y Acceso
+  password    String?   // Hashed password
+  resetToken  String?   @unique
+  resetExpires DateTime?
+  
+  hireDate    DateTime  @default(now())
+  
+  attendances Attendance[]
+  transactions Transaction[]
+  drivenRoutes DeliveryRoute[] @relation("DriverRelation")
+  payrollReceipts PayrollReceipt[]
+  incidents    Incident[]
+  shiftAssignments ShiftAssignment[]
+  payrolls     Payroll[]
+  activityLogs ActivityLog[]
+}
+
+// --- MÓDULO FINANCIERO INDUSTRIAL ---
+
+enum AccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  REVENUE
+  EXPENSE
+}
+
+model Account {
+  id            String        @id @default(uuid())
+  code          String        @unique // Ej: 1101 (Caja), 4101 (Ventas)
+  name          String
+  type          AccountType
+  balance       Decimal       @default(0) @db.Decimal(15, 2)
+  entries       LedgerEntry[]
+  createdAt     DateTime      @default(now())
+}
+
+model LedgerEntry {
+  id            String        @id @default(uuid())
+  accountId     String
+  account       Account       @relation(fields: [accountId], references: [id])
+  type          String        // DEBIT | CREDIT
+  amount        Decimal       @db.Decimal(15, 2)
+  description   String
+  referenceId   String?       // ID de la Venta, Compra o Nómina que generó el asiento
+  date          DateTime      @default(now())
+}
+
+model CashBox {
+  id            String        @id @default(uuid())
+  name          String        // Ej: 'Caja Principal Toluca'
+  branchId      String
+  currentAmount Decimal       @default(0) @db.Decimal(15, 2)
+  isOpen        Boolean       @default(false)
+  lastOpenedAt  DateTime?
+  lastClosedAt  DateTime?
+  logs          CashLog[]
+}
+
+model CashLog {
+  id            String        @id @default(uuid())
+  cashBoxId     String
+  cashBox       CashBox       @relation(fields: [cashBoxId], references: [id])
+  type          String        // OPEN | CLOSE | INCOME | EXPENSE
+  amount        Decimal       @db.Decimal(15, 2)
+  reason        String
+  employeeId    String
+  createdAt     DateTime      @default(now())
+}
+
+model Vendor {
+  id            String        @id @default(uuid())
+  name          String        @unique // Ej: 'Molinos de México'
+  contact       String?
+  phone         String?
+  email         String?
+  address       String?
+  taxId         String?       // RFC / Tax ID
+  creditDays    Int           @default(0)
+  invoices      VendorInvoice[]
+  purchaseOrders PurchaseOrder[]
+  createdAt     DateTime      @default(now())
+}
+
+model VendorInvoice {
+  id            String        @id @default(uuid())
+  vendorId      String
+  vendor        Vendor        @relation(fields: [vendorId], references: [id])
+  invoiceNumber String?
+  amount        Decimal       @db.Decimal(15, 2)
+  dueDate       DateTime
+  status        PaymentStatus @default(UNPAID)
+  description   String?
+  ledgerId      String?       // Vínculo con el asiento contable (Pasivo)
+  createdAt     DateTime      @default(now())
+}
+
+model PurchaseOrder {
+  id            String        @id @default(uuid())
+  vendorId      String
+  vendor        Vendor        @relation(fields: [vendorId], references: [id])
+  items         PurchaseOrderItem[]
+  totalAmount   Decimal       @db.Decimal(15, 2)
+  status        POStatus      @default(DRAFT)
+  requestedBy   String?       // ID del empleado (ej: Maestro Panadero)
+  approvedBy    String?       // ID del Admin/Manager
+  receivedAt    DateTime?
+  createdAt     DateTime      @default(now())
+}
+
+model PurchaseOrderItem {
+  id              String        @id @default(uuid())
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  productId       String
+  // product       Product       @relation(fields: [productId], references: [id])
+  quantity        Decimal       @db.Decimal(15, 3)
+  unitPrice       Decimal       @db.Decimal(15, 2)
+  total           Decimal       @db.Decimal(15, 2)
+}
+
+enum POStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  RECEIVED
+  CANCELLED
+}
+
+model TaxData {
+  id              String        @id @default(uuid())
+  rfc             String        @unique
+  legalName       String        // Razón Social
+  taxRegime       String        // Régimen Fiscal (ej: 601)
+  zipCode         String
+  csdCertificate  String?       // Certificado de Sello Digital (Base64)
+  csdKey          String?       // Llave del CSD (Base64)
+  csdPassword     String?       // Password de la llave
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+}
+
+model ElectronicInvoice {
+  id              String        @id @default(uuid())
+  uuid            String?       @unique // Folio Fiscal (SAT)
+  serie           String?
+  folio           Int           @default(autoincrement())
+  rfcIssuer       String
+  rfcReceiver     String
+  totalAmount     Decimal       @db.Decimal(15, 2)
+  cfdiUsage       String        @default("G03") // Gastos en general
+  status          InvoiceStatus @default(PENDING)
+  xmlUrl          String?
+  pdfUrl          String?
+  
+  orderId         String?       // Vínculo con POS Order (Opcional)
+  b2bOrderId      String?       // Vínculo con B2B Order (Opcional)
+  
+  createdAt       DateTime      @default(now())
+}
+
+enum InvoiceStatus {
+  PENDING
+  STAMPED   // Timbrada
+  CANCELLED
+  ERROR
+}
+model PayrollPeriod {
+  id              String        @id @default(uuid())
+  startDate       DateTime
+  endDate         DateTime
+  paymentDate     DateTime
+  status          PayrollStatus @default(PENDING)
+  receipts        PayrollReceipt[]
+  createdAt       DateTime      @default(now())
+}
+
+model PayrollReceipt {
+  id              String        @id @default(uuid())
+  employeeId      String
+  employee        Employee      @relation(fields: [employeeId], references: [id])
+  periodId        String
+  period          PayrollPeriod @relation(fields: [periodId], references: [id])
+  totalEarnings   Decimal       @db.Decimal(15, 2)
+  totalDeductions Decimal       @db.Decimal(15, 2)
+  netPay          Decimal       @db.Decimal(15, 2)
+  status          InvoiceStatus @default(PENDING)
+  uuid            String?       @unique // Folio SAT del recibo
+  items           PayrollItem[]
+  createdAt       DateTime      @default(now())
+}
+
+model PayrollItem {
+  id              String        @id @default(uuid())
+  receiptId       String
+  receipt         PayrollReceipt @relation(fields: [receiptId], references: [id])
+  code            String        // Catálogo SAT (001, 002...)
+  description     String
+  amount          Decimal       @db.Decimal(15, 2)
+  type            String        // EARNING (Percepción) | DEDUCTION (Deducción)
+}
+
+enum PayrollStatus {
+  PENDING
+  OPEN
+  CALCULATED
+  PAID
+  CLOSED
+  CANCELLED
+}
+model Warehouse {
+  id            String        @id @default(uuid())
+  name          String        @unique // Ej: 'Almacén Central Planta', 'Bodega Sucursal Toluca'
+  location      String?
+  type          WarehouseType @default(GENERAL)
+  stockLevels   StockLevel[]
+  movements     InventoryMovement[]
+  createdAt     DateTime      @default(now())
+}
+
+model StockLevel {
+  id            String        @id @default(uuid())
+  warehouseId   String
+  warehouse     Warehouse     @relation(fields: [warehouseId], references: [id])
+  productId     String
+  product       Product       @relation(fields: [productId], references: [id])
+  quantity      Decimal       @default(0) @db.Decimal(15, 3)
+  minStock      Decimal       @default(0) @db.Decimal(15, 3)
+  maxStock      Decimal?      @db.Decimal(15, 3)
+  lastInventory DateTime      @default(now())
+
+  @@unique([warehouseId, productId])
+}
+
+model InventoryMovement {
+  id            String        @id @default(uuid())
+  warehouseId   String
+  warehouse     Warehouse     @relation(fields: [warehouseId], references: [id])
+  productId     String
+  product       Product       @relation(fields: [productId], references: [id])
+  quantity      Decimal       @db.Decimal(15, 3)
+  type          MovementType  // IN | OUT | TRANSFER | ADJUSTMENT
+  reason        String?       // Ej: 'Compra a proveedor', 'Venta POS', 'Merma'
+  referenceId   String?       // ID de la orden, factura o plan de producción
+  createdAt     DateTime      @default(now())
+}
+
+enum WarehouseType {
+  PLANT
+  RETAIL
+  TRANSIT
+  GENERAL
+}
+
+enum MovementType {
+  IN
+  OUT
+  TRANSFER
+  ADJUSTMENT
+}
+
+model Incident {
+  id          String   @id @default(uuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  type        IncidentType
+  severity    Severity @default(LOW)
+  description String   @db.Text
+  date        DateTime @default(now())
+  reportedBy  String?  // ID del Gerente o "SYSTEM" (ej: por falta de tarea)
+  isResolved  Boolean  @default(false)
+  actionTaken String?  // Medida correctiva tomada
+}
+
+enum IncidentType {
+  ABSENCE      // Falta
+  LATENESS     // Retardo
+  DISCIPLINARY // Falta administrativa / Amonestación
+  MERIT        // Mérito / Reconocimiento
+  TASK_FAILURE // Incumplimiento de manual operativo
+  ACCIDENT     // Accidente laboral
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+
+model Attendance {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  clockIn     DateTime  @default(now())
+  clockOut    DateTime?
+}
+
+model Shift {
+  id          String    @id @default(uuid())
+  name        String    
+  startTime   String    
+  endTime     String    
+  assignments ShiftAssignment[]
+}
+
+model ShiftAssignment {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  shiftId     String
+  shift       Shift     @relation(fields: [shiftId], references: [id])
+  date        DateTime
+}
+
+model Payroll {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  periodStart DateTime
+  periodEnd   DateTime
+  totalAmount Decimal   @db.Decimal(10, 2)
+  bonuses     Decimal   @db.Decimal(10, 2) @default(0)
+  deductions  Decimal   @db.Decimal(10, 2) @default(0)
+  status      PayrollStatus @default(PENDING)
+}
+
+// MANUALES OPERATIVOS (REQUERIMIENTO NUEVO)
+model OperationalManual {
+  id          String     @id @default(uuid())
+  role        Role       
+  dayOfWeek   Int        // 0-6 (Google Calendar Style: Sunday is 0)
+  activities  Activity[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([role, dayOfWeek])
+}
+
+model Activity {
+  id                String            @id @default(uuid())
+  manualId          String
+  manual            OperationalManual @relation(fields: [manualId], references: [id])
+  name              String            // Nombre de la actividad
+  startTime         String            // HH:mm
+  durationMinutes   Int               
+  endTime           String            // HH:mm
+  procedure         String            @db.Text
+  priority          ActivityPriority  @default(FUNDAMENTAL)
+  
+  // Lógica Google Calendar
+  isRecurring       Boolean           @default(true)
+  recurrenceRule    String?           // DAILY, WEEKLY, etc.
+  
+  productId         String?           // Opcional: vinculada a un producto específico
+  product           Product?          @relation(fields: [productId], references: [id])
+  
+  logs              ActivityLog[]
+}
+
+model ActivityLog {
+  id              String      @id @default(uuid())
+  activityId      String
+  activity        Activity    @relation(fields: [activityId], references: [id])
+  employeeId      String
+  employee        Employee    @relation(fields: [employeeId], references: [id])
+  status          LogStatus   @default(PENDING)
+  notes           String?     // Por qué se saltó o por qué no se completó
+  timestamp       DateTime    @default(now())
+  completedAt     DateTime?
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  BAKER      
+  PIZZA_CHEF 
+  BARISTA    
+  WAITER     
+  CASHIER    
+  LOGISTICS  
+  DRIVER     // Repartidor
+}
+
+
+enum ActivityPriority {
+  FUNDAMENTAL // No se puede saltar
+  SKIPPABLE   // Se puede saltar si la operación lo requiere
+}
+
+enum LogStatus {
+  PENDING
+  COMPLETED
+  SKIPPED
+  FAILED
+}
+
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  IN_PRODUCTION
+  READY
+  DELIVERED
+}
+
+enum PlanStatus {
+  DRAFT
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum PrintLocation {
+  BAKERY
+  PIZZA
+  CAFE
+  KITCHEN
+  BAR
+  NONE
+}
+
+enum PaymentType {
+  CASH
+  CARD
+  TRANSFER
+  LOYALTY
+  OFFLINE_CARD
+}
+
+// Métodos de pago del nuevo sistema multimodal
+enum MetodoPago {
+  EFECTIVO
+  TARJETA       // Terminal bancaria (con o sin integración)
+  PUNTOS        // Canje de puntos de lealtad
+  SPEI          // Transferencia bancaria
+  OFFLINE_CARD  // Tarjeta procesada en terminal independiente (modo contingencia)
+  QR_CoDi       // Cobro con CoDi/QR
+}
+
+enum EstadoPago {
+  PENDIENTE
+  APROBADO
+  RECHAZADO
+  EN_PROCESO   // Esperando respuesta de terminal
+  TIMEOUT      // La terminal no respondió en 45s
+  MANUAL       // Aprobado manualmente por cajero (captura de auth code)
+}
+
+enum VentaStatus {
+  BORRADOR      // Carrito en proceso
+  PENDIENTE     // Esperando pago
+  COMPLETADA
+  CANCELADA
+  OFFLINE       // Guardada sin internet, pendiente de sync
+}
+
+enum NivelCliente {
+  BRONCE
+  PLATA
+  ORO
+}
+
+enum TipoMovimientoLealtad {
+  ACUMULACION
+  REDENCION
+  AJUSTE
+  VENCIMIENTO
+  BIENVENIDA    // Puntos de registro
+}
+
+enum StatusTurno {
+  ABIERTO
+  CERRADO
+  CONCILIADO
+}
+
+enum TipoMovCaja {
+  INGRESO
+  EGRESO
+}
+
+enum ErrorTypeTerminal {
+  TIMEOUT          // Sin respuesta en 45 segundos
+  SIN_CONEXION     // No hay internet
+  TARJETA_DECLINADA
+  FONDOS_INSUFICIENTES
+  TARJETA_INVALIDA
+  ERROR_PROCESADOR // Error del lado del banco/procesador
+  ERROR_SISTEMA    // Error interno del POS
+}
+
+enum ResolucionFalla {
+  REINTENTO_EXITOSO
+  VALIDACION_MANUAL
+  CAMBIO_A_EFECTIVO
+  CANCELADA_CLIENTE
+  PENDIENTE_REVISION
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum LogisticsStatus {
+  PENDING
+  PRODUCTION_DONE
+  ON_ROUTE
+  DELIVERED
+  FAILED
+}
+
+enum RouteStatus {
+  DRAFT
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+}
+

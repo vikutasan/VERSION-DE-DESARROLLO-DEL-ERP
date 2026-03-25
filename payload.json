@@ -1,0 +1,3292 @@
+﻿{"products": [
+    {
+        "sku": "1",
+        "name": "BOLSA BIODEGRADABLE",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 2,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "2",
+        "name": "BOLSA DE PAPEL",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 2,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "3",
+        "name": "TELERA ARTESANAL MEDIANA",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 3,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "4",
+        "name": "TELERA SUAVE MEDIANA",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 3,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "5",
+        "name": "BOLILLO ARTESANAL MEDIANO",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 3,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "6",
+        "name": "BOLILLO RUSTICO MEDIANO",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 3,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "7",
+        "name": "BOLILLITO DE ARANDANO",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 6,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "8",
+        "name": "BOLILLITO DE NUEZ",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 6,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "9",
+        "name": "BAGUETTE MEDIANO",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 12,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "10",
+        "name": "BAGUETTE GRANDE",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 22,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "11",
+        "name": "COSTO EXTRA 1",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 1,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "12",
+        "name": "COSTO EXTRA 2",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 2,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "13",
+        "name": "COSTO EXTRA 4",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 4,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "14",
+        "name": "COSTO EXTRA 6",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 6,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "15",
+        "name": "BOLSA DE PLASTICO DE 60 X 90",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 6,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "16",
+        "name": "CHAROLA CHICA DE CARTON",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 20,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "17",
+        "name": "CHAROLA MEDIANA DE CARTON",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 30,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "18",
+        "name": "CHAROLA GRANDE DE CARTON",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 35,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "359",
+        "name": "NESCAFE CAPUCHINO",
+        "description": "1.-EMPAQUE Y PAN BLANCO",
+        "price": 15,
+        "category": "1.-EMPAQUE Y PAN BLANCO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "29",
+        "name": "ABANICO",
+        "description": "2.-A - B",
+        "price": 8,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "30",
+        "name": "ALMEJA",
+        "description": "2.-A - B",
+        "price": 8,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "44",
+        "name": "ANCESTRAL MEDIANO",
+        "description": "2.-A - B",
+        "price": 9,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "45",
+        "name": "ANCESTRAL GRANDE",
+        "description": "2.-A - B",
+        "price": 15,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "31",
+        "name": "BANDERILLA",
+        "description": "2.-A - B",
+        "price": 8,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "32",
+        "name": "BARQUILLO DE CHANTILLY",
+        "description": "2.-A - B",
+        "price": 12,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "33",
+        "name": "BARQUILLO DE CREMA PASTELERA",
+        "description": "2.-A - B",
+        "price": 12,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "34",
+        "name": "BARRA DE MANTECA",
+        "description": "2.-A - B",
+        "price": 7,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "43",
+        "name": "BARRITA DE PIÃ‘A O FRESA",
+        "description": "2.-A - B",
+        "price": 7,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "35",
+        "name": "BERLINES DE CHANTILLY",
+        "description": "2.-A - B",
+        "price": 12,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "36",
+        "name": "BERLINES DE CREMA PASTELERA",
+        "description": "2.-A - B",
+        "price": 12,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "37",
+        "name": "BESO CON RELLENO DE DURAZNO",
+        "description": "2.-A - B",
+        "price": 8,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "38",
+        "name": "BIGOTE DE CHOCOLATE",
+        "description": "2.-A - B",
+        "price": 9,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "39",
+        "name": "BIZQUET",
+        "description": "2.-A - B",
+        "price": 8,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "40",
+        "name": "BOLLO DE QUESO PHILADELPHIA",
+        "description": "2.-A - B",
+        "price": 11,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "41",
+        "name": "BROCA",
+        "description": "2.-A - B",
+        "price": 8,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "42",
+        "name": "BUDIN DE HIGO CON COCO",
+        "description": "2.-A - B",
+        "price": 17,
+        "category": "2.-A - B",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "53",
+        "name": "CACAHUATE",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "54",
+        "name": "CALVO DE COCO",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "55",
+        "name": "CALVO DE GRANILLO DE COLORES",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "56",
+        "name": "CAMPECHANA",
+        "description": "3.-C - D",
+        "price": 7,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "57",
+        "name": "CANASTA DE FRUTAS",
+        "description": "3.-C - D",
+        "price": 17,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "58",
+        "name": "CANASTA DE PIÃ‘A",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "59",
+        "name": "CAZUELA DE MANTEQUILLA",
+        "description": "3.-C - D",
+        "price": 15,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "60",
+        "name": "CHICHARRON",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "61",
+        "name": "CHINO",
+        "description": "3.-C - D",
+        "price": 12,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "62",
+        "name": "CHIRIMOYA",
+        "description": "3.-C - D",
+        "price": 7,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "63",
+        "name": "CHOCOFLAN",
+        "description": "3.-C - D",
+        "price": 25,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "64",
+        "name": "CHURRO FRESCO",
+        "description": "3.-C - D",
+        "price": 6,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "65",
+        "name": "CHURRO FRIO",
+        "description": "3.-C - D",
+        "price": 3,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "180",
+        "name": "CHURRO OFERTA",
+        "description": "3.-C - D",
+        "price": 10,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "66",
+        "name": "CONCHA AMARILLA",
+        "description": "3.-C - D",
+        "price": 7,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "67",
+        "name": "CONCHA AMARILLA CON BOLITA",
+        "description": "3.-C - D",
+        "price": 7,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "68",
+        "name": "CONCHA BLANCA",
+        "description": "3.-C - D",
+        "price": 7,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "69",
+        "name": "CONCHA CAFE",
+        "description": "3.-C - D",
+        "price": 7,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "81",
+        "name": "CONCHA DE CANELA",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "82",
+        "name": "CONCHA DE CANELA GRANDE",
+        "description": "3.-C - D",
+        "price": 35,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "70",
+        "name": "CUADRO DE COCO",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "71",
+        "name": "CUBILETE",
+        "description": "3.-C - D",
+        "price": 12,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "72",
+        "name": "CUERNO",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "73",
+        "name": "CUERNO DE HIGO",
+        "description": "3.-C - D",
+        "price": 13,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "74",
+        "name": "DEDO CON RELLENO DE PIÃ‘A Y AZUCAR GLASS",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "75",
+        "name": "DEDO CON RELLENO DE ZARZAMORA Y CHOCOLATE",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "76",
+        "name": "DELICIOSA",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "77",
+        "name": "DIAMANTE DE CHABACANO",
+        "description": "3.-C - D",
+        "price": 8,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "78",
+        "name": "DONA DE AZUCAR",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "79",
+        "name": "DONA DE CHOCOLATE",
+        "description": "3.-C - D",
+        "price": 9,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "80",
+        "name": "DONA DE MOKA",
+        "description": "3.-C - D",
+        "price": 13,
+        "category": "3.-C - D",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "91",
+        "name": "ELOTE",
+        "description": "4.-E - K",
+        "price": 7,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "92",
+        "name": "EMPANADA DE FRESA",
+        "description": "4.-E - K",
+        "price": 8,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "93",
+        "name": "EMPANADA MADRILEÃ‘A CON CREMA PASTELERA",
+        "description": "4.-E - K",
+        "price": 15,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "94",
+        "name": "EMPANADA TABASQUEÃ‘A CON RELLENO DE PIÃ‘A",
+        "description": "4.-E - K",
+        "price": 9,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "95",
+        "name": "ESPOLVOREADO",
+        "description": "4.-E - K",
+        "price": 30,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "96",
+        "name": "FIGURA ESPAÃ‘OLA",
+        "description": "4.-E - K",
+        "price": 7,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "97",
+        "name": "FLAUTAS",
+        "description": "4.-E - K",
+        "price": 7,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "98",
+        "name": "FLOR",
+        "description": "4.-E - K",
+        "price": 9,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "99",
+        "name": "GALLETA DE CARITA",
+        "description": "4.-E - K",
+        "price": 7,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "100",
+        "name": "GALLETA DE BOLSA CON NUEZ",
+        "description": "4.-E - K",
+        "price": 8,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "101",
+        "name": "GALLETA DE CHOCOLATE CON NUEZ",
+        "description": "4.-E - K",
+        "price": 8,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "102",
+        "name": "GALLETA DE COCO CON PUNTO",
+        "description": "4.-E - K",
+        "price": 8,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "132",
+        "name": "GALLETA DE NUEZ",
+        "description": "4.-E - K",
+        "price": 8,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "103",
+        "name": "GANSITO",
+        "description": "4.-E - K",
+        "price": 12,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "104",
+        "name": "HIGO",
+        "description": "4.-E - K",
+        "price": 35,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "106",
+        "name": "HOJALDRA DE CANELA",
+        "description": "4.-E - K",
+        "price": 18,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "107",
+        "name": "HOJALDRA DE CANELA GRANDE",
+        "description": "4.-E - K",
+        "price": 50,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "112",
+        "name": "HOJALDRA DE NARANJA CHICA",
+        "description": "4.-E - K",
+        "price": 23,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "113",
+        "name": "HOJALDRA DE NARANJA MEDIANA",
+        "description": "4.-E - K",
+        "price": 115,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "114",
+        "name": "HOJALDRA DE NARANJA GRANDE",
+        "description": "4.-E - K",
+        "price": 210,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "115",
+        "name": "HOJALDRA DE NARANJA JUMBO",
+        "description": "4.-E - K",
+        "price": 279,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "134",
+        "name": "HOJALDRA DE NARANJA INDIVIDUAL RELLENA",
+        "description": "4.-E - K",
+        "price": 60,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "135",
+        "name": "HOJALDRA DE NUEZ INDIVIDUAL RELLENA",
+        "description": "4.-E - K",
+        "price": 65,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "136",
+        "name": "HOJALDRA GLASEADA DE CANELA",
+        "description": "4.-E - K",
+        "price": 23,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "137",
+        "name": "HOJALDRA DE CANELA",
+        "description": "4.-E - K",
+        "price": 23,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "108",
+        "name": "HOJALDRA DE NUEZ CHICA",
+        "description": "4.-E - K",
+        "price": 26,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "109",
+        "name": "HOJALDRA DE NUEZ MEDIANA",
+        "description": "4.-E - K",
+        "price": 130,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "110",
+        "name": "HOJALDRA DE NUEZ GRANDE",
+        "description": "4.-E - K",
+        "price": 230,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "111",
+        "name": "HOJALDRA DE NUEZ JUMBO",
+        "description": "4.-E - K",
+        "price": 349,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "105",
+        "name": "HUESO DE MANTEQUILLA",
+        "description": "4.-E - K",
+        "price": 10,
+        "category": "4.-E - K",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "116",
+        "name": "LADRILLO AZUCAR",
+        "description": "5.-L - M",
+        "price": 9,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "117",
+        "name": "LADRILLO CHOCOLATE",
+        "description": "5.-L - M",
+        "price": 9,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "118",
+        "name": "LADRILLO UNTADO",
+        "description": "5.-L - M",
+        "price": 9,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "119",
+        "name": "LAUREL",
+        "description": "5.-L - M",
+        "price": 7,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "120",
+        "name": "MANTECADAS",
+        "description": "5.-L - M",
+        "price": 7,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "121",
+        "name": "MANTECONCHA DE CHOCOLATE",
+        "description": "5.-L - M",
+        "price": 10,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "122",
+        "name": "MANTECONCHA DE VAINILLA",
+        "description": "5.-L - M",
+        "price": 10,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "123",
+        "name": "MEDIAS",
+        "description": "5.-L - M",
+        "price": 12,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "124",
+        "name": "MIL HOJAS",
+        "description": "5.-L - M",
+        "price": 17,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "125",
+        "name": "MINI OREJA",
+        "description": "5.-L - M",
+        "price": 3,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "133",
+        "name": "MINI PAN DE MUERTO",
+        "description": "5.-L - M",
+        "price": 5,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "126",
+        "name": "MINIS",
+        "description": "5.-L - M",
+        "price": 30,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "127",
+        "name": "MOÃ‘O",
+        "description": "5.-L - M",
+        "price": 8,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "128",
+        "name": "MUFFIN DE CHOCOLATE RELLENO DE CAPUCCINO",
+        "description": "5.-L - M",
+        "price": 13,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "129",
+        "name": "MUFIN DE VAINILLA CON RELLENO DE MANGO",
+        "description": "5.-L - M",
+        "price": 13,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "130",
+        "name": "MULTI CON CHOCOLATE",
+        "description": "5.-L - M",
+        "price": 14,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "131",
+        "name": "MULTI MARMOLEADO",
+        "description": "5.-L - M",
+        "price": 14,
+        "category": "5.-L - M",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "142",
+        "name": "NEGRITO",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "143",
+        "name": "NEVADA",
+        "description": "6.-N - P",
+        "price": 17,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "144",
+        "name": "NOVIA",
+        "description": "6.-N - P",
+        "price": 9,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "145",
+        "name": "NUBE",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "146",
+        "name": "NUEZ",
+        "description": "6.-N - P",
+        "price": 40,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "147",
+        "name": "OFERTA DE PANES",
+        "description": "6.-N - P",
+        "price": 25,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "148",
+        "name": "OJO DE BUEY",
+        "description": "6.-N - P",
+        "price": 10,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "149",
+        "name": "OJO DE VENADO",
+        "description": "6.-N - P",
+        "price": 10,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "150",
+        "name": "OREJA",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "151",
+        "name": "PAMBAZO DE PILONCILLO CON ANÃS",
+        "description": "6.-N - P",
+        "price": 5,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "152",
+        "name": "PAN MOLIDO",
+        "description": "6.-N - P",
+        "price": 24,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "153",
+        "name": "PANADEROS",
+        "description": "6.-N - P",
+        "price": 7,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "154",
+        "name": "PASAS",
+        "description": "6.-N - P",
+        "price": 30,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "155",
+        "name": "PANQUE DE ELOTE",
+        "description": "6.-N - P",
+        "price": 18,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "156",
+        "name": "PAN DE ELOTE",
+        "description": "6.-N - P",
+        "price": 35,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "174",
+        "name": "PAN DE MUERTO",
+        "description": "6.-N - P",
+        "price": 9,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "175",
+        "name": "PAN DE MUERTO DOBLE",
+        "description": "6.-N - P",
+        "price": 18,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "176",
+        "name": "PAN DE MUERTO MUÃ‘ECO",
+        "description": "6.-N - P",
+        "price": 18,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "177",
+        "name": "PAN DE MUERTO CHICO",
+        "description": "6.-N - P",
+        "price": 5,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "157",
+        "name": "PASTEL DE ELOTE",
+        "description": "6.-N - P",
+        "price": 23,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "158",
+        "name": "PASTEL C. DE ELOTE",
+        "description": "6.-N - P",
+        "price": 330,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "159",
+        "name": "PEINETA DE FRESA",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "160",
+        "name": "PIEDRA DE AZUCAR",
+        "description": "6.-N - P",
+        "price": 9,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "161",
+        "name": "PIEDRA DE CHOCOLATE",
+        "description": "6.-N - P",
+        "price": 9,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "162",
+        "name": "PINGUINO",
+        "description": "6.-N - P",
+        "price": 12,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "163",
+        "name": "PIZZA HAWAIANA REBANADA",
+        "description": "6.-N - P",
+        "price": 22,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "164",
+        "name": "PIZZA PEPPERONI REBANADA",
+        "description": "6.-N - P",
+        "price": 17,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "165",
+        "name": "PIZZA COMBINADA HAW/PEP COMPLETA",
+        "description": "6.-N - P",
+        "price": 117,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "166",
+        "name": "PIZZA HAWAIANA COMPLETA",
+        "description": "6.-N - P",
+        "price": 129,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "167",
+        "name": "PIZZA PEPPERONI COMPLETA",
+        "description": "6.-N - P",
+        "price": 99,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "168",
+        "name": "PLATANO",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "169",
+        "name": "PLOMO CON COCO",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "170",
+        "name": "PLOMO CON NUEZ",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "171",
+        "name": "PLUMA",
+        "description": "6.-N - P",
+        "price": 7,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "172",
+        "name": "POLVORON NARANJA",
+        "description": "6.-N - P",
+        "price": 8,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "173",
+        "name": "POLVORON SEVILLANO",
+        "description": "6.-N - P",
+        "price": 5,
+        "category": "6.-N - P",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "184",
+        "name": "REBANADA CARIOCA DE COCO RELLENA DE CHABACANO",
+        "description": "7.-R - S",
+        "price": 9,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "185",
+        "name": "REBANADA CARIOCA DE GRANILLO RELLENA DE CHABACANO",
+        "description": "7.-R - S",
+        "price": 9,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "186",
+        "name": "REBANADA CON HIGO",
+        "description": "7.-R - S",
+        "price": 9,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "187",
+        "name": "REBANADA DE AZUCAR",
+        "description": "7.-R - S",
+        "price": 8,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "188",
+        "name": "REBANADA SOL Y SOMBRA",
+        "description": "7.-R - S",
+        "price": 9,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "189",
+        "name": "REJA",
+        "description": "7.-R - S",
+        "price": 8,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "190",
+        "name": "RIEL DE FRESA O PIÃ‘A",
+        "description": "7.-R - S",
+        "price": 9,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "191",
+        "name": "ROL DE CANELA",
+        "description": "7.-R - S",
+        "price": 17,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "192",
+        "name": "ROLLO DE JAMON Y QUESO PHILADELPHIA",
+        "description": "7.-R - S",
+        "price": 13,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "193",
+        "name": "ROLLO DE MANZANA CANELA",
+        "description": "7.-R - S",
+        "price": 11,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "194",
+        "name": "ROLLO DE PIÃ‘A CON SALVADO",
+        "description": "7.-R - S",
+        "price": 11,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "195",
+        "name": "ROLLO DE QUESO ZARZA",
+        "description": "7.-R - S",
+        "price": 17,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "196",
+        "name": "ROSCA BOLSA CON NUEZ",
+        "description": "7.-R - S",
+        "price": 8,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "197",
+        "name": "ROSCA DE ARANDANO CON NUEZ",
+        "description": "7.-R - S",
+        "price": 17,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "198",
+        "name": "ROSCA C. DE ARANDANO CON NUEZ",
+        "description": "7.-R - S",
+        "price": 200,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "199",
+        "name": "ROSCA DE NARANJA",
+        "description": "7.-R - S",
+        "price": 17,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "200",
+        "name": "ROSCA C. DE NARANJA",
+        "description": "7.-R - S",
+        "price": 200,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "201",
+        "name": "ROSCA DE CHOCOLATE RELLENA DE QUESO ZARZA",
+        "description": "7.-R - S",
+        "price": 17,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "202",
+        "name": "ROSCA C. DE CHOCOLATE RELLENA DE QUESO ZARZA",
+        "description": "7.-R - S",
+        "price": 200,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "203",
+        "name": "ROSCA DE VAINILLA RELLENA DE QUESO ZARZA",
+        "description": "7.-R - S",
+        "price": 17,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "204",
+        "name": "ROSCA C. DE VAINILLA RELLENA DE QUESO ZARZA",
+        "description": "7.-R - S",
+        "price": 200,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "205",
+        "name": "ROSCA DE CANELA RELLENA DE FRESA",
+        "description": "7.-R - S",
+        "price": 8,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "206",
+        "name": "ROSCA C. DE CANELA RELLENA DE FRESA",
+        "description": "7.-R - S",
+        "price": 8,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "207",
+        "name": "RUEDA DE MANTECA",
+        "description": "7.-R - S",
+        "price": 7,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "208",
+        "name": "SACRISTAN",
+        "description": "7.-R - S",
+        "price": 9,
+        "category": "7.-R - S",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "219",
+        "name": "TABASQUEÃ‘O",
+        "description": "8.-T - Z",
+        "price": 8,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "220",
+        "name": "TAPADO O MORDIDA",
+        "description": "8.-T - Z",
+        "price": 8,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "221",
+        "name": "TEJAMANI DE MANTECA CON AZUCAR",
+        "description": "8.-T - Z",
+        "price": 7,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "222",
+        "name": "TOSTADA DE CANELA",
+        "description": "8.-T - Z",
+        "price": 7,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "223",
+        "name": "TOSTADAS DE MANTEQUILLA",
+        "description": "8.-T - Z",
+        "price": 15,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "224",
+        "name": "TRONCO DE CANELA",
+        "description": "8.-T - Z",
+        "price": 7,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "225",
+        "name": "VIENESA DE CREMA, COCO, HIGO Y NUEZ",
+        "description": "8.-T - Z",
+        "price": 17,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "227",
+        "name": "VOLCAN",
+        "description": "8.-T - Z",
+        "price": 8,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "226",
+        "name": "VOLTEADO DE NUEZ",
+        "description": "8.-T - Z",
+        "price": 13,
+        "category": "8.-T - Z",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "218",
+        "name": "ROSCA DE REYES NARANJA MINI",
+        "description": "17.-ROSCA DE REYES",
+        "price": 40,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "209",
+        "name": "ROSCA DE REYES NARANJA MEDIANA",
+        "description": "17.-ROSCA DE REYES",
+        "price": 190,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "210",
+        "name": "ROSCA DE REYES NARANJA GRANDE",
+        "description": "17.-ROSCA DE REYES",
+        "price": 290,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "211",
+        "name": "ROSCA DE REYES NARANJA JUMBO",
+        "description": "17.-ROSCA DE REYES",
+        "price": 390,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "1219",
+        "name": "ROSCA DE REYES NUEZ MINI",
+        "description": "17.-ROSCA DE REYES",
+        "price": 55,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "212",
+        "name": "ROSCA DE REYES NUEZ MEDIANA",
+        "description": "17.-ROSCA DE REYES",
+        "price": 270,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "213",
+        "name": "ROSCA DE REYES NUEZ GRANDE",
+        "description": "17.-ROSCA DE REYES",
+        "price": 400,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "214",
+        "name": "ROSCA DE REYES NUEZ JUMBO",
+        "description": "17.-ROSCA DE REYES",
+        "price": 530,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "1220",
+        "name": "ROSCA DE REYES ZARZAMORA PHIL MINI",
+        "description": "17.-ROSCA DE REYES",
+        "price": 80,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "215",
+        "name": "ROSCA DE REYES ZARZAMORA PHIL MEDIANA",
+        "description": "17.-ROSCA DE REYES",
+        "price": 330,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "216",
+        "name": "ROSCA DE REYES ZARZAMORA PHIL GRANDE",
+        "description": "17.-ROSCA DE REYES",
+        "price": 500,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "217",
+        "name": "ROSCA DE REYES ZARZAMORA PHIL JUMBO",
+        "description": "17.-ROSCA DE REYES",
+        "price": 630,
+        "category": "17.-ROSCA DE REYES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "237",
+        "name": "NATA",
+        "description": "9.-LACTEOS",
+        "price": 50,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "238",
+        "name": "LECHE ALPURA DE CHOCOLATE DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 30,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "239",
+        "name": "LECHE ALPURA DE FRESA DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 30,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "240",
+        "name": "LECHE ALPURA DE VAINILLA DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 30,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "241",
+        "name": "LECHE ALPURA SEMI DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 28,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "242",
+        "name": "LECHE ALPURA SEMI DESLACTOSADA DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 28,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "243",
+        "name": "LECHE SANTA CLARA DESLACTOSADA DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 28,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "244",
+        "name": "LECHE SANTA CLARA ENTERA DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 28,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "245",
+        "name": "NUTRI DE UN LITRO",
+        "description": "9.-LACTEOS",
+        "price": 21,
+        "category": "9.-LACTEOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "256",
+        "name": "BAGUETTE CHICO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "257",
+        "name": "BARRA VIEJA HIERBAS FINAS",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 20,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "258",
+        "name": "BARRA VIEJA NATURAL",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 20,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "259",
+        "name": "BARRA VIEJA RELLENA CON QUESO PHILADELPHIA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 45,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "260",
+        "name": "BOLILLO CON AJONJOLI CHICO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 4,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "261",
+        "name": "BOLILLO CON AJONJOLI MEDIANO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "262",
+        "name": "BOLILLO ARTESANAL CHICO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 3,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "263",
+        "name": "BOLILLO ARTESANAL GRA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 7,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "264",
+        "name": "BOLILLO ARTESANAL JUM",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 12,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "265",
+        "name": "BOLLO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 6.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "266",
+        "name": "CHAPATA DE AJO PEREJIL CON QUESO PHILADELPHIA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 15,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "267",
+        "name": "CHAPATA NATURAL",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 8,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "268",
+        "name": "CHAPATA REPOSADA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 8,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "269",
+        "name": "HAMBURGUESA CHICA (MARINA)",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 7.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "270",
+        "name": "HAMBURGUESA GRANDE",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 9.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "271",
+        "name": "HAMBURGUESA JUMBO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 10.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "272",
+        "name": "HAMBURGUESA MEDIANA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 8.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "273",
+        "name": "HOGAZAS",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 0,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "274",
+        "name": "HOJALDRA GRANDE",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 9,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "275",
+        "name": "HOJALDRA MEDIANA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 8,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "276",
+        "name": "HOT DOGS",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 7,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "277",
+        "name": "MINIPAMBACITOS",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 15,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "278",
+        "name": "PAMBAZO MEXICANO",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 4,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "279",
+        "name": "PAN INTEGRAL",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 7,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "280",
+        "name": "TELERA ARTESANAL CHICA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 3,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "281",
+        "name": "TELERA ARTESANAL GRANDE",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 4.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "282",
+        "name": "TELERA SUAVE CHICA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 3,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "283",
+        "name": "TELERA SUAVE GRANDE",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 4.5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "284",
+        "name": "TELERA SUAVE CON AJONJOLI CHICA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 4,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "285",
+        "name": "TELERA SUAVE CON AJONJOLI EXTRAGRANDE",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 9,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "286",
+        "name": "TELERA SUAVE CON AJONJOLI GRANDE",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 7,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "287",
+        "name": "TELERA SUAVE CON AJONJOLI MEDIANA",
+        "description": "10.-SOBRE PEDIDO",
+        "price": 5,
+        "category": "10.-SOBRE PEDIDO",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "298",
+        "name": "ALMOHADA",
+        "description": "11.-ESPORADICOS",
+        "price": 7,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "299",
+        "name": "PUERQUITO",
+        "description": "11.-ESPORADICOS",
+        "price": 8,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "300",
+        "name": "BOLINACHOS",
+        "description": "11.-ESPORADICOS",
+        "price": 17,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "301",
+        "name": "BUÃ‘UELOS",
+        "description": "11.-ESPORADICOS",
+        "price": 8,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "302",
+        "name": "BURRITAS",
+        "description": "11.-ESPORADICOS",
+        "price": 8,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "303",
+        "name": "CALABAZA CON CREMA PASTELERA",
+        "description": "11.-ESPORADICOS",
+        "price": 12,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "304",
+        "name": "COCKTEL DE CHOCOLATE",
+        "description": "11.-ESPORADICOS",
+        "price": 8,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "305",
+        "name": "DONA DECORADA",
+        "description": "11.-ESPORADICOS",
+        "price": 13,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "306",
+        "name": "COLADERAS",
+        "description": "11.-ESPORADICOS",
+        "price": 7,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "307",
+        "name": "DOMINO CON CHANTILLY Y RAYAS DE CHOCOLATE",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "308",
+        "name": "DOMINO CON GRANILLO DE COLORES",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "309",
+        "name": "DOMINO INTEGRAL",
+        "description": "11.-ESPORADICOS",
+        "price": 10,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "310",
+        "name": "DOMINO SALPICADO DE CHOCOLATE",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "311",
+        "name": "EMPANADA UNTADA CON RELLENO DE FRESA",
+        "description": "11.-ESPORADICOS",
+        "price": 7,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "312",
+        "name": "EMPAREDADO",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "313",
+        "name": "ESCUADRAS",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "314",
+        "name": "Garibaldi",
+        "description": "11.-ESPORADICOS",
+        "price": 15,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "315",
+        "name": "HOJALDRA CHICA 1600 BASTON (50g)",
+        "description": "11.-ESPORADICOS",
+        "price": 7,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "316",
+        "name": "MINIPOLVORON CHOCOLATE",
+        "description": "11.-ESPORADICOS",
+        "price": 5,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "317",
+        "name": "MINIPOLVORON SEVILLANO DE NUEZ",
+        "description": "11.-ESPORADICOS",
+        "price": 5,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "318",
+        "name": "MUELA",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "319",
+        "name": "NIDO CON AZUCAR Y MERMELADA DE FRESA AL CENTRO",
+        "description": "11.-ESPORADICOS",
+        "price": 7,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "320",
+        "name": "NIDO CON PASTA DE CONCHA Y MERMELADA DE FRESA AL CENTRO",
+        "description": "11.-ESPORADICOS",
+        "price": 8,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "321",
+        "name": "NIÃ‘O ENVUELTO",
+        "description": "11.-ESPORADICOS",
+        "price": 25,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "322",
+        "name": "NUEVES CON COCO Y CANELA",
+        "description": "11.-ESPORADICOS",
+        "price": 10,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "323",
+        "name": "PASTELILLO DE CHOCOLATE",
+        "description": "11.-ESPORADICOS",
+        "price": 12,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "324",
+        "name": "PASTELILLO DE VAINILLA",
+        "description": "11.-ESPORADICOS",
+        "price": 12,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "325",
+        "name": "PASTISETAS",
+        "description": "11.-ESPORADICOS",
+        "price": 4,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "326",
+        "name": "PAY DE LIMON GLASEADO",
+        "description": "11.-ESPORADICOS",
+        "price": 23,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "327",
+        "name": "PAY DE QUESO EN CUADRITO",
+        "description": "11.-ESPORADICOS",
+        "price": 17,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "328",
+        "name": "SANDIAS",
+        "description": "11.-ESPORADICOS",
+        "price": 9,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "329",
+        "name": "TARTA DE NUEZ",
+        "description": "11.-ESPORADICOS",
+        "price": 30,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "330",
+        "name": "TARTA DE QUESO FRESA CAJETA",
+        "description": "11.-ESPORADICOS",
+        "price": 30,
+        "category": "11.-ESPORADICOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "341",
+        "name": "SOBRE TE DE LIMON MC CORMICK",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 3,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "342",
+        "name": "SOBRE TE DE MANZANILLA MC CORMICK",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 3,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "343",
+        "name": "SOBRE TE VERDE MC CORMICK",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 3,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "344",
+        "name": "SOBRE NESCAFE CLASICO 14G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 16,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "345",
+        "name": "SOBRE CHOCOMILK 18G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 8,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "346",
+        "name": "SOBRE NESCAFE CLASICO 28G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 28,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "347",
+        "name": "SOBRE CAFE LEGAL DE GRANO 28G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 10,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "348",
+        "name": "SOBRE COFFEE MATE 34G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 10,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "349",
+        "name": "FRASCO NESCAFE CLASICO 60G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 70,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "350",
+        "name": "FRASCO CAFE ORO 50G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 36,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "351",
+        "name": "BOTE COFFEE MATE 160G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 39,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "352",
+        "name": "SOBRE CHOCOLATE MORELIA PRESIDENCIAL 155G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 21,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "353",
+        "name": "SOBRE CHOCOMILK 160G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 27,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "354",
+        "name": "SOBRE CAL C TOSE 160G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 30,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "355",
+        "name": "TABLETA CHOCOLATE ABUELITA 90G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 18,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "356",
+        "name": "LATA CAL C TOSE 400G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 69,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "357",
+        "name": "LATA CHOCOMILK 400G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 69,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "358",
+        "name": "AZUCAR A GRANEL 500G",
+        "description": "12.-CAFES Y CHOCOLATES",
+        "price": 15,
+        "category": "12.-CAFES Y CHOCOLATES",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "369",
+        "name": "LLAVERO CHICO",
+        "description": "13.-SOUVENIRS",
+        "price": 100,
+        "category": "13.-SOUVENIRS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "370",
+        "name": "LLAVERO MEDIANO",
+        "description": "13.-SOUVENIRS",
+        "price": 120,
+        "category": "13.-SOUVENIRS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "371",
+        "name": "LLAVERO GRANDE",
+        "description": "13.-SOUVENIRS",
+        "price": 140,
+        "category": "13.-SOUVENIRS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "382",
+        "name": "HELADO SENCILLO (1 BOLA)",
+        "description": "14.-HELADOS",
+        "price": 18,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "383",
+        "name": "COBERTURA DE CHOCOLATE PARA HELADO SENCILLO",
+        "description": "14.-HELADOS",
+        "price": 5,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "384",
+        "name": "COBERTURA DE CHOCOLATE CON CONFITERIA PARA HELADO SENCILLO",
+        "description": "14.-HELADOS",
+        "price": 9,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "385",
+        "name": "COBERTURA DE CHOCOLATE CON NUEZ PARA HELADO SENCILLO",
+        "description": "14.-HELADOS",
+        "price": 11,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "386",
+        "name": "HELADO DOBLE (2 BOLAS)",
+        "description": "14.-HELADOS",
+        "price": 34,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "387",
+        "name": "COBERTURA DE CHOCOLATE PARA HELADO DOBLE",
+        "description": "14.-HELADOS",
+        "price": 7,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "388",
+        "name": "COBERTURA DE CHOCOLATE CON CONFITERIA PARA HELADO DOBLE",
+        "description": "14.-HELADOS",
+        "price": 11,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "389",
+        "name": "COBERTURA DE CHOCOLATE CON NUEZ PARA HELADO DOBLE",
+        "description": "14.-HELADOS",
+        "price": 15,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "390",
+        "name": "HELADO TRIPLE (3 BOLAS)",
+        "description": "14.-HELADOS",
+        "price": 50,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "391",
+        "name": "COBERTURA DE CHOCOLATE PARA HELADO TRIPLE",
+        "description": "14.-HELADOS",
+        "price": 9,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "392",
+        "name": "COBERTURA DE CHOCOLATE CON CONFITERIA PARA HELADO TRIPLE",
+        "description": "14.-HELADOS",
+        "price": 13,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "393",
+        "name": "COBERTURA DE CHOCOLATE CON NUEZ PARA HELADO TRIPLE",
+        "description": "14.-HELADOS",
+        "price": 17,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "394",
+        "name": "COPA",
+        "description": "14.-HELADOS",
+        "price": 55,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "395",
+        "name": "CANASTA SENCILLA (I BOLA)",
+        "description": "14.-HELADOS",
+        "price": 30,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "396",
+        "name": "CANASTA DOBLE (2 BOLAS)",
+        "description": "14.-HELADOS",
+        "price": 50,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "397",
+        "name": "CANASTA TRIPLE (3 BOLAS)",
+        "description": "14.-HELADOS",
+        "price": 65,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "398",
+        "name": "FRUHESPE (2 BOLAS)",
+        "description": "14.-HELADOS",
+        "price": 55,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "399",
+        "name": "HELADO MEDIO LITRO",
+        "description": "14.-HELADOS",
+        "price": 85,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "400",
+        "name": "HELADO UN LITRO",
+        "description": "14.-HELADOS",
+        "price": 170,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "401",
+        "name": "CONO",
+        "description": "14.-HELADOS",
+        "price": 3,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "402",
+        "name": "GALLETA CANASTA",
+        "description": "14.-HELADOS",
+        "price": 5,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "403",
+        "name": "GALLETA ROLLO",
+        "description": "14.-HELADOS",
+        "price": 5,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "404",
+        "name": "CUCHARADA EXTRA DE COBERTURA",
+        "description": "14.-HELADOS",
+        "price": 4,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "405",
+        "name": "BOLA EXTRA DE HELADO",
+        "description": "14.-HELADOS",
+        "price": 16,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "406",
+        "name": "FRESAS CON CREMA",
+        "description": "14.-HELADOS",
+        "price": 40,
+        "category": "14.-HELADOS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "417",
+        "name": "PALETA MEDIANA",
+        "description": "15.-PALETAS",
+        "price": 13,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "418",
+        "name": "COBERTURA DE CHOCOLATE PARA PALETA MEDIANA",
+        "description": "15.-PALETAS",
+        "price": 5,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "419",
+        "name": "COBERTURA DE CHOCOLATE CON CONFITERIA PARA PALETA MEDIANA",
+        "description": "15.-PALETAS",
+        "price": 9,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "420",
+        "name": "COBERTURA DE CHOCOLATE CON NUEZ PARA PALETA MEDIANA",
+        "description": "15.-PALETAS",
+        "price": 11,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "421",
+        "name": "PALETA GRANDE",
+        "description": "15.-PALETAS",
+        "price": 24,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "422",
+        "name": "COBERTURA DE CHOCOLATE PARA PALETA GRANDE",
+        "description": "15.-PALETAS",
+        "price": 6,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "423",
+        "name": "COBERTURA DE CHOCOLATE CON CONFITERIA PARA PALETA GRANDE",
+        "description": "15.-PALETAS",
+        "price": 11,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "424",
+        "name": "COBERTURA DE CHOCOLATE CON NUEZ PARA PALETA GRANDE",
+        "description": "15.-PALETAS",
+        "price": 15,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "425",
+        "name": "PALETA DE CREMA",
+        "description": "15.-PALETAS",
+        "price": 30,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "426",
+        "name": "PALETA DE KIWI",
+        "description": "15.-PALETAS",
+        "price": 30,
+        "category": "15.-PALETAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "436",
+        "name": "AGUA DE MEDIO LITRO",
+        "description": "16.-AGUAS Y MALTEADAS",
+        "price": 16,
+        "category": "16.-AGUAS Y MALTEADAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "437",
+        "name": "AGUA DE UN LITRO",
+        "description": "16.-AGUAS Y MALTEADAS",
+        "price": 30,
+        "category": "16.-AGUAS Y MALTEADAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    },
+    {
+        "sku": "438",
+        "name": "MALTEADA",
+        "description": "16.-AGUAS Y MALTEADAS",
+        "price": 65,
+        "category": "16.-AGUAS Y MALTEADAS",
+        "stock": 0,
+        "unit": "pza",
+        "isSpecialOrder": false
+    }
+]}

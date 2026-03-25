@@ -1,0 +1,27 @@
+[
+    {
+        "employeeId": "emp-001",
+        "type": "LATENESS",
+        "severity": "MEDIUM",
+        "description": "Retardo de 15 minutos en el turno matutino. El empleado reportó problemas con el transporte público.",
+        "reportedBy": "MANAGER-01",
+        "isResolved": false
+    },
+    {
+        "employeeId": "emp-004",
+        "type": "MERIT",
+        "severity": "LOW",
+        "description": "Excelente atención al cliente durante el pico de ventas. Un cliente dejó una nota especial felicitando su servicio.",
+        "reportedBy": "MANAGER-01",
+        "isResolved": true,
+        "actionTaken": "Mención honorífica en la junta semanal."
+    },
+    {
+        "employeeId": "emp-002",
+        "type": "TASK_FAILURE",
+        "severity": "HIGH",
+        "description": "No se completó la tarea fundamental de 'Sanitización de área de pizzas'. Detectado por el Log de Actividades.",
+        "reportedBy": "SYSTEM",
+        "isResolved": false
+    }
+]
