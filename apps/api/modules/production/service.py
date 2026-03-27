@@ -9,6 +9,7 @@ async def list_doughs(db: AsyncSession):
         selectinload(models.Dough.ingredients),
         selectinload(models.Dough.procedure_steps),
         selectinload(models.Dough.product_relations),
+        selectinload(models.Dough.dough_relations),
         selectinload(models.Dough.batches)
     ))
     return result.scalars().all()
@@ -18,13 +19,14 @@ async def get_dough(db: AsyncSession, dough_id: int):
         selectinload(models.Dough.ingredients),
         selectinload(models.Dough.procedure_steps),
         selectinload(models.Dough.product_relations),
+        selectinload(models.Dough.dough_relations),
         selectinload(models.Dough.batches)
     ))
     return result.scalar_one_or_none()
 
 async def create_dough(db: AsyncSession, data: schemas.DoughCreate):
     # Separate nested from main
-    dough_data = data.model_dump(exclude={'ingredients', 'procedure_steps', 'product_relations', 'batches'})
+    dough_data = data.model_dump(exclude={'ingredients', 'procedure_steps', 'product_relations', 'dough_relations', 'batches'})
     
     new_dough = models.Dough(**dough_data)
     
@@ -35,6 +37,8 @@ async def create_dough(db: AsyncSession, data: schemas.DoughCreate):
         new_dough.procedure_steps.append(models.DoughProcedureStep(**step.model_dump()))
     for prod in data.product_relations:
         new_dough.product_relations.append(models.DoughProductRelation(**prod.model_dump()))
+    for d_rel in data.dough_relations:
+        new_dough.dough_relations.append(models.DoughRelation(**d_rel.model_dump()))
     for batch in data.batches:
         new_dough.batches.append(models.DoughBatchConfig(**batch.model_dump()))
         
@@ -50,7 +54,7 @@ async def update_dough(db: AsyncSession, dough_id: int, data: schemas.DoughCreat
         return None
         
     # Update main fields
-    dough_data = data.model_dump(exclude={'ingredients', 'procedure_steps', 'product_relations', 'batches'})
+    dough_data = data.model_dump(exclude={'ingredients', 'procedure_steps', 'product_relations', 'dough_relations', 'batches'})
     for key, value in dough_data.items():
         setattr(existing_dough, key, value)
         
@@ -62,6 +66,14 @@ async def update_dough(db: AsyncSession, dough_id: int, data: schemas.DoughCreat
     existing_dough.procedure_steps = []
     for step in data.procedure_steps:
         existing_dough.procedure_steps.append(models.DoughProcedureStep(**step.model_dump()))
+        
+    existing_dough.product_relations = []
+    for prod in data.product_relations:
+        existing_dough.product_relations.append(models.DoughProductRelation(**prod.model_dump()))
+        
+    existing_dough.dough_relations = []
+    for d_rel in data.dough_relations:
+        existing_dough.dough_relations.append(models.DoughRelation(**d_rel.model_dump()))
         
     existing_dough.batches = []
     for batch in data.batches:

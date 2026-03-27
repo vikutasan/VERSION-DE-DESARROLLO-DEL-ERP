@@ -30,6 +30,22 @@ class Dough(Base):
     ingredients = relationship("DoughIngredient", back_populates="dough", cascade="all, delete-orphan", foreign_keys="[DoughIngredient.dough_id]")
     procedure_steps = relationship("DoughProcedureStep", back_populates="dough", order_by="DoughProcedureStep.step_number", cascade="all, delete-orphan")
     product_relations = relationship("DoughProductRelation", back_populates="dough", cascade="all, delete-orphan")
+    dough_relations = relationship("DoughRelation", back_populates="dough", cascade="all, delete-orphan", foreign_keys="[DoughRelation.dough_id]")
+
+class DoughRelation(Base):
+    """
+    Relación Masa-a-Masa (Ej: Masa de Fuerza requerida por Pan Blanco).
+    Define cuántos gramos de un prefermento usa esta masa.
+    """
+    __tablename__ = "dough_relations"
+
+    id = Column(Integer, primary_key=True, index=True)
+    dough_id = Column(Integer, ForeignKey("doughs.id"), nullable=False)
+    related_dough_id = Column(Integer, ForeignKey("doughs.id"), nullable=False)
+    qty_per_baston = Column(Float, nullable=False) # Gramos de prefermento por BASTON de esta masa
+
+    dough = relationship("Dough", foreign_keys=[dough_id], back_populates="dough_relations")
+    related_dough = relationship("Dough", foreign_keys=[related_dough_id])
 
 class DoughBatchConfig(Base):
     """
@@ -93,6 +109,7 @@ class DoughProductRelation(Base):
     dough_id = Column(Integer, ForeignKey("doughs.id"))
     product_id = Column(Integer, ForeignKey("products.id"))
     grams_per_piece = Column(Float, nullable=False)
+    pieces_per_baston = Column(Integer, nullable=True) # Cantidad real operativa de piezas por bastón (Ej: 36 bolillos)
     
     dough = relationship("Dough", back_populates="product_relations")
     product = relationship("Product")

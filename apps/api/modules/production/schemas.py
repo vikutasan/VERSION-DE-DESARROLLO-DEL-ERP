@@ -38,11 +38,25 @@ class DoughIngredientResponse(DoughIngredientBase):
 class DoughProductRelationBase(BaseModel):
     product_id: int
     grams_per_piece: float
+    pieces_per_baston: Optional[int] = None
 
 class DoughProductRelationCreate(DoughProductRelationBase):
     pass
 
 class DoughProductRelationResponse(DoughProductRelationBase):
+    id: int
+    class Config:
+        from_attributes = True
+
+# Dough Relations (Prefermentos)
+class DoughRelationBase(BaseModel):
+    related_dough_id: int
+    qty_per_baston: float
+
+class DoughRelationCreate(DoughRelationBase):
+    pass
+
+class DoughRelationResponse(DoughRelationBase):
     id: int
     class Config:
         from_attributes = True
@@ -113,6 +127,7 @@ class DoughCreate(DoughBase):
     ingredients: List[DoughIngredientCreate] = []
     procedure_steps: List[DoughProcedureStepCreate] = []
     product_relations: List[DoughProductRelationCreate] = []
+    dough_relations: List[DoughRelationCreate] = []
     batches: List[DoughBatchConfigCreate] = []
 
 class DoughResponse(DoughBase):
@@ -120,6 +135,7 @@ class DoughResponse(DoughBase):
     ingredients: List[DoughIngredientResponse] = []
     procedure_steps: List[DoughProcedureStepResponse] = []
     product_relations: List[DoughProductRelationResponse] = []
+    dough_relations: List[DoughRelationResponse] = []
     batches: List[DoughBatchConfigResponse] = []
     
     class Config:

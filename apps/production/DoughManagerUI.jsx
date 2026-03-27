@@ -158,8 +158,8 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
         ingredients: [],
         procedure_steps: [],
         batches: [{ name: 'BASE', baston_qty: 1 }],
-        product_relations: [], // { id, name, code, weight_per_piece: 0 }
-        dough_relations: [], // { id, name, code, weight_per_piece: 0 }
+        product_relations: [], // { id, name, code, grams_per_piece, pieces_per_baston }
+        dough_relations: [],   // { id, name, code, qty_per_baston }
         themeIdx: 0,
         ...initialData
     });
@@ -211,6 +211,15 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
     const handleSave = async () => {
         setLoading(true);
         try {
+            // Adapt dough_relations to match backend expected format
+            const payload = {
+                ...formData,
+                dough_relations: formData.dough_relations.map(r => ({
+                    related_dough_id: r.id,
+                    qty_per_baston: r.qty_per_baston || 0
+                }))
+            };
+
             const isUpdate = !!initialData?.id;
             const url = isUpdate
                 ? `http://localhost:3002/api/v1/production/doughs/${initialData.id}`
@@ -219,7 +228,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
             const resp = await fetch(url, {
                 method: isUpdate ? 'PUT' : 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
             });
 
             if (resp.ok) {
@@ -318,6 +327,16 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                             className="w-full border border-black/5 rounded-3xl p-5 mt-2 outline-none font-mono font-bold placeholder-black/30"
                                         />
                                     </label>
+                                    <label className="block">
+                                        <span style={{ color: theme.text }} className="text-[13px] font-black uppercase opacity-60 tracking-widest pl-2">Descripción</span>
+                                        <textarea
+                                            value={formData.description || ''}
+                                            onChange={e => setFormData({...formData, description: e.target.value})}
+                                            placeholder="Descripción o notas de la masa..."
+                                            style={{ backgroundColor: theme.input, color: theme.text }}
+                                            className="w-full border border-black/5 rounded-3xl p-5 mt-2 outline-none font-bold placeholder-black/30 resize-none h-24"
+                                        />
+                                    </label>
                                 </div>
                                 <div className="space-y-6">
                                     <label className="block">
@@ -388,7 +407,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                     style={{ color: theme.text }}
                                                     className="bg-transparent border-none font-black text-sm w-full outline-none placeholder-black/30"
                                                 />
-                                                <div className="w-48">
+                                                <div className="w-56">
                                                     <select
                                                         value={ing.mep_type}
                                                         onChange={e => {
@@ -397,14 +416,15 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                             setFormData({...formData, ingredients: newIngs});
                                                         }}
                                                         style={{ backgroundColor: theme.bg, color: theme.text }}
-                                                        className="border border-black/5 rounded-xl px-4 py-2 text-xs font-black outline-none w-full appearance-none"
+                                                        className="border border-black/5 rounded-xl px-4 py-2 text-xs font-black outline-none w-full appearance-none uppercase"
                                                     >
-                                                        <option value="POLVOS">POLVOS</option>
-                                                        <option value="LIQUIDOS">LÍQUIDOS</option>
+                                                        <option value="POLVOS">MEP POLVOS</option>
+                                                        <option value="LIQUIDOS">MEP LÍQUIDOS</option>
                                                         <option value="PRE-FERMENTO">PRE-FERMENTO</option>
+                                                        <option value="INGREDIENTE DIRECTO">INGREDIENTE DIRECTO</option>
                                                     </select>
                                                 </div>
-                                                <div className="w-32 flex items-center gap-2">
+                                                <div className="w-48 flex items-center gap-2">
                                                     <input
                                                         type="number"
                                                         value={ing.qty_per_baston}
@@ -414,9 +434,25 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                             setFormData({...formData, ingredients: newIngs});
                                                         }}
                                                         style={{ backgroundColor: theme.bg, color: theme.text }}
-                                                        className="border border-black/5 rounded-xl px-4 py-2 font-mono text-center w-full font-black text-sm"
+                                                        className="border border-black/5 rounded-l-xl px-4 py-2 font-mono text-center w-full font-black text-sm outline-none"
                                                     />
-                                                    <span style={{ color: theme.text }} className="text-xs font-black opacity-40">g</span>
+                                                    <select
+                                                        value={ing.unit}
+                                                        onChange={e => {
+                                                            const newIngs = [...formData.ingredients];
+                                                            newIngs[idx].unit = e.target.value;
+                                                            setFormData({...formData, ingredients: newIngs});
+                                                        }}
+                                                        style={{ backgroundColor: theme.bg, color: theme.text }}
+                                                        className="border border-black/5 rounded-r-xl px-2 py-2 text-xs font-black outline-none appearance-none"
+                                                    >
+                                                        <option value="g">g</option>
+                                                        <option value="kg">kg</option>
+                                                        <option value="ml">ml</option>
+                                                        <option value="L">L</option>
+                                                        <option value="BASTON">BASTÓN</option>
+                                                        <option value="pza">pza</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <button
@@ -625,20 +661,24 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                         
                                         {searchTerm && (
                                             <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-black/5 rounded-3xl overflow-hidden z-50 shadow-2xl max-h-64 overflow-auto custom-scrollbar">
-                                                {(formData.dough_type === 'PREFERMENTO' ? catalog.doughs : catalog.products)
+                                                {(formData.dough_type === 'PREFERMENTO' ? catalog.doughs : catalog.products.filter(p => p.nature === 'MANUFACTURADO'))
                                                     .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) && item.id !== initialData?.id)
                                                     .map(item => {
                                                         const key = formData.dough_type === 'PREFERMENTO' ? 'dough_relations' : 'product_relations';
-                                                        const isSelected = formData[key].some(r => r.id === item.id);
+                                                        const isSelected = formData[key].some(r => (r.id === item.id || r.related_dough_id === item.id));
                                                         
                                                         return (
                                                             <button 
                                                                 key={item.id}
                                                                 onClick={() => {
                                                                     if (!isSelected) {
-                                                                        setFormData({...formData, [key]: [...formData[key], { ...item, weight_per_piece: 0 }]});
+                                                                        if (formData.dough_type === 'PREFERMENTO') {
+                                                                            setFormData({...formData, dough_relations: [...formData.dough_relations, { id: item.id, name: item.name, code: item.code, qty_per_baston: 0 }]});
+                                                                        } else {
+                                                                            setFormData({...formData, product_relations: [...formData.product_relations, { id: item.id, name: item.name, code: item.code, product_id: item.id, grams_per_piece: 0, pieces_per_baston: 0 }]});
+                                                                        }
                                                                     } else {
-                                                                        setFormData({...formData, [key]: formData[key].filter(r => r.id !== item.id)});
+                                                                        setFormData({...formData, [key]: formData[key].filter(r => r.id !== item.id && r.related_dough_id !== item.id)});
                                                                     }
                                                                     setSearchTerm('');
                                                                 }}
@@ -662,13 +702,11 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                     {/* Lista de Vínculos Actuales */}
                                     <div className="grid grid-cols-2 gap-4 mt-8">
                                         {(formData.dough_type === 'PREFERMENTO' ? formData.dough_relations : formData.product_relations).map((item, idx) => {
-                                            const key = formData.dough_type === 'PREFERMENTO' ? 'dough_relations' : 'product_relations';
-                                            const weight = item.weight_per_piece || 0;
-                                            const totalYield = formData.theoretical_yield || 0;
-                                            const piecesPerBatch = weight > 0 ? Math.floor(totalYield / weight) : 0;
+                                            const isPrefermento = formData.dough_type === 'PREFERMENTO';
+                                            const key = isPrefermento ? 'dough_relations' : 'product_relations';
 
                                             return (
-                                                <div key={item.id} style={{ backgroundColor: theme.input }} className="border border-black/5 p-5 rounded-[32px] flex flex-col gap-4 group hover:shadow-lg transition-all">
+                                                <div key={item.id || item.related_dough_id} style={{ backgroundColor: theme.input }} className="border border-black/5 p-5 rounded-[32px] flex flex-col gap-4 group hover:shadow-lg transition-all">
                                                     <div className="flex items-center justify-between">
                                                         <div className="flex items-center gap-4">
                                                             <div style={{ backgroundColor: theme.bg, color: theme.text }} className="w-10 h-10 rounded-xl flex items-center justify-center font-black italic text-xs border border-black/5">
@@ -678,7 +716,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                         </div>
                                                         <button 
                                                             onClick={() => {
-                                                                setFormData({...formData, [key]: formData[key].filter(r => r.id !== item.id)});
+                                                                setFormData({...formData, [key]: formData[key].filter(r => r.id !== item.id && r.related_dough_id !== item.related_dough_id)});
                                                             }}
                                                             style={{ color: theme.text }}
                                                             className="p-2 hover:bg-red-500 hover:text-white rounded-lg transition-all"
@@ -688,32 +726,83 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                     </div>
 
                                                     <div className="grid grid-cols-2 gap-4 pt-2 border-t border-black/5">
-                                                        <div className="space-y-1">
-                                                            <span style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest pl-1 opacity-50">Gramaje / Pieza</span>
-                                                            <div style={{ backgroundColor: theme.bg }} className="flex items-center gap-2 border border-black/5 rounded-xl px-3 py-2">
-                                                                <input 
-                                                                    type="number"
-                                                                    value={item.weight_per_piece || ''}
-                                                                    placeholder="0"
-                                                                    onChange={e => {
-                                                                        const val = Number(e.target.value);
-                                                                        const newList = [...formData[key]];
-                                                                        newList[idx].weight_per_piece = val;
-                                                                        setFormData({...formData, [key]: newList});
-                                                                    }}
-                                                                    style={{ color: theme.text }}
-                                                                    className="bg-transparent text-xs font-mono font-black w-full outline-none text-center placeholder-black/30"
-                                                                />
-                                                                <span style={{ color: theme.text }} className="text-[9px] font-black opacity-40">G</span>
+                                                        {isPrefermento ? (
+                                                            <div className="col-span-2 space-y-1">
+                                                                <span style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest pl-1 opacity-50">Consumo (g) / Bastón de {item.name}</span>
+                                                                <div style={{ backgroundColor: theme.bg }} className="flex items-center gap-2 border border-black/5 rounded-xl px-3 py-2">
+                                                                    <input 
+                                                                        type="number"
+                                                                        value={item.qty_per_baston || ''}
+                                                                        placeholder="0"
+                                                                        onChange={e => {
+                                                                            const val = Number(e.target.value);
+                                                                            const newList = [...formData[key]];
+                                                                            newList[idx].qty_per_baston = val;
+                                                                            setFormData({...formData, [key]: newList});
+                                                                        }}
+                                                                        style={{ color: theme.text }}
+                                                                        className="bg-transparent text-xs font-mono font-black w-full outline-none text-center placeholder-black/30"
+                                                                    />
+                                                                    <span style={{ color: theme.text }} className="text-[9px] font-black opacity-40">g</span>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div className="space-y-1">
-                                                            <span style={{ color: theme.text }} className="text-[12px] font-black uppercase tracking-widest pl-1 opacity-50">Piezas / Tanda</span>
-                                                            <div style={{ backgroundColor: theme.text }} className="rounded-xl px-3 py-2 flex items-center justify-center">
-                                                                <span style={{ color: theme.bg }} className="text-base font-mono font-black italic">{piecesPerBatch}</span>
-                                                                <span style={{ color: theme.bg }} className="text-[10px] font-black ml-2 tracking-tighter opacity-60">PZS</span>
-                                                            </div>
-                                                        </div>
+                                                        ) : (
+                                                            <>
+                                                                <div className="space-y-1">
+                                                                    <span style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest pl-1 opacity-50">Gramaje / Pieza</span>
+                                                                    <div style={{ backgroundColor: theme.bg }} className="flex items-center gap-2 border border-black/5 rounded-xl px-3 py-2">
+                                                                        <input 
+                                                                            type="number"
+                                                                            value={item.grams_per_piece || ''}
+                                                                            placeholder="0"
+                                                                            onChange={e => {
+                                                                                const val = Number(e.target.value);
+                                                                                const newList = [...formData[key]];
+                                                                                newList[idx].grams_per_piece = val;
+                                                                                setFormData({...formData, [key]: newList});
+                                                                            }}
+                                                                            style={{ color: theme.text }}
+                                                                            className="bg-transparent text-xs font-mono font-black w-full outline-none text-center placeholder-black/30"
+                                                                        />
+                                                                        <span style={{ color: theme.text }} className="text-[9px] font-black opacity-40">g</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="space-y-1">
+                                                                    <span style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest pl-1 opacity-50">Piezas / Bastón</span>
+                                                                    <div style={{ backgroundColor: theme.text }} className="rounded-xl px-3 py-2 flex items-center justify-center border border-transparent">
+                                                                        <input 
+                                                                            type="number"
+                                                                            value={item.pieces_per_baston !== undefined ? item.pieces_per_baston : ''}
+                                                                            placeholder="0"
+                                                                            onChange={e => {
+                                                                                const val = Number(e.target.value);
+                                                                                const newList = [...formData[key]];
+                                                                                newList[idx].pieces_per_baston = val;
+                                                                                setFormData({...formData, [key]: newList});
+                                                                            }}
+                                                                            style={{ color: theme.bg }}
+                                                                            className="bg-transparent text-xs font-mono font-black w-full outline-none text-center placeholder-white/50"
+                                                                        />
+                                                                        <span style={{ color: theme.bg }} className="text-[9px] font-black ml-1 tracking-tighter opacity-60">PZS</span>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                {/* Resumen de Tandas */}
+                                                                {formData.batches.length > 0 && (item.pieces_per_baston > 0) && (
+                                                                    <div className="col-span-2 mt-2 bg-black/5 rounded-xl p-3">
+                                                                        <span style={{ color: theme.text }} className="text-[9px] font-black uppercase tracking-widest opacity-50 block mb-2">Rendimiento por Tanda Configurada:</span>
+                                                                        <div className="grid grid-cols-2 gap-2">
+                                                                            {formData.batches.map((b, i) => (
+                                                                                <div key={i} className="flex justify-between items-center text-[10px] font-mono font-bold">
+                                                                                    <span style={{ color: theme.text }} className="opacity-70">{b.name}:</span>
+                                                                                    <span style={{ color: theme.text }}>{Math.floor(item.pieces_per_baston * b.baston_qty)} pza</span>
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             );
