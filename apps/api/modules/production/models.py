@@ -21,9 +21,9 @@ class Dough(Base):
     rest_warehouse = Column(String, nullable=True)               # Ej: 'Cámara 1', 'Almacén Secos'
     rest_time_min = Column(Integer, nullable=True)
     
-    # Rendimientos Teóricos
     theoretical_yield = Column(Float, nullable=True) # Peso total esperado
     expected_waste = Column(Float, default=0.0)
+    recipe_matrix = Column(JSON, nullable=True)
 
     # Relaciones
     batches = relationship("DoughBatchConfig", back_populates="dough", cascade="all, delete-orphan")

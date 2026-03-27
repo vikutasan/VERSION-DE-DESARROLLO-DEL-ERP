@@ -122,6 +122,7 @@ class DoughBase(BaseModel):
     rest_time_min: Optional[int] = None
     theoretical_yield: Optional[float] = None
     expected_waste: float = 0.0
+    recipe_matrix: Optional[Dict[str, Any]] = None
 
 class DoughCreate(DoughBase):
     ingredients: List[DoughIngredientCreate] = []
