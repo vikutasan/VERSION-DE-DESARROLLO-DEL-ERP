@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
     ArrowLeft, Plus, Search, Filter, Loader2, ChefHat, Info, 
     Save, X, ChevronRight, ChevronLeft, Beaker, Zap, Timer, 
-    Scale, Trash2, ListOrdered, Settings2, Package, ArrowRight, Edit2
+    Scale, Trash2, ListOrdered, Settings2, Package, ArrowRight, Edit2, GripVertical
 } from 'lucide-react';
 
 /**
@@ -32,6 +32,7 @@ export const DoughManagerUI = ({ onBack }) => {
     const [selectedDough, setSelectedDough] = useState(null);
     const [doughs, setDoughs] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [draggedIdx, setDraggedIdx] = useState(null);
 
     const loadDoughs = async () => {
         try {
@@ -42,6 +43,45 @@ export const DoughManagerUI = ({ onBack }) => {
     };
 
     useEffect(() => { loadDoughs(); }, []);
+
+    const handleDragStart = (e, index) => {
+        setDraggedIdx(index);
+        e.dataTransfer.effectAllowed = "move";
+        e.target.style.opacity = '0.5';
+    };
+
+    const handleDragOver = (e, index) => {
+        e.preventDefault();
+        if (draggedIdx === index) return;
+
+        const items = [...doughs];
+        const draggedItem = items[draggedIdx];
+        items.splice(draggedIdx, 1);
+        items.splice(index, 0, draggedItem);
+
+        setDraggedIdx(index);
+        setDoughs(items);
+    };
+
+    const handleDragEnd = (e) => {
+        e.target.style.opacity = '1';
+        setDraggedIdx(null);
+        // Persistir usando el estado más reciente
+        setDoughs(current => {
+            saveOrder(current.map(d => d.id));
+            return current;
+        });
+    };
+
+    const saveOrder = async (orderIds) => {
+        try {
+            await fetch('http://localhost:3002/api/v1/production/doughs/reorder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order: orderIds })
+            });
+        } catch (e) { console.error("Error saving order:", e); }
+    };
 
     return (
         <div 
@@ -107,10 +147,21 @@ export const DoughManagerUI = ({ onBack }) => {
                             return (
                                 <div
                                     key={dough.id}
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(e, idx)}
+                                    onDragOver={(e) => handleDragOver(e, idx)}
+                                    onDragEnd={handleDragEnd}
                                     onClick={() => { setSelectedDough({...dough, themeIdx: idx}); setIsModalOpen(true); }}
-                                    style={{ backgroundColor: theme.bg }}
-                                    className="group relative border border-black/5 rounded-2xl p-4 hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden flex items-center gap-6"
+                                    style={{ 
+                                        backgroundColor: theme.bg,
+                                        transform: draggedIdx === idx ? 'scale(0.98)' : 'scale(1)',
+                                        zIndex: draggedIdx === idx ? 50 : 1
+                                    }}
+                                    className="group relative border border-black/5 rounded-2xl p-4 hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden flex items-center gap-6 active:cursor-grabbing"
                                 >
+                                    <div className="opacity-20 group-hover:opacity-60 transition-opacity">
+                                        <GripVertical size={20} style={{ color: theme.text }} />
+                                    </div>
                                     {/* Nombre de la Masa (Cromática Total) */}
                                     <div className="relative z-10 flex flex-1 items-center justify-between">
                                         <div className="flex items-center gap-4 min-w-0 pr-12">
@@ -158,7 +209,9 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
             { id: 'mep_polvos', name: 'MEP POLVOS', type: 'POLVOS' },
             { id: 'mep_liquidos', name: 'MEP LÍQUIDOS', type: 'LIQUIDOS' }
         ],
-        rows: []
+        rows: [
+            { id: 'row_base_reference', name: 'RECETA BASE', baston_qty: 1, unit: 'BST', values: {} }
+        ]
     };
     
     // Legacy Data Reconstruction Logic
@@ -175,9 +228,20 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
             }
         });
 
-        // 2. Create rows for each batch
-        _baseMatrix.rows = initialData.batches.map((b, bIdx) => {
-             const row = { id: 'r_'+bIdx+'_'+Date.now(), name: b.name, baston_qty: b.baston_qty, values: {} };
+        // 2. Create rows for each batch (including Base Reference)
+        const batchesToMap = [
+            { name: 'RECETA BASE', baston_qty: 1, unit: 'BST', isBase: true },
+            ...initialData.batches
+        ];
+
+        _baseMatrix.rows = batchesToMap.map((b, bIdx) => {
+             const row = { 
+                id: b.isBase ? 'row_base_reference' : 'r_'+bIdx+'_'+Date.now(), 
+                name: b.name, 
+                baston_qty: b.baston_qty, 
+                unit: b.unit || 'BST', 
+                values: {} 
+             };
              
              // Populate columns
              _baseMatrix.columns.forEach(col => {
@@ -200,7 +264,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
         });
     }
 
-    const initialMatrix = initialData?.recipe_matrix || _baseMatrix;
+    const initialMatrix = (initialData && initialData.recipe_matrix) ? initialData.recipe_matrix : _baseMatrix;
 
     const [formData, setFormData] = useState({
         code: '', name: '', dough_type: 'MASA SALADA', description: '',
@@ -218,10 +282,55 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
 
     // Aseguramos consistencia post-merge de initialData
     useEffect(() => {
-        if (!formData.recipe_matrix || !formData.recipe_matrix.columns) {
+        if (!formData?.recipe_matrix?.columns) {
             setFormData(prev => ({ ...prev, recipe_matrix: _baseMatrix }));
         }
-    }, []);
+    }, [formData]);
+
+    // Auto-calcula la RECETA BASE (1 Unidad) basada en el promedio de las tandas activas
+    useEffect(() => {
+        if (!formData?.recipe_matrix?.rows) return;
+        const rows = formData.recipe_matrix.rows;
+        const columns = formData.recipe_matrix.columns;
+        const productionRows = rows.filter(r => r.id !== 'row_base_reference');
+        
+        if (productionRows.length === 0) return;
+
+        const baseRow = rows.find(r => r.id === 'row_base_reference');
+        if (!baseRow) return;
+
+        let needsUpdate = false;
+        const newBaseValues = { ...baseRow.values };
+
+        columns.forEach(col => {
+            let totalRatio = 0;
+            let validRowsCount = 0;
+
+            productionRows.forEach(row => {
+                const qty = row.baston_qty || 0;
+                const val = row.values[col.id]?.qty || 0;
+                if (qty > 0 && val > 0) {
+                    totalRatio += (val / qty);
+                    validRowsCount++;
+                }
+            });
+
+            const avgRatio = validRowsCount > 0 ? Math.round((totalRatio / validRowsCount) * 100) / 100 : 0;
+            
+            // Sincronizar unidad con la primera tanda disponible
+            const firstUnit = productionRows.find(r => r.values[col.id]?.unit)?.values[col.id]?.unit || 'g';
+            
+            if (newBaseValues[col.id]?.qty !== avgRatio || newBaseValues[col.id]?.unit !== firstUnit) {
+                newBaseValues[col.id] = { ...newBaseValues[col.id], qty: avgRatio, unit: firstUnit };
+                needsUpdate = true;
+            }
+        });
+
+        if (needsUpdate) {
+            const newRows = rows.map(r => r.id === 'row_base_reference' ? { ...r, values: newBaseValues } : r);
+            setFormData(prev => ({ ...prev, recipe_matrix: { ...prev.recipe_matrix, rows: newRows } }));
+        }
+    }, [formData?.recipe_matrix?.rows]);
 
     const [catalog, setCatalog] = useState({ products: [], doughs: [] });
     const [searchTerm, setSearchTerm] = useState('');
@@ -244,15 +353,17 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
     useEffect(() => { loadCatalog(); }, []);
 
     const addMatrixRow = () => {
+        if (!formData?.recipe_matrix?.columns) return;
         const newRowId = 'r_' + Date.now();
-        const newRow = { id: newRowId, name: '', baston_qty: 1, values: {} };
+        const newRow = { id: newRowId, name: '', baston_qty: 1, unit: 'BST', values: {} };
         formData.recipe_matrix.columns.forEach(col => {
             newRow.values[col.id] = { qty: 0, unit: 'g' };
         });
-        setFormData({...formData, recipe_matrix: { ...formData.recipe_matrix, rows: [...formData.recipe_matrix.rows, newRow] } });
+        setFormData({...formData, recipe_matrix: { ...formData.recipe_matrix, rows: [...(formData.recipe_matrix.rows || []), newRow] } });
     };
 
     const addMatrixColumn = () => {
+        if (!formData?.recipe_matrix?.rows) return;
         const newColId = 'c_' + Date.now();
         const newCol = { id: newColId, name: 'NUEVO INSUMO', type: 'INGREDIENTE DIRECTO' };
         
@@ -261,7 +372,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
             values: { ...r.values, [newColId]: { qty: 0, unit: 'g' } }
         }));
         
-        setFormData({...formData, recipe_matrix: { columns: [...formData.recipe_matrix.columns, newCol], rows: newRows } });
+        setFormData({...formData, recipe_matrix: { columns: [...(formData.recipe_matrix.columns || []), newCol], rows: newRows } });
         setEditingColumnId(newColId);
     };
 
@@ -285,7 +396,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
     const handleSave = async () => {
         setLoading(true);
         try {
-            const derivedBatches = formData.recipe_matrix.rows.map(r => ({
+            const derivedBatches = (formData?.recipe_matrix?.rows || []).map(r => ({
                 name: r.name || `${r.baston_qty || 1}B`,
                 baston_qty: r.baston_qty || 1
             }));
@@ -359,7 +470,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                 </div>
 
                 {/* Stepper Progress - Theme aware */}
-                <div className="px-10 py-4 flex gap-3">
+                <div className="px-10 py-2 flex gap-3">
                     {steps.map(s => (
                         <button
                             key={s.id}
@@ -461,25 +572,26 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                         {step === 2 && (
                             <div className="space-y-4 animate-in fade-in duration-500 flex flex-col h-full">
                                 <div className="flex justify-between items-center mb-2 shrink-0">
-                                    <h3 style={{ color: theme.text }} className="text-2xl font-black italic uppercase border-b border-black/10 pb-2 flex-1">Receta por <span className="opacity-40 text-sm ml-2">Tandas</span></h3>
+                                    <h3 style={{ color: theme.text }} className="text-2xl font-black italic uppercase border-b border-black/10 pb-2 flex-1">Receta por <span className="opacity-40 ml-2">Tandas</span></h3>
                                     <button onClick={addMatrixColumn} style={{ backgroundColor: theme.text, color: theme.bg }} className="px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all flex items-center gap-2">
                                         <Plus size={14}/> Agregar Insumo (Columna)
                                     </button>
                                 </div>
-                                <div className="flex-1 overflow-auto custom-scrollbar bg-black/5 rounded-[40px] border border-black/5 p-4 relative w-full">
+                                <div className="flex-1 overflow-auto custom-scrollbar bg-black/5 rounded-[40px] border border-black/5 p-2 relative w-full">
                                     <div className="min-w-max">
                                         {/* Table Header */}
-                                        <div className="flex gap-4 mb-4">
+                                        <div className="flex gap-4 mb-2">
                                             <div className="w-48 shrink-0 flex items-end pb-2">
                                                 <span style={{ color: theme.text }} className="text-xs font-black uppercase tracking-widest opacity-60">Matriz de Producción</span>
                                             </div>
                                             {formData.recipe_matrix.columns.map((col, cIdx) => (
                                                 <div key={col.id} className="w-48 shrink-0 relative group flex items-center gap-2">
-                                                    <div style={{ backgroundColor: theme.input }} className="flex-1 p-4 text-center rounded-2xl border-2 border-black/20 flex flex-col h-20 bg-white justify-center shadow-md relative overflow-hidden">
+                                                    <div style={{ backgroundColor: theme.input }} className="flex-1 p-2 text-center rounded-2xl border-2 border-black/20 flex flex-col h-14 justify-center shadow-md relative overflow-hidden">
                                                         {editingColumnId === col.id ? (
                                                             <input 
                                                                 autoFocus
                                                                 className="bg-transparent text-[11px] font-black uppercase text-center outline-none w-full border-b-2 border-orange-500"
+                                                                style={{ color: theme.text }}
                                                                 value={col.name}
                                                                 onBlur={() => setEditingColumnId(null)}
                                                                 onKeyDown={e => e.key === 'Enter' && setEditingColumnId(null)}
@@ -491,7 +603,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                             />
                                                         ) : (
                                                             <>
-                                                                <span style={{ color: '#000' }} className="text-[11px] leading-tight font-black uppercase tracking-widest">{col.name}</span>
+                                                                <span style={{ color: theme.text }} className="text-[11px] leading-tight font-black uppercase tracking-widest">{col.name}</span>
                                                                 {cIdx > 1 && (
                                                                     <div className="absolute inset-0 bg-white/95 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-all">
                                                                         <button 
@@ -528,78 +640,134 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                             {formData.recipe_matrix.rows.map((row, rIdx) => (
                                                 <div key={row.id} className="flex gap-4 items-center group">
                                                     {/* Batch Config */}
-                                                    <div style={{ backgroundColor: theme.input }} className="w-48 shrink-0 flex items-center gap-1 p-3 rounded-2xl border-2 border-black/20 shadow-sm relative bg-white">
-                                                        <input 
-                                                            type="text"
-                                                            value={row.name}
+                                                    <div 
+                                                        style={{ 
+                                                            backgroundColor: row.id === 'row_base_reference' ? theme.text : theme.input,
+                                                            borderColor: row.id === 'row_base_reference' ? theme.text : 'rgba(0,0,0,0.2)'
+                                                        }} 
+                                                        className={`w-48 shrink-0 flex items-center gap-1 p-3 rounded-2xl border-2 shadow-sm relative transition-all`}
+                                                    >
+                                                        {row.id === 'row_base_reference' ? (
+                                                            <div className="flex-1 flex flex-col items-center justify-center -space-y-1">
+                                                                <span style={{ color: theme.bg }} className="text-[9px] font-black uppercase tracking-tighter opacity-60">RECETA BASE</span>
+                                                                <span style={{ color: theme.bg }} className="text-2xl font-black leading-none">1</span>
+                                                            </div>
+                                                        ) : (
+                                                            <input 
+                                                                type="text"
+                                                                value={row.name}
+                                                                onChange={e => {
+                                                                    const newRows = [...formData.recipe_matrix.rows];
+                                                                    newRows[rIdx].name = e.target.value.toUpperCase();
+                                                                    setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
+                                                                }}
+                                                                style={{ color: '#000' }}
+                                                                placeholder="Ej: 4B"
+                                                                className="bg-transparent font-black text-sm w-16 outline-none text-center"
+                                                            />
+                                                        )}
+                                                        
+                                                        {row.id !== 'row_base_reference' && <span className="opacity-20 text-xs">/</span>}
+                                                        
+                                                        {row.id !== 'row_base_reference' && (
+                                                            <input 
+                                                                type="number"
+                                                                value={row.baston_qty || ''}
+                                                                onChange={e => {
+                                                                    const newRows = [...formData.recipe_matrix.rows];
+                                                                    newRows[rIdx].baston_qty = Number(e.target.value);
+                                                                    setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
+                                                                }}
+                                                                style={{ color: '#000' }}
+                                                                className="bg-transparent font-black text-sm w-12 outline-none text-right"
+                                                            />
+                                                        )}
+
+                                                        <select
+                                                            value={row.unit || 'BST'}
                                                             onChange={e => {
                                                                 const newRows = [...formData.recipe_matrix.rows];
-                                                                newRows[rIdx].name = e.target.value.toUpperCase();
+                                                                newRows[rIdx].unit = e.target.value;
                                                                 setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
                                                             }}
-                                                            style={{ color: '#000' }}
-                                                            placeholder="Ej: 4B"
-                                                            className="bg-transparent font-black text-sm w-16 outline-none text-center"
-                                                        />
-                                                        <span className="opacity-20 text-xs">/</span>
-                                                        <input 
-                                                            type="number"
-                                                            value={row.baston_qty || ''}
-                                                            onChange={e => {
-                                                                const newRows = [...formData.recipe_matrix.rows];
-                                                                newRows[rIdx].baston_qty = Number(e.target.value);
-                                                                setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
-                                                            }}
-                                                            style={{ color: '#000' }}
-                                                            className="bg-transparent font-black text-sm w-12 outline-none text-right"
-                                                        />
-                                                        <span className="text-[10px] font-black uppercase mt-1 tracking-widest opacity-60 text-black">BST</span>
-                                                        <button 
-                                                            onClick={() => {
-                                                                const newRows = formData.recipe_matrix.rows.filter((_, i) => i !== rIdx);
-                                                                setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
-                                                            }}
-                                                            className="absolute -left-4 p-1 bg-red-500 rounded-lg text-white opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                                                            style={{ color: row.id === 'row_base_reference' ? theme.bg : theme.text }}
+                                                            className="bg-transparent text-[10px] font-black uppercase mt-1 tracking-widest opacity-60 outline-none appearance-none cursor-pointer"
                                                         >
-                                                            <Trash2 size={12}/>
-                                                        </button>
+                                                            <option value="BST">BST</option>
+                                                            <option value="TND">TND</option>
+                                                            <option value="1/2 TND">1/2 TND</option>
+                                                        </select>
+                                                        
+                                                        {row.id !== 'row_base_reference' && (
+                                                            <button 
+                                                                onClick={() => {
+                                                                    const newRows = formData.recipe_matrix.rows.filter((_, i) => i !== rIdx);
+                                                                    setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
+                                                                }}
+                                                                className="absolute -left-4 p-1 bg-red-500 rounded-lg text-white opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                                                            >
+                                                                <Trash2 size={12}/>
+                                                            </button>
+                                                        )}
                                                     </div>
 
                                                     {/* Ingredient Cells */}
                                                     {formData.recipe_matrix.columns.map(col => {
                                                         const cell = row.values[col.id] || { qty: 0, unit: 'g' };
+                                                        const isBase = row.id === 'row_base_reference';
                                                         return (
-                                                            <div key={col.id} className="w-48 shrink-0 flex items-center border-2 border-black/20 rounded-2xl overflow-hidden bg-white focus-within:ring-4 focus-within:ring-orange-500/20 focus-within:border-black transition-all shadow-sm">
-                                                                <input 
-                                                                    type="number"
-                                                                    value={cell.qty === 0 ? '' : cell.qty}
-                                                                    placeholder="0"
-                                                                    onChange={e => {
-                                                                        const val = Number(e.target.value);
-                                                                        const newRows = [...formData.recipe_matrix.rows];
-                                                                        newRows[rIdx].values[col.id] = { ...cell, qty: val };
-                                                                        setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
-                                                                    }}
-                                                                    style={{ color: '#000' }}
-                                                                    className="w-full min-w-0 bg-transparent px-3 py-3 font-mono font-black text-lg outline-none text-right"
-                                                                />
-                                                                <select 
-                                                                    value={cell.unit}
-                                                                    onChange={e => {
-                                                                        const newRows = [...formData.recipe_matrix.rows];
-                                                                        newRows[rIdx].values[col.id] = { ...cell, unit: e.target.value };
-                                                                        setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
-                                                                    }}
-                                                                    style={{ color: '#000' }}
-                                                                    className="bg-black/5 text-xs font-black font-mono w-20 px-1 pl-2 py-4 outline-none cursor-pointer appearance-none text-left border-l border-black/10"
-                                                                >
-                                                                    <option value="g">g</option>
-                                                                    <option value="kg">kg</option>
-                                                                    <option value="ml">ml</option>
-                                                                    <option value="L">L</option>
-                                                                    <option value="BASTÓN">BST</option>
-                                                                    <option value="pza">pza</option>
-                                                                </select>
+                                                            <div 
+                                                                key={col.id} 
+                                                                style={{ 
+                                                                    backgroundColor: isBase ? theme.text : 'white',
+                                                                    borderColor: isBase ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                                                                }}
+                                                                className={`w-48 shrink-0 flex items-center border-2 rounded-2xl overflow-hidden ${isBase ? '' : 'focus-within:ring-4 focus-within:ring-orange-500/20 focus-within:border-black'} transition-all shadow-sm`}
+                                                            >
+                                                                {isBase ? (
+                                                                    <div style={{ color: theme.bg }} className="w-full px-3 py-2 font-mono font-black text-lg text-right opacity-90 select-none">
+                                                                        {cell.qty || 0}
+                                                                    </div>
+                                                                ) : (
+                                                                    <input 
+                                                                        type="number"
+                                                                        value={cell.qty === 0 ? '' : cell.qty}
+                                                                        placeholder="0"
+                                                                        onChange={e => {
+                                                                            const val = Number(e.target.value);
+                                                                            const newRows = [...formData.recipe_matrix.rows];
+                                                                            newRows[rIdx].values[col.id] = { ...cell, qty: val };
+                                                                            setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
+                                                                        }}
+                                                                        style={{ color: '#000' }}
+                                                                        className="w-full min-w-0 bg-transparent px-3 py-2 font-mono font-black text-lg outline-none text-right"
+                                                                    />
+                                                                )}
+                                                                {isBase ? (
+                                                                    <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: theme.bg }} className="text-[10px] font-black font-mono w-16 px-1 pl-2 py-3 opacity-60 border-l border-white/10 select-none">
+                                                                        {cell.unit}
+                                                                    </div>
+                                                                ) : (
+                                                                    <select 
+                                                                        value={cell.unit}
+                                                                        onChange={e => {
+                                                                            const newRows = [...formData.recipe_matrix.rows];
+                                                                            newRows[rIdx].values[col.id] = { ...cell, unit: e.target.value };
+                                                                            setFormData({...formData, recipe_matrix: {...formData.recipe_matrix, rows: newRows}});
+                                                                        }}
+                                                                        style={{ color: '#000' }}
+                                                                        className="bg-black/5 text-[10px] font-black font-mono w-16 px-1 pl-2 py-3 outline-none cursor-pointer appearance-none text-left border-l border-black/10"
+                                                                    >
+                                                                        <option value="g">g</option>
+                                                                        <option value="kg">kg</option>
+                                                                        <option value="ml">ml</option>
+                                                                        <option value="L">L</option>
+                                                                        <option value="BASTÓN">BST</option>
+                                                                        <option value="TANDA">TND</option>
+                                                                        <option value="1/2 TANDA">1/2 TND</option>
+                                                                        <option value="pza">pza</option>
+                                                                    </select>
+                                                                )}
                                                             </div>
                                                         );
                                                     })}
@@ -942,7 +1110,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                                         <div className="grid grid-cols-2 gap-2">
                                                                             {formData.recipe_matrix.rows.map((r, i) => (
                                                                                 <div key={i} className="flex justify-between items-center text-[11px] font-mono font-black border-b border-black/5 pb-1">
-                                                                                    <span style={{ color: '#000' }}>{r.name || `${r.baston_qty || 0}B`}:</span>
+                                                                                    <span style={{ color: '#000' }}>{r.name || `${r.baston_qty || 0}${r.unit || 'B'}`}:</span>
                                                                                     <span style={{ color: '#000' }} className="bg-black text-white px-2 rounded-lg">{Math.floor(item.pieces_per_baston * (r.baston_qty || 0))} pza</span>
                                                                                 </div>
                                                                             ))}

@@ -28,3 +28,9 @@ async def update_dough(dough_id: int, dough: schemas.DoughCreate, db: AsyncSessi
     if not updated:
         raise HTTPException(status_code=404, detail="Dough not found")
     return updated
+
+@router.post("/doughs/reorder")
+async def reorder_doughs(req: schemas.DoughReorderRequest, db: AsyncSession = Depends(get_db)):
+    """Reorder doughs based on the provided list of IDs"""
+    await service.reorder_doughs(db, req.order)
+    return {"status": "ok"}

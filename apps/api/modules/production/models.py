@@ -24,6 +24,7 @@ class Dough(Base):
     theoretical_yield = Column(Float, nullable=True) # Peso total esperado
     expected_waste = Column(Float, default=0.0)
     recipe_matrix = Column(JSON, nullable=True)
+    position = Column(Integer, default=0)
 
     # Relaciones
     batches = relationship("DoughBatchConfig", back_populates="dough", cascade="all, delete-orphan")
@@ -58,6 +59,7 @@ class DoughBatchConfig(Base):
     dough_id = Column(Integer, ForeignKey("doughs.id"))
     name = Column(String, nullable=False)           # Ej: '4B (4 BASTONES)'
     baston_qty = Column(Float, nullable=False)      # Ej: 4.0
+    unit = Column(String, default="BST")            # BST o TND (TANDA)
     
     dough = relationship("Dough", back_populates="batches")
 

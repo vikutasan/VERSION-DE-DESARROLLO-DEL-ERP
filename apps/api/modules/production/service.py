@@ -1,11 +1,12 @@
+from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from fastapi import HTTPException
 from . import models, schemas
 
 async def list_doughs(db: AsyncSession):
-    result = await db.execute(select(models.Dough).options(
+    result = await db.execute(select(models.Dough).order_by(models.Dough.position.asc()).options(
         selectinload(models.Dough.ingredients),
         selectinload(models.Dough.procedure_steps),
         selectinload(models.Dough.product_relations),
@@ -101,3 +102,14 @@ async def upsert_technical_sheet(db: AsyncSession, data: schemas.TechnicalSheetC
     await db.commit()
     await db.refresh(sheet)
     return sheet
+
+async def reorder_doughs(db: AsyncSession, order: List[int]):
+    """Actualiza la posición de las masas basándose en el orden de IDs recibido."""
+    for idx, d_id in enumerate(order):
+        await db.execute(
+            update(models.Dough)
+            .where(models.Dough.id == d_id)
+            .values(position=idx)
+        )
+    await db.commit()
+    return True

@@ -65,6 +65,7 @@ class DoughRelationResponse(DoughRelationBase):
 class DoughBatchConfigBase(BaseModel):
     name: str
     baston_qty: float
+    unit: str = "BST"
 
 class DoughBatchConfigCreate(DoughBatchConfigBase):
     pass
@@ -110,6 +111,9 @@ class TechnicalSheetResponse(TechnicalSheetBase):
     class Config:
         from_attributes = True
 
+class DoughReorderRequest(BaseModel):
+    order: List[int] # List of Dough IDs in desired order
+
 # Main Dough
 class DoughBase(BaseModel):
     code: str
@@ -123,6 +127,7 @@ class DoughBase(BaseModel):
     theoretical_yield: Optional[float] = None
     expected_waste: float = 0.0
     recipe_matrix: Optional[Dict[str, Any]] = None
+    position: int = 0
 
 class DoughCreate(DoughBase):
     ingredients: List[DoughIngredientCreate] = []
