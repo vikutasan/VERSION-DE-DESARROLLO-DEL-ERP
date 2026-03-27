@@ -79,8 +79,14 @@ from typing import Dict, Any
 
 class TechnicalSheetBase(BaseModel):
     primary_mass_id: Optional[int] = None
+    primary_mass_grams: Optional[float] = None
+    
     secondary_mass_id: Optional[int] = None
+    secondary_mass_grams: Optional[float] = None
+    
     tertiary_mass_id: Optional[int] = None
+    tertiary_mass_grams: Optional[float] = None
+    
     weight_per_piece: Optional[float] = None
     
     baking_temp_top: Optional[float] = None

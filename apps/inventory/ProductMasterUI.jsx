@@ -44,7 +44,7 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
     const [draggedCatIndex, setDraggedCatIndex] = useState(null);
     const [draggedProdIndex, setDraggedProdIndex] = useState(null);
 
-    const API_BASE = "http://localhost:3002/api/v1/catalog";
+    const API_BASE = "http://127.0.0.1:3002/api/v1/catalog";
 
     // Carga inicial de datos desde la API
     useEffect(() => {
@@ -73,7 +73,7 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
                 }
 
                 // Masas (Producción)
-                const massRes = await fetch("http://localhost:3002/api/v1/production/masses");
+                const massRes = await fetch(`${API_BASE.replace('/catalog', '/production')}/doughs`);
                 if (massRes.ok) {
                     setMasses(await massRes.json());
                 }
@@ -122,10 +122,33 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
                 console.warn("Categoría solicitada no encontrada:", catName);
             }
             
-            // Sanitización de technical_data
-            const techData = { ...(updatedProduct.technical_data || {}) };
-            if (techData.primary_mass_id === '') techData.primary_mass_id = null;
-            if (techData.weight_per_piece === '') techData.weight_per_piece = null;
+            // Sanitización de technical_data (Imperial Hardening)
+            const rawTD = updatedProduct.technical_data || {};
+            const techData = {
+                ...rawTD,
+                // IDs de Masa (Convertir "" a null para evitar errores de tipo int)
+                primary_mass_id: rawTD.primary_mass_id && rawTD.primary_mass_id !== '' ? parseInt(rawTD.primary_mass_id) : null,
+                secondary_mass_id: rawTD.secondary_mass_id && rawTD.secondary_mass_id !== '' ? parseInt(rawTD.secondary_mass_id) : null,
+                tertiary_mass_id: rawTD.tertiary_mass_id && rawTD.tertiary_mass_id !== '' ? parseInt(rawTD.tertiary_mass_id) : null,
+                
+                // Gramajes (Convertir a float o null/0)
+                primary_mass_grams: rawTD.primary_mass_grams && rawTD.primary_mass_grams !== '' ? parseFloat(rawTD.primary_mass_grams) : 0,
+                secondary_mass_grams: rawTD.secondary_mass_grams && rawTD.secondary_mass_grams !== '' ? parseFloat(rawTD.secondary_mass_grams) : 0,
+                tertiary_mass_grams: rawTD.tertiary_mass_grams && rawTD.tertiary_mass_grams !== '' ? parseFloat(rawTD.tertiary_mass_grams) : 0,
+                
+                // Otros parámetros numéricos
+                weight_per_piece: rawTD.weight_per_piece && rawTD.weight_per_piece !== '' ? parseFloat(rawTD.weight_per_piece) : null,
+                baking_temp_top: rawTD.baking_temp_top && rawTD.baking_temp_top !== '' ? parseFloat(rawTD.baking_temp_top) : null,
+                baking_temp_bottom: rawTD.baking_temp_bottom && rawTD.baking_temp_bottom !== '' ? parseFloat(rawTD.baking_temp_bottom) : null,
+                baking_time_min: rawTD.baking_time_min && rawTD.baking_time_min !== '' ? parseInt(rawTD.baking_time_min) : null,
+                preparation_time_min: rawTD.preparation_time_min && rawTD.preparation_time_min !== '' ? parseInt(rawTD.preparation_time_min) : null,
+                
+                // Garantizar strings o nulls para textos
+                recipe_procedure: rawTD.recipe_procedure || null,
+                forming_procedure: rawTD.forming_procedure || null,
+                provider: rawTD.provider || null,
+                original_barcode: rawTD.original_barcode || null
+            };
             
             const payload = {
                 name: updatedProduct.name,
@@ -737,49 +760,129 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
                                         <span>⚙️</span> Parámetros de Manufactura
                                     </h4>
                                     
-                                    <div className="grid grid-cols-2 gap-4 bg-gray-800/20 p-5 rounded-[24px] border border-gray-800">
-                                        <div className="col-span-2">
-                                            <label className="text-[10px] font-black text-gray-500 uppercase block mb-2 text-[#c1d72e]">Masa Primaria (Base)</label>
-                                            <select 
-                                                className="w-full bg-black/60 border border-gray-700 p-3 rounded-xl text-xs font-bold outline-none focus:border-[#c1d72e]"
-                                                value={editingProduct.technical_data?.primary_mass_id || ''}
-                                                onChange={(e) => setEditingProduct({
-                                                    ...editingProduct, 
-                                                    technical_data: {...editingProduct.technical_data, primary_mass_id: e.target.value}
-                                                })}
-                                            >
-                                                <option value="">-- Seleccionar Masa --</option>
-                                                {masses.map(m => (
-                                                    <option key={m.id} value={m.id}>{m.name} ({m.total_yield_grams}g totales)</option>
-                                                ))}
-                                            </select>
+                                    <div className="bg-gray-800/20 p-6 rounded-[32px] border border-gray-800 space-y-6">
+                                        {/* Masa Primaria */}
+                                        <div className="grid grid-cols-5 gap-4 items-end">
+                                            <div className="col-span-3">
+                                                <label className="text-[10px] font-black text-[#c1d72e] uppercase block mb-2">Masa Primaria (Base)</label>
+                                                <select 
+                                                    className="w-full bg-black/60 border border-gray-700 p-3 rounded-xl text-xs font-bold outline-none focus:border-[#c1d72e]"
+                                                    value={editingProduct.technical_data?.primary_mass_id || ''}
+                                                    onChange={(e) => setEditingProduct({
+                                                        ...editingProduct, 
+                                                        technical_data: {...editingProduct.technical_data, primary_mass_id: e.target.value}
+                                                    })}
+                                                >
+                                                    <option value="">-- Sin Masa --</option>
+                                                    {masses.filter(m => m.dough_type !== 'PREFERMENTO').map(m => (
+                                                        <option key={m.id} value={m.id}>{m.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Gramos</label>
+                                                <div className="flex items-center gap-2 bg-black/40 border border-gray-700 p-3 rounded-xl">
+                                                    <input 
+                                                        type="number"
+                                                        placeholder="0"
+                                                        className="bg-transparent w-full text-sm font-bold outline-none text-center"
+                                                        value={editingProduct.technical_data?.primary_mass_grams || ''}
+                                                        onChange={(e) => setEditingProduct({
+                                                            ...editingProduct, 
+                                                            technical_data: {...editingProduct.technical_data, primary_mass_grams: e.target.value}
+                                                        })}
+                                                    />
+                                                    <span className="text-[10px] font-black opacity-30">g</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Peso x Pieza (Gramos)</label>
-                                            <input 
-                                                type="number"
-                                                className="w-full bg-black/40 border border-gray-700 p-3 rounded-xl text-sm font-bold outline-none focus:border-indigo-500"
-                                                value={editingProduct.technical_data?.weight_per_piece || ''}
-                                                onChange={(e) => setEditingProduct({
-                                                    ...editingProduct, 
-                                                    technical_data: {...editingProduct.technical_data, weight_per_piece: e.target.value}
-                                                })}
-                                            />
+
+                                        {/* Masa Secundaria */}
+                                        <div className="grid grid-cols-5 gap-4 items-end pt-4 border-t border-gray-800/50">
+                                            <div className="col-span-3">
+                                                <label className="text-[10px] font-black text-indigo-400 uppercase block mb-2">Masa Secundaria</label>
+                                                <select 
+                                                    className="w-full bg-black/60 border border-gray-700 p-3 rounded-xl text-xs font-bold outline-none focus:border-indigo-400"
+                                                    value={editingProduct.technical_data?.secondary_mass_id || ''}
+                                                    onChange={(e) => setEditingProduct({
+                                                        ...editingProduct, 
+                                                        technical_data: {...editingProduct.technical_data, secondary_mass_id: e.target.value}
+                                                    })}
+                                                >
+                                                    <option value="">-- Sin Masa --</option>
+                                                    {masses.filter(m => m.dough_type !== 'PREFERMENTO').map(m => (
+                                                        <option key={m.id} value={m.id}>{m.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Gramos</label>
+                                                <div className="flex items-center gap-2 bg-black/40 border border-gray-700 p-3 rounded-xl">
+                                                    <input 
+                                                        type="number"
+                                                        placeholder="0"
+                                                        className="bg-transparent w-full text-sm font-bold outline-none text-center"
+                                                        value={editingProduct.technical_data?.secondary_mass_grams || ''}
+                                                        onChange={(e) => setEditingProduct({
+                                                            ...editingProduct, 
+                                                            technical_data: {...editingProduct.technical_data, secondary_mass_grams: e.target.value}
+                                                        })}
+                                                    />
+                                                    <span className="text-[10px] font-black opacity-30">g</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label className="text-[10px] font-black text-indigo-400 uppercase block mb-2">Rendimiento (Autocalculado)</label>
-                                            <div className="w-full bg-indigo-900/20 border border-indigo-500/30 p-3 rounded-xl text-sm font-black text-indigo-300 flex items-center justify-center">
-                                                {(() => {
-                                                    const massId = editingProduct.technical_data?.primary_mass_id;
-                                                    const weight = parseFloat(editingProduct.technical_data?.weight_per_piece);
-                                                    if (!massId || !weight) return "--- piezas";
-                                                    
-                                                    const mass = masses.find(m => m.id.toString() === massId.toString());
-                                                    if (!mass) return "--- piezas";
-                                                    
-                                                    const yieldPieces = Math.floor(mass.total_yield_grams / weight);
-                                                    return `${yieldPieces} PIEZAS MÁX.`;
-                                                })()}
+
+                                        {/* Masa Terciaria */}
+                                        <div className="grid grid-cols-5 gap-4 items-end pt-4 border-t border-gray-800/50">
+                                            <div className="col-span-3">
+                                                <label className="text-[10px] font-black text-orange-400 uppercase block mb-2">Masa Terciaria</label>
+                                                <select 
+                                                    className="w-full bg-black/60 border border-gray-700 p-3 rounded-xl text-xs font-bold outline-none focus:border-orange-400"
+                                                    value={editingProduct.technical_data?.tertiary_mass_id || ''}
+                                                    onChange={(e) => setEditingProduct({
+                                                        ...editingProduct, 
+                                                        technical_data: {...editingProduct.technical_data, tertiary_mass_id: e.target.value}
+                                                    })}
+                                                >
+                                                    <option value="">-- Sin Masa --</option>
+                                                    {masses.filter(m => m.dough_type !== 'PREFERMENTO').map(m => (
+                                                        <option key={m.id} value={m.id}>{m.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="text-[10px] font-black text-gray-500 uppercase block mb-2">Gramos</label>
+                                                <div className="flex items-center gap-2 bg-black/40 border border-gray-700 p-3 rounded-xl">
+                                                    <input 
+                                                        type="number"
+                                                        placeholder="0"
+                                                        className="bg-transparent w-full text-sm font-bold outline-none text-center"
+                                                        value={editingProduct.technical_data?.tertiary_mass_grams || ''}
+                                                        onChange={(e) => setEditingProduct({
+                                                            ...editingProduct, 
+                                                            technical_data: {...editingProduct.technical_data, tertiary_mass_grams: e.target.value}
+                                                        })}
+                                                    />
+                                                    <span className="text-[10px] font-black opacity-30">g</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-4 border-t border-gray-800 flex justify-between items-center">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase">Peso Total Final en Ficha</label>
+                                            <div className="flex items-center gap-4">
+                                                <input 
+                                                    type="number"
+                                                    placeholder="Total"
+                                                    className="bg-black/60 border border-gray-700 p-3 rounded-xl text-sm font-black text-white w-32 text-center outline-none focus:border-green-500"
+                                                    value={editingProduct.technical_data?.weight_per_piece || ''}
+                                                    onChange={(e) => setEditingProduct({
+                                                        ...editingProduct, 
+                                                        technical_data: {...editingProduct.technical_data, weight_per_piece: e.target.value}
+                                                    })}
+                                                />
+                                                <span className="text-xs font-black text-green-500">g</span>
                                             </div>
                                         </div>
                                     </div>

@@ -45,10 +45,15 @@ class ProductTechnicalSheet(Base):
     
     # Masas vinculadas (Referencias por ID para evitar circularidad profunda en modelos)
     primary_mass_id = Column(Integer, ForeignKey("doughs.id"), nullable=True)
-    secondary_mass_id = Column(Integer, ForeignKey("doughs.id"), nullable=True)
-    tertiary_mass_id = Column(Integer, ForeignKey("doughs.id"), nullable=True)
+    primary_mass_grams = Column(Float, nullable=True)
     
-    weight_per_piece = Column(Float, nullable=True)
+    secondary_mass_id = Column(Integer, ForeignKey("doughs.id"), nullable=True)
+    secondary_mass_grams = Column(Float, nullable=True)
+    
+    tertiary_mass_id = Column(Integer, ForeignKey("doughs.id"), nullable=True)
+    tertiary_mass_grams = Column(Float, nullable=True)
+    
+    weight_per_piece = Column(Float, nullable=True) # Peso total final sugerido
     baking_temp_top = Column(Float, nullable=True)
     baking_temp_bottom = Column(Float, nullable=True)
     baking_time_min = Column(Integer, nullable=True)

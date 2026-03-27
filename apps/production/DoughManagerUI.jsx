@@ -36,7 +36,7 @@ export const DoughManagerUI = ({ onBack }) => {
 
     const loadDoughs = async () => {
         try {
-            const resp = await fetch('http://localhost:3002/api/v1/production/doughs');
+            const resp = await fetch('http://127.0.0.1:3002/api/v1/production/doughs');
             if (resp.ok) setDoughs(await resp.json());
         } catch (e) { console.error(e); }
         finally { setIsLoading(false); }
@@ -75,7 +75,7 @@ export const DoughManagerUI = ({ onBack }) => {
 
     const saveOrder = async (orderIds) => {
         try {
-            await fetch('http://localhost:3002/api/v1/production/doughs/reorder', {
+            await fetch('http://127.0.0.1:3002/api/v1/production/doughs/reorder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ order: orderIds })
@@ -338,8 +338,8 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
     const loadCatalog = async () => {
         try {
             const [pResp, dResp] = await Promise.all([
-                fetch('http://localhost:3002/api/v1/products'),
-                fetch('http://localhost:3002/api/v1/production/doughs')
+                fetch('http://127.0.0.1:3002/api/v1/catalog/products'),
+                fetch('http://127.0.0.1:3002/api/v1/production/doughs')
             ]);
             if (pResp.ok && dResp.ok) {
                 setCatalog({
@@ -955,180 +955,115 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
 
                         {step === 5 && (
                             <div className="animate-in fade-in duration-500 pt-6 max-w-4xl mx-auto w-full">
-                                <div className="space-y-6">
-                                    <div className="text-center mb-8">
+                                <div className="space-y-8">
+                                    <div className="text-center">
                                         <h3 style={{ color: theme.text }} className="text-3xl font-black tracking-tighter uppercase italic">
                                             {formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO' ? 'Masas que emplean este pre-fermento' : 'Productos que emplean esta masa'}
                                         </h3>
-                                        <p style={{ color: theme.text }} className="text-[11px] font-black uppercase tracking-widest mt-2 opacity-50">Traza la cadena de producción industrial</p>
+                                        <p style={{ color: theme.text }} className="text-[11px] font-black uppercase tracking-widest mt-2 opacity-50">Trazabilidad industrial descendente (Downstream)</p>
                                     </div>
 
-                                    {/* Buscador de Vínculos */}
-                                    <div className="relative group max-w-xl mx-auto">
-                                        <Search style={{ color: theme.text }} className="absolute left-5 top-1/2 -translate-y-1/2 opacity-40" size={20} />
-                                        <input 
-                                            type="text" 
-                                            placeholder={`Buscar ${formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO' ? 'masa' : 'producto'} para vincular...`}
-                                            value={searchTerm}
-                                            onChange={e => setSearchTerm(e.target.value)}
-                                            style={{ backgroundColor: theme.input, color: theme.text }}
-                                            className="w-full border border-black/5 rounded-[30px] py-6 pl-14 pr-6 text-base font-bold focus:shadow-xl transition-all placeholder-black/30"
-                                        />
-                                        
-                                        {searchTerm && (
-                                            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-black/5 rounded-3xl overflow-hidden z-50 shadow-2xl max-h-64 overflow-auto custom-scrollbar">
-                                                {(formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO' ? catalog.doughs : catalog.products.filter(p => p.nature === 'MANUFACTURADO'))
-                                                    .filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) && item.id !== initialData?.id)
-                                                    .map(item => {
-                                                        const key = formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO' ? 'dough_relations' : 'product_relations';
-                                                        const isSelected = formData[key].some(r => (r.id === item.id || r.related_dough_id === item.id));
-                                                        
-                                                        return (
-                                                            <button 
-                                                                key={item.id}
-                                                                onClick={() => {
-                                                                    if (!isSelected) {
-                                                                        if (formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO') {
-                                                                            setFormData({...formData, dough_relations: [...formData.dough_relations, { id: item.id, name: item.name, code: item.code, qty_per_baston: 0 }]});
-                                                                        } else {
-                                                                            setFormData({...formData, product_relations: [...formData.product_relations, { id: item.id, name: item.name, code: item.code, product_id: item.id, grams_per_piece: 0, pieces_per_baston: 0 }]});
-                                                                        }
-                                                                    } else {
-                                                                        setFormData({...formData, [key]: formData[key].filter(r => r.id !== item.id && r.related_dough_id !== item.id)});
-                                                                    }
-                                                                    setSearchTerm('');
-                                                                }}
-                                                                className="w-full px-6 py-4 flex items-center justify-between hover:bg-black/5 transition-all text-left border-b border-black/5 last:border-0"
-                                                            >
-                                                                <div className="flex items-center gap-4">
-                                                                    <div style={{ backgroundColor: theme.input, color: theme.text }} className="w-8 h-8 rounded-lg flex items-center justify-center font-black italic text-[10px]">
-                                                                        {item.code || 'ID'}
-                                                                    </div>
-                                                                    <span className="text-xs font-bold text-black uppercase">{item.name}</span>
-                                                                </div>
-                                                                {isSelected ? <Trash2 size={16} className="text-red-500" /> : <Plus size={16} className="text-black/40" />}
-                                                            </button>
-                                                        );
-                                                    })
-                                                }
-                                            </div>
-                                        )}
-                                    </div>
+                                    <div className="bg-white/5 border border-black/5 rounded-[40px] p-8">
+                                        {(() => {
+                                            const isPreferment = formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO';
+                                            
+                                            if (isPreferment) {
+                                                const linkedDoughs = (catalog.doughs || []).filter(d => 
+                                                    d.ingredients?.some(ing => ing.mep_type === 'PRE-FERMENTO' && ing.related_dough_id === initialData?.id)
+                                                );
 
-                                    {/* Lista de Vínculos Actuales */}
-                                    <div className="grid grid-cols-2 gap-4 mt-8">
-                                        {(formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO' ? formData.dough_relations : formData.product_relations).map((item, idx) => {
-                                            const isPrefermento = formData.dough_type === 'PREFERMENTO' || formData.dough_type === 'PRE-FERMENTO';
-                                            const key = isPrefermento ? 'dough_relations' : 'product_relations';
-
-                                            return (
-                                                <div key={item.id || item.related_dough_id} style={{ backgroundColor: theme.input }} className="border border-black/5 p-5 rounded-[32px] flex flex-col gap-4 group hover:shadow-lg transition-all">
-                                                    <div className="flex items-center justify-between">
-                                                        <div className="flex items-center gap-4">
-                                                            <div style={{ backgroundColor: theme.bg, color: theme.text }} className="w-10 h-10 rounded-xl flex items-center justify-center font-black italic text-xs border border-black/5">
-                                                                {item.code || 'ID'}
-                                                            </div>
-                                                            <span style={{ color: theme.text }} className="text-xs font-black uppercase tracking-tight">{item.name}</span>
+                                                if (linkedDoughs.length === 0) {
+                                                    return (
+                                                        <div className="text-center py-20 opacity-30">
+                                                            <Zap size={48} className="mx-auto mb-4" />
+                                                            <p className="font-bold uppercase tracking-widest text-xs">No hay masas vinculadas a este prefermento</p>
                                                         </div>
-                                                        <button 
-                                                            onClick={() => {
-                                                                setFormData({...formData, [key]: formData[key].filter(r => r.id !== item.id && r.related_dough_id !== item.related_dough_id)});
-                                                            }}
-                                                            style={{ color: theme.text }}
-                                                            className="p-2 hover:bg-red-500 hover:text-white rounded-lg transition-all"
-                                                        >
-                                                            <Trash2 size={14} />
-                                                        </button>
-                                                    </div>
+                                                    );
+                                                }
 
-                                                    <div className="grid grid-cols-2 gap-4 pt-2 border-t border-black/5">
-                                                        {isPrefermento ? (
-                                                            <div className="col-span-2 space-y-1">
-                                                                <span style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest pl-1 opacity-50">Consumo (g) / Bastón de {item.name}</span>
-                                                                <div style={{ backgroundColor: theme.bg }} className="flex items-center gap-2 border border-black/5 rounded-xl px-3 py-2">
-                                                                    <input 
-                                                                        type="number"
-                                                                        value={item.qty_per_baston || ''}
-                                                                        placeholder="0"
-                                                                        onChange={e => {
-                                                                            const val = Number(e.target.value);
-                                                                            const newList = [...formData[key]];
-                                                                            newList[idx].qty_per_baston = val;
-                                                                            setFormData({...formData, [key]: newList});
-                                                                        }}
-                                                                        style={{ color: '#000' }}
-                                                                        className="bg-transparent text-sm font-mono font-black w-full outline-none text-center placeholder-black/30"
-                                                                    />
-                                                                    <span style={{ color: '#000' }} className="text-[10px] font-black opacity-60">g</span>
+                                                return (
+                                                    <div className="grid grid-cols-1 gap-4">
+                                                        {linkedDoughs.map(d => (
+                                                            <div key={d.id} className="flex items-center justify-between bg-white rounded-3xl p-6 shadow-sm border border-black/5">
+                                                                <div className="flex items-center gap-4">
+                                                                    <div className="w-12 h-12 bg-black/5 rounded-2xl flex items-center justify-center font-black text-xs">DOU</div>
+                                                                    <div>
+                                                                        <div className="font-black uppercase tracking-tighter text-lg">{d.name}</div>
+                                                                        <div className="text-[10px] font-bold opacity-40 uppercase tracking-widest">{d.code}</div>
+                                                                    </div>
                                                                 </div>
+                                                                <div className="bg-black/5 px-4 py-2 rounded-xl font-black text-[10px] uppercase opacity-60">USADO EN RECETA</div>
                                                             </div>
-                                                        ) : (
-                                                            <>
-                                                                <div className="space-y-1">
-                                                                    <span style={{ color: '#000' }} className="text-[10px] font-black uppercase tracking-widest pl-1">Gramaje / Pieza</span>
-                                                                    <div style={{ backgroundColor: theme.bg }} className="flex items-center gap-2 border-2 border-black/20 rounded-xl px-3 py-2">
-                                                                        <input 
-                                                                            type="number"
-                                                                            value={item.grams_per_piece || ''}
-                                                                            placeholder="0"
-                                                                            onChange={e => {
-                                                                                const val = Number(e.target.value);
-                                                                                const newList = [...formData[key]];
-                                                                                newList[idx].grams_per_piece = val;
-                                                                                setFormData({...formData, [key]: newList});
-                                                                            }}
-                                                                            style={{ color: '#000' }}
-                                                                            className="bg-transparent text-sm font-mono font-black w-full outline-none text-center placeholder-black/30"
-                                                                        />
-                                                                        <span style={{ color: '#000' }} className="text-[10px] font-black opacity-60">g</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="space-y-1">
-                                                                    <span style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest pl-1 opacity-50">Piezas / Bastón</span>
-                                                                    <div style={{ backgroundColor: '#000' }} className="rounded-xl px-3 py-2 flex items-center justify-center border border-transparent">
-                                                                        <input 
-                                                                            type="number"
-                                                                            value={item.pieces_per_baston !== undefined ? item.pieces_per_baston : ''}
-                                                                            placeholder="0"
-                                                                            onChange={e => {
-                                                                                const val = Number(e.target.value);
-                                                                                const newList = [...formData[key]];
-                                                                                newList[idx].pieces_per_baston = val;
-                                                                                setFormData({...formData, [key]: newList});
-                                                                            }}
-                                                                            style={{ color: '#fff' }}
-                                                                            className="bg-transparent text-sm font-mono font-black w-full outline-none text-center placeholder-white/50"
-                                                                        />
-                                                                        <span style={{ color: '#fff' }} className="text-[10px] font-black ml-1 tracking-tighter opacity-80">PZS</span>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                {/* Resumen de Tandas */}
-                                                                {formData.recipe_matrix.rows.length > 0 && (item.pieces_per_baston > 0) && (
-                                                                    <div className="col-span-2 mt-2 bg-black/5 rounded-xl p-3">
-                                                                        <span style={{ color: '#000' }} className="text-[10px] font-black uppercase tracking-widest block mb-2">Rendimiento por Tanda Configurada:</span>
-                                                                        <div className="grid grid-cols-2 gap-2">
-                                                                            {formData.recipe_matrix.rows.map((r, i) => (
-                                                                                <div key={i} className="flex justify-between items-center text-[11px] font-mono font-black border-b border-black/5 pb-1">
-                                                                                    <span style={{ color: '#000' }}>{r.name || `${r.baston_qty || 0}${r.unit || 'B'}`}:</span>
-                                                                                    <span style={{ color: '#000' }} className="bg-black text-white px-2 rounded-lg">{Math.floor(item.pieces_per_baston * (r.baston_qty || 0))} pza</span>
-                                                                                </div>
-                                                                            ))}
+                                                        ))}
+                                                    </div>
+                                                );
+                                            } else {
+                                                const linkedProducts = (catalog.products || []).filter(p => {
+                                                    const ts = p.technical_sheet || p.technical_data;
+                                                    if (!ts) return false;
+                                                    return (
+                                                        ts.primary_mass_id?.toString() === initialData?.id?.toString() ||
+                                                        ts.secondary_mass_id?.toString() === initialData?.id?.toString() ||
+                                                        ts.tertiary_mass_id?.toString() === initialData?.id?.toString()
+                                                    );
+                                                });
+
+                                                if (linkedProducts.length === 0) {
+                                                    return (
+                                                        <div className="text-center py-20 opacity-30">
+                                                            <Zap size={48} className="mx-auto mb-4" />
+                                                            <p className="font-bold uppercase tracking-widest text-xs">No hay productos vinculados a esta masa</p>
+                                                            <p className="text-[10px] mt-2 opacity-60 italic">Vincúlalos desde el Maestro de Productos</p>
+                                                        </div>
+                                                    );
+                                                }
+
+                                                return (
+                                                    <div className="grid grid-cols-1 gap-4">
+                                                        {linkedProducts.map(p => {
+                                                            const ts = p.technical_sheet || p.technical_data || {};
+                                                            let grams = 0;
+                                                            if (ts.primary_mass_id?.toString() === initialData?.id?.toString()) grams = ts.primary_mass_grams;
+                                                            else if (ts.secondary_mass_id?.toString() === initialData?.id?.toString()) grams = ts.secondary_mass_grams;
+                                                            else if (ts.tertiary_mass_id?.toString() === initialData?.id?.toString()) grams = ts.tertiary_mass_grams;
+
+                                                            return (
+                                                                <div key={p.id} className="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border border-black/5 hover:translate-x-1 transition-transform group">
+                                                                    <div className="flex items-center gap-4">
+                                                                        <div className="w-10 h-10 bg-black/5 rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
+                                                                            {p.image_url ? (
+                                                                                <img src={p.image_url} alt="" className="w-full h-full object-cover" />
+                                                                            ) : (
+                                                                                <div style={{ backgroundColor: theme.input }} className="w-full h-full flex items-center justify-center font-black text-[9px] opacity-30">PRO</div>
+                                                                            )}
+                                                                        </div>
+                                                                        <div>
+                                                                            <div style={{ color: theme.text }} className="font-black uppercase tracking-tighter text-base leading-none">{p.name || 'SIN NOMBRE'}</div>
+                                                                            <div style={{ color: theme.text }} className="text-[9px] font-bold opacity-30 uppercase tracking-widest">{p.sku || 'SIN SKU'}</div>
                                                                         </div>
                                                                     </div>
-                                                                )}
-                                                            </>
-                                                        )}
+                                                                    <div className="flex items-center gap-4">
+                                                                        <div className="flex items-baseline gap-2 bg-black/5 px-4 py-2 rounded-xl">
+                                                                            <div style={{ color: theme.text }} className="text-xl font-mono font-black">{parseFloat(grams) || 0}<span className="text-[10px] ml-1 opacity-40">g</span></div>
+                                                                            <div style={{ color: theme.text }} className="text-[11px] font-black opacity-60 uppercase tracking-wider leading-none">/ UNIDAD</div>
+                                                                        </div>
+                                                                        <div style={{ backgroundColor: theme.bg, color: theme.text }} className="w-8 h-8 rounded-full flex items-center justify-center shadow-md border border-black/5 group-hover:scale-110 transition-transform">
+                                                                            <ChevronRight size={16} />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
-                                        {(formData.dough_type === 'PREFERMENTO' ? formData.dough_relations : formData.product_relations).length === 0 && (
-                                            <div style={{ backgroundColor: theme.input }} className="col-span-2 py-12 border border-dashed border-black/10 rounded-[40px] flex flex-col items-center justify-center opacity-30 select-none">
-                                                <Zap size={32} style={{ color: theme.text }} />
-                                                <p style={{ color: theme.text }} className="text-[10px] font-black uppercase tracking-widest mt-4">No hay vínculos establecidos</p>
-                                            </div>
-                                        )}
+                                                );
+                                            }
+                                        })()}
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-3 justify-center text-[10px] font-black uppercase tracking-widest opacity-30 italic">
+                                        <div className="w-8 h-[1px] bg-black/50" />
+                                        La vinculación se gestiona automáticamente desde el Maestro de Productos
+                                        <div className="w-8 h-[1px] bg-black/50" />
                                     </div>
                                 </div>
                             </div>

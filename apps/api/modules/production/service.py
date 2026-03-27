@@ -4,6 +4,7 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from fastapi import HTTPException
 from . import models, schemas
+from modules.catalog import models as catalog_models
 
 async def list_doughs(db: AsyncSession):
     result = await db.execute(select(models.Dough).order_by(models.Dough.position.asc()).options(
@@ -89,14 +90,14 @@ async def get_technical_sheet(db: AsyncSession, product_id: int):
     return result.scalar_one_or_none()
 
 async def upsert_technical_sheet(db: AsyncSession, data: schemas.TechnicalSheetCreate):
-    result = await db.execute(select(models.ProductTechnicalSheet).where(models.ProductTechnicalSheet.product_id == data.product_id))
+    result = await db.execute(select(catalog_models.ProductTechnicalSheet).where(catalog_models.ProductTechnicalSheet.product_id == data.product_id))
     sheet = result.scalar_one_or_none()
     
     if sheet:
         for key, value in data.model_dump(exclude_unset=True).items():
             setattr(sheet, key, value)
     else:
-        sheet = models.ProductTechnicalSheet(**data.model_dump())
+        sheet = catalog_models.ProductTechnicalSheet(**data.model_dump())
         db.add(sheet)
         
     await db.commit()
