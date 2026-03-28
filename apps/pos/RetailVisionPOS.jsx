@@ -54,7 +54,7 @@ export const RetailVisionPOS = ({ currentUser, onForceLogout }) => {
         category: p.category ? (typeof p.category === 'string' ? p.category : p.category.name) : 'OTROS'
     })), [initialProducts]);
 
-    const { cart, setCart, total, addToCart, updateQuantity, removeFromCart, clearCart } = useCart(PRODUCTS);
+    const { cart, setCart, total, addToCart, updateQuantity, removeFromCart, clearCart } = useCart(PRODUCTS, selectedTerminal);
     const { isScanning, setIsScanning } = useVision();
 
 
