@@ -67,3 +67,18 @@ class TerminalSessionResponse(TerminalSessionBase):
 class VisionTrainingUpload(BaseModel):
     sku: str
     images: List[str] # List of base64 strings
+
+# --- Vision Prediction ---
+class VisionPredictionRequest(BaseModel):
+    image: str # Base64 string from camera
+    terminal_id: Optional[str] = "T1"
+
+class VisionDetection(BaseModel):
+    label: str # SKU or Product Name
+    qty: int = 1
+    confidence: float # 0.0 to 1.0
+
+class VisionPredictionResponse(BaseModel):
+    detections: List[VisionDetection]
+    engine: str # "local" or "cloud"
+    latency_ms: float

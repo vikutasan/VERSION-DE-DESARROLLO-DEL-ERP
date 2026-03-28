@@ -135,3 +135,7 @@ async def heartbeat_terminal_lock(terminal_id: str, req: LockRequest):
 @router.post("/vision/training/upload")
 async def upload_vision_training(payload: schemas.VisionTrainingUpload):
     return await pos_service.upload_training_images(payload)
+
+@router.post("/vision/predict", response_model=schemas.VisionPredictionResponse)
+async def predict_vision(payload: schemas.VisionPredictionRequest):
+    return await pos_service.predict_vision(payload)

@@ -123,6 +123,16 @@ class POSService {
         if (!res.ok) throw new Error("Error subiendo imágenes de entrenamiento");
         return res.json();
     }
+
+    async predictVision(image, terminalId = 'T1') {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/pos/vision/predict`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image, terminal_id: terminalId })
+        });
+        if (!res.ok) throw new Error("Error en predicción local");
+        return res.json();
+    }
 }
 
 export const posService = new POSService();

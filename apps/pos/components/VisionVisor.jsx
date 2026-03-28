@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { VisionScanner } from '../VisionScanner';
 
 export const VisionVisor = ({ isScanning, setIsScanning, addToCart, products, categories }) => {
+    const [aiStatus, setAiStatus] = useState('IDLE'); // IDLE, ANALYZING, LOCAL, CLOUD, ERROR
+
+    const statusConfig = {
+        ANALYZING: { color: 'bg-blue-400', label: 'ANALIZANDO...', icon: '🧠' },
+        LOCAL:     { color: 'bg-[#c1d72e]', label: 'IA LOCAL (T6)', icon: '🟢' },
+        CLOUD:     { color: 'bg-yellow-400', label: 'IA NUBE (GEMINI)', icon: '🟡' },
+        ERROR:     { color: 'bg-red-500', label: 'IA OFFLINE', icon: '🔴' },
+        IDLE:      { color: 'bg-gray-500', label: 'ESPERANDO...', icon: '⚪' }
+    };
+
+    const currentStatus = statusConfig[aiStatus] || statusConfig.IDLE;
+
     return (
         <div className="flex-1 relative rounded-[40px] overflow-hidden shadow-2xl border border-white/10 group bg-black/5 animate-in fade-in zoom-in-95 duration-500">
-            <VisionScanner isScanning={isScanning} onScan={addToCart} products={products} categories={categories} />
+            <VisionScanner 
+                isScanning={isScanning} 
+                onScan={addToCart} 
+                products={products} 
+                categories={categories} 
+                onStatusChange={setAiStatus}
+            />
 
             <div className="absolute top-8 left-8 z-30 pointer-events-none">
                 <div className="bg-black/40 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/10">
@@ -30,13 +48,19 @@ export const VisionVisor = ({ isScanning, setIsScanning, addToCart, products, ca
 
             {isScanning && (
                 <div className="absolute top-10 right-10 z-30 flex flex-col gap-3">
-                    <div className="bg-black/20 border border-white/10 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
-                        <p className="text-[8px] font-black text-white/50 uppercase tracking-widest mb-1">Procesando</p>
-                        <p className="text-[10px] font-bold text-orange-400">FPS: 60.4 ms</p>
+                    <div className="bg-black/60 backdrop-blur-xl p-5 rounded-[28px] border border-white/10 animate-in fade-in slide-in-from-right-4 duration-500 shadow-2xl min-w-[180px]">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className={`w-3 h-3 rounded-full ${currentStatus.color} ${aiStatus !== 'IDLE' ? 'animate-pulse' : ''} shadow-[0_0_10px_rgba(255,255,255,0.2)]`}></div>
+                            <p className="text-[9px] font-black text-white/90 uppercase tracking-widest">{currentStatus.label}</p>
+                        </div>
+                        <div className="flex justify-between items-end">
+                            <p className="text-[10px] font-bold text-white/40 uppercase tracking-tighter italic">Source: {aiStatus === 'LOCAL' ? 'SERVER T6' : 'GOOGLE CLOUD'}</p>
+                            <p className="text-[9px] font-black text-[#c1d72e]">SCANNER ON</p>
+                        </div>
                     </div>
                     <button
                         onClick={() => setIsScanning(false)}
-                        className="bg-red-500 hover:bg-red-600 text-white p-4 rounded-3xl shadow-xl border border-red-500/50 flex items-center justify-center transition-all hover:scale-105 active:scale-95 animate-in fade-in zoom-in"
+                        className="bg-red-500/80 hover:bg-red-600 text-white p-4 rounded-3xl shadow-xl border border-red-500/50 flex items-center justify-center transition-all hover:scale-105 active:scale-95 animate-in fade-in zoom-in"
                         title="Detener Escaner"
                     >
                         <span className="text-xl">⏹️</span>

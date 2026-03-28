@@ -287,4 +287,88 @@ class POSService:
             
         return {"sku": payload.sku, "count": len(saved_files), "path": str(sku_dir)}
 
+    async def predict_vision(self, payload: schemas.VisionPredictionRequest):
+        import time
+        import base64
+        import cv2
+        import numpy as np
+        from pathlib import Path
+
+        start_time = time.time()
+        
+        # 1. Decodificar imagen de la cámara
+        try:
+            b64_str = payload.image
+            if "," in b64_str:
+                b64_str = b64_str.split(",")[1]
+            img_data = base64.b64decode(b64_str)
+            nparr = np.frombuffer(img_data, np.uint8)
+            frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            if frame is None:
+                raise ValueError("Could not decode image")
+        except Exception as e:
+            return schemas.VisionPredictionResponse(detections=[], engine="local", latency_ms=(time.time()-start_time)*1000)
+
+        # 2. Inicializar detector ORB (Rápido y local)
+        orb = cv2.ORB_create(nfeatures=500)
+        kp_frame, des_frame = orb.detectAndCompute(frame, None)
+        
+        if des_frame is None:
+            return schemas.VisionPredictionResponse(detections=[], engine="local", latency_ms=(time.time()-start_time)*1000)
+
+        # 3. Escanear dataset local
+        base_dir = Path("apps/api/static/training")
+        if not base_dir.exists():
+            return schemas.VisionPredictionResponse(detections=[], engine="local", latency_ms=(time.time()-start_time)*1000)
+
+        best_sku = None
+        best_score = 0.0
+        
+        # BFMatcher para comparar características de forma cruda
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+
+        for sku_path in base_dir.iterdir():
+            if not sku_path.is_dir(): continue
+            
+            sku_name = sku_path.name
+            sku_max_matches = 0
+            
+            # Revisar hasta 3 fotos de entrenamiento por SKU para máxima velocidad
+            train_images = list(sku_path.glob("*.jpg"))
+            for img_file in train_images[:3]:
+                train_img = cv2.imread(str(img_file), cv2.IMREAD_COLOR)
+                if train_img is None: continue
+                
+                kp_train, des_train = orb.detectAndCompute(train_img, None)
+                if des_train is None: continue
+                
+                matches = bf.match(des_frame, des_train)
+                # Contamos coincidencias de buena calidad (distancia baja)
+                good_matches = len([m for m in matches if m.distance < 45])
+                
+                if good_matches > sku_max_matches:
+                    sku_max_matches = good_matches
+            
+            # Normalización heurística del score
+            score = sku_max_matches / 40.0 # Umbral de 40 puntos para considerarlo sólido
+            if score > best_score:
+                best_score = score
+                best_sku = sku_name
+
+        detections = []
+        # Umbral de confianza mínimo para evitar falsos positivos
+        if best_sku and best_score > 0.35:
+            # Limpiamos el SKU (guiones por espacios) para que coincida con el nombre del producto
+            detections.append(schemas.VisionDetection(
+                label=best_sku.replace("_", " ").upper(), 
+                qty=1, 
+                confidence=min(best_score, 1.0)
+            ))
+
+        return schemas.VisionPredictionResponse(
+            detections=detections,
+            engine="local",
+            latency_ms=(time.time() - start_time) * 1000
+        )
+
 pos_service = POSService()
