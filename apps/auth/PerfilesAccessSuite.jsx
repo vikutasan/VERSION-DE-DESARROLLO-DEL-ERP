@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const API_BASE = `http://${window.location.hostname}:3002/api/v1`;
+const API_BASE = `http://${window.location.hostname}:5001/api/v1`;
 
 // Módulos del sistema para la matriz de permisos
 const SYSTEM_MODULES = [
@@ -19,6 +19,8 @@ const SYSTEM_MODULES = [
     { id: 'pos_tables', name: 'TPV Mesas & KDS', icon: '🍽️' },
     { id: 'waiter', name: 'App Mesero', icon: '📱' },
     { id: 'driver', name: 'App Repartidor', icon: '📱' },
+    { id: 'settings', name: 'Ajustes del Sistema', icon: '⚙️' },
+    { id: 'procurement', name: 'B2B Procurement', icon: '📦🏢' },
     { id: 'seguridad_acceso', name: 'Seguridad y Acceso', icon: '🔑' },
     { id: 'auditoria', name: 'Auditoría y Control', icon: '📋' },
 ];
@@ -76,13 +78,28 @@ export const PerfilesAccessSuite = ({ onClose, onPermissionsUpdate }) => {
     };
 
     const handleTogglePermission = (moduleId) => {
-        setEditData(prev => ({
-            ...prev,
-            permissions: {
-                ...prev.permissions,
-                [moduleId]: prev.permissions[moduleId] ? null : 'full'
-            }
-        }));
+        if (moduleId === 'all') {
+            // Al activar Master Access: activar TODOS. Al desactivar: limpiar TODOS.
+            const newState = editData.permissions.all ? null : 'full';
+            const newPerms = { all: newState };
+            SYSTEM_MODULES.forEach(m => { newPerms[m.id] = newState; });
+            setEditData(prev => ({ ...prev, permissions: newPerms }));
+        } else {
+            // Si Master Access está activo, no permitir desactivar módulos individuales
+            if (editData.permissions.all === 'full') return;
+            setEditData(prev => ({
+                ...prev,
+                permissions: {
+                    ...prev.permissions,
+                    [moduleId]: prev.permissions[moduleId] ? null : 'full'
+                }
+            }));
+        }
+    };
+
+    // Helper: un módulo está activo si tiene permiso propio O si Master Access está ON
+    const isModuleActive = (moduleId) => {
+        return editData.permissions.all === 'full' || !!editData.permissions[moduleId];
     };
 
     const handleSave = async () => {
@@ -337,21 +354,21 @@ export const PerfilesAccessSuite = ({ onClose, onPermissionsUpdate }) => {
                                 <div 
                                     key={module.id}
                                     onClick={() => handleTogglePermission(module.id)}
-                                    className={`p-4 rounded-3xl border transition-all duration-500 cursor-pointer group flex items-center justify-between ${editData.permissions[module.id] ? 'bg-white/[0.04] border-white/20 shadow-[0_10px_40px_-10px_rgba(255,255,255,0.05)]' : 'bg-white/[0.01] border-white/5 opacity-30 hover:opacity-100 hover:border-white/10'}`}
+                                    className={`p-4 rounded-3xl border transition-all duration-500 cursor-pointer group flex items-center justify-between ${isModuleActive(module.id) ? 'bg-white/[0.04] border-white/20 shadow-[0_10px_40px_-10px_rgba(255,255,255,0.05)]' : 'bg-white/[0.01] border-white/5 opacity-30 hover:opacity-100 hover:border-white/10'}`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-lg transition-all duration-500 border ${editData.permissions[module.id] ? 'bg-[#c1d72e] text-black border-[#c1d72e] shadow-xl rotate-2' : 'bg-black/40 text-white/20 border-white/5 group-hover:rotate-6'}`}>
+                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-lg transition-all duration-500 border ${isModuleActive(module.id) ? 'bg-[#c1d72e] text-black border-[#c1d72e] shadow-xl rotate-2' : 'bg-black/40 text-white/20 border-white/5 group-hover:rotate-6'}`}>
                                             {module.icon}
                                         </div>
                                         <div>
-                                            <p className={`font-black uppercase tracking-widest text-[10px] transition-colors ${editData.permissions[module.id] ? 'text-white' : 'text-white/20 group-hover:text-white/40'}`}>{module.name}</p>
-                                            <p className="text-[8px] font-bold text-white/10 uppercase tracking-tighter mt-0.5">Acceso {(editData.permissions[module.id] || 'Nulo').toUpperCase()}</p>
+                                            <p className={`font-black uppercase tracking-widest text-[10px] transition-colors ${isModuleActive(module.id) ? 'text-white' : 'text-white/20 group-hover:text-white/40'}`}>{module.name}</p>
+                                            <p className="text-[8px] font-bold text-white/10 uppercase tracking-tighter mt-0.5">Acceso {(isModuleActive(module.id) ? 'FULL' : 'Nulo').toUpperCase()}</p>
                                         </div>
                                     </div>
                                     
                                     {/* Switch Premium Refinado */}
-                                    <div className={`w-7 h-3.5 rounded-full p-0.5 transition-all duration-500 shrink-0 ${editData.permissions[module.id] ? 'bg-[#c1d72e]' : 'bg-white/10'}`}>
-                                        <div className={`w-2.5 h-2.5 bg-white rounded-full shadow-lg transition-transform duration-500 ${editData.permissions[module.id] ? 'translate-x-3.5' : 'translate-x-0'}`}></div>
+                                    <div className={`w-7 h-3.5 rounded-full p-0.5 transition-all duration-500 shrink-0 ${isModuleActive(module.id) ? 'bg-[#c1d72e]' : 'bg-white/10'}`}>
+                                        <div className={`w-2.5 h-2.5 bg-white rounded-full shadow-lg transition-transform duration-500 ${isModuleActive(module.id) ? 'translate-x-3.5' : 'translate-x-0'}`}></div>
                                     </div>
                                 </div>
                             ))}

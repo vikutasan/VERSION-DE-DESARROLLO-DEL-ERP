@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const API_BASE = `http://${window.location.hostname}:5001/api/v1`;
+
 export const SystemSettingsUI = () => {
     const [settings, setSettings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ export const SystemSettingsUI = () => {
     const fetchSettings = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:3002/api/v1/settings/');
+            const res = await fetch(`${API_BASE}/settings/`);
             const data = await res.json();
             setSettings(data);
         } catch (e) {
@@ -28,7 +30,7 @@ export const SystemSettingsUI = () => {
         if (!selectedSetting) return;
         setIsSaving(true);
         try {
-            const res = await fetch(`http://localhost:3002/api/v1/settings/${selectedSetting.key}`, {
+            const res = await fetch(`${API_BASE}/settings/${selectedSetting.key}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ value: newValue })

@@ -27,6 +27,19 @@ const getTheme = (idx) => {
     };
 };
 
+const API_BASE = `http://${window.location.hostname}:5001/api/v1`;
+
+// Sistema inteligente de de-hardcoding de imágenes para red local
+const resolveImageUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('http')) {
+        return url.replace(/localhost:\d+/g, `${window.location.hostname}:5001`)
+                  .replace(/127\.0\.0\.1:\d+/g, `${window.location.hostname}:5001`)
+                  .replace(/192\.168\.\d+\.\d+:\d+/g, `${window.location.hostname}:5001`);
+    }
+    return `http://${window.location.hostname}:5001${url.startsWith('/') ? '' : '/'}${url}`;
+};
+
 export const DoughManagerUI = ({ onBack }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDough, setSelectedDough] = useState(null);
@@ -36,7 +49,7 @@ export const DoughManagerUI = ({ onBack }) => {
 
     const loadDoughs = async () => {
         try {
-            const resp = await fetch('http://127.0.0.1:3002/api/v1/production/doughs');
+            const resp = await fetch(`${API_BASE}/production/doughs`);
             if (resp.ok) setDoughs(await resp.json());
         } catch (e) { console.error(e); }
         finally { setIsLoading(false); }
@@ -75,7 +88,7 @@ export const DoughManagerUI = ({ onBack }) => {
 
     const saveOrder = async (orderIds) => {
         try {
-            await fetch('http://127.0.0.1:3002/api/v1/production/doughs/reorder', {
+            await fetch(`${API_BASE}/production/doughs/reorder`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ order: orderIds })
@@ -338,8 +351,8 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
     const loadCatalog = async () => {
         try {
             const [pResp, dResp] = await Promise.all([
-                fetch('http://127.0.0.1:3002/api/v1/catalog/products'),
-                fetch('http://127.0.0.1:3002/api/v1/production/doughs')
+                fetch(`${API_BASE}/catalog/products`),
+                fetch(`${API_BASE}/production/doughs`)
             ]);
             if (pResp.ok && dResp.ok) {
                 setCatalog({
@@ -413,8 +426,8 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
 
             const isUpdate = !!initialData?.id;
             const url = isUpdate
-                ? `http://localhost:3002/api/v1/production/doughs/${initialData.id}`
-                : 'http://localhost:3002/api/v1/production/doughs';
+                ? `${API_BASE}/production/doughs/${initialData.id}`
+                : `${API_BASE}/production/doughs`;
 
             const resp = await fetch(url, {
                 method: isUpdate ? 'PUT' : 'POST',
@@ -430,7 +443,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                 showNotify("ERROR DE MOTOR", err.detail || "No se pudo guardar la masa", "error");
             }
         } catch (e) {
-            showNotify("ERROR DE CONEXIÓN", "El servidor no responde (Puerto 3002)", "error");
+            showNotify("ERROR DE CONEXIÓN", "El servidor no responde (Puerto 5001)", "error");
         } finally {
             setLoading(false);
         }
@@ -1032,7 +1045,7 @@ const DoughWizardModal = ({ onClose, onSuccess, initialData }) => {
                                                                     <div className="flex items-center gap-4">
                                                                         <div className="w-10 h-10 bg-black/5 rounded-xl flex items-center justify-center overflow-hidden shadow-inner">
                                                                             {p.image_url ? (
-                                                                                <img src={p.image_url} alt="" className="w-full h-full object-cover" />
+                                                                                <img src={resolveImageUrl(p.image_url)} alt="" className="w-full h-full object-cover" />
                                                                             ) : (
                                                                                 <div style={{ backgroundColor: theme.input }} className="w-full h-full flex items-center justify-center font-black text-[9px] opacity-30">PRO</div>
                                                                             )}

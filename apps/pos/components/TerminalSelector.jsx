@@ -145,7 +145,7 @@ export const TerminalSelector = ({ currentUser, terminalStatuses, setTerminalSta
                             <button 
                                 onClick={async () => {
                                     try {
-                                        await posService.forceUnlockTerminal(unlockingTerminal.id);
+                                        await posService.forceUnlockTerminal(unlockingTerminal.id, currentUser.id, currentUser.name);
                                         const data = await posService.getTerminalsStatus();
                                         setTerminalStatuses(data);
                                         setUnlockingTerminal(null);

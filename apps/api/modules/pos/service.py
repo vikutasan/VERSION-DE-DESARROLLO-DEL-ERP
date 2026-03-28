@@ -58,21 +58,13 @@ class POSService:
             db_ticket.payment_details = ticket.payment_details
             db_ticket.cash_session_id = ticket.cash_session_id
             
-            print(f"DEBUG START: Ticket {ticket.account_num}")
-            print(f"DEBUG Payload: capturer_id={ticket.captured_by_id}, casher_id={ticket.cashed_by_id}")
-            print(f"DEBUG DB Before: capturer_id={db_ticket.captured_by_id}, casher_id={db_ticket.cashed_by_id}")
-
             # Si se está cobrando ahora, registrar quién lo hizo
             if ticket.status == "PAID" and ticket.cashed_by_id:
                 db_ticket.cashed_by_id = ticket.cashed_by_id
-                print(f"DEBUG: Setting cashed_by_id to {ticket.cashed_by_id}")
             
             # Registrar quién lo captura.
             if ticket.captured_by_id:
                 db_ticket.captured_by_id = ticket.captured_by_id
-                print(f"DEBUG: Respecting payload captured_by_id={ticket.captured_by_id}")
-            
-            print(f"DEBUG DB After Update: capturer_id={db_ticket.captured_by_id}, casher_id={db_ticket.cashed_by_id}")
             
             # Eliminamos items anteriores para reemplazarlos
             await db.execute(
@@ -120,11 +112,8 @@ class POSService:
         ticket_obj.captured_by_name = ticket_obj.captured_by.name if ticket_obj.captured_by else "SISTEMA"
         ticket_obj.cashed_by_name = ticket_obj.cashed_by.name if ticket_obj.cashed_by else "SISTEMA/AUTO"
         
-        print(f"!!! RETURNING TICKET: {ticket_obj.account_num}")
-        print(f"!!! Capturer: {ticket_obj.captured_by_name} (ID: {ticket_obj.captured_by_id})")
-        print(f"!!! Casher: {ticket_obj.cashed_by_name} (ID: {ticket_obj.cashed_by_id})")
-        
         return ticket_obj
+
     async def get_open_tickets(self, db: AsyncSession):
         result = await db.execute(
             select(models.Ticket)
@@ -137,24 +126,27 @@ class POSService:
                 selectinload(models.Ticket.cashed_by).selectinload(Employee.profile)
             )
             .where(models.Ticket.status == "OPEN")
-            .where(models.Ticket.total > 0)
             .order_by(models.Ticket.created_at.desc())
         )
         tickets = result.scalars().all()
         for t in tickets:
-            t.terminal_id = t.session.terminal_id
-            t.captured_by_name = t.captured_by.name if t.captured_by else "SISTEMA"
-            t.cashed_by_name = t.cashed_by.name if t.cashed_by else "SISTEMA/AUTO"
+            try:
+                t.terminal_id = t.session.terminal_id if t.session else "UNKNOWN"
+                t.captured_by_name = t.captured_by.name if t.captured_by else "SISTEMA"
+                t.cashed_by_name = t.cashed_by.name if t.cashed_by else "SISTEMA/AUTO"
+            except Exception as e:
+                print(f"ERROR lazy-load get_open_tickets on {t.account_num}: {e}")
+                t.terminal_id = t.terminal_id if hasattr(t, 'terminal_id') else "UNKNOWN"
+                t.captured_by_name = t.captured_by_name if hasattr(t, 'captured_by_name') else "SISTEMA"
+                t.cashed_by_name = t.cashed_by_name if hasattr(t, 'cashed_by_name') else "SISTEMA/AUTO"
         return tickets
 
     async def get_tickets(self, db: AsyncSession, terminal_id: str = None, status: str = None, search: str = None, limit: int = 100):
         query = select(models.Ticket).options(
-            selectinload(models.Ticket.items)
-            .selectinload(models.TicketItem.product)
-            .selectinload(Product.category),
+            selectinload(models.Ticket.items).selectinload(models.TicketItem.product),
             selectinload(models.Ticket.session),
-            selectinload(models.Ticket.captured_by).selectinload(Employee.profile),
-            selectinload(models.Ticket.cashed_by).selectinload(Employee.profile)
+            selectinload(models.Ticket.captured_by),
+            selectinload(models.Ticket.cashed_by)
         )
         
         if terminal_id:
@@ -162,18 +154,54 @@ class POSService:
         if status:
             query = query.where(models.Ticket.status == status)
         if search:
-            # Búsqueda por folio (account_num)
             query = query.where(models.Ticket.account_num.ilike(f"%{search}%"))
             
         query = query.order_by(models.Ticket.created_at.desc()).limit(limit)
         
         result = await db.execute(query)
         tickets = result.scalars().all()
+        
+        response_data = []
         for t in tickets:
-            t.terminal_id = t.session.terminal_id
-            t.captured_by_name = t.captured_by.name if t.captured_by else "SISTEMA"
-            t.cashed_by_name = t.cashed_by.name if t.cashed_by else "SISTEMA/AUTO"
-        return tickets
+            try:
+                # Construcción manual del diccionario para evitar LazyLoad en la serialización de FastAPI
+                ticket_dict = {
+                    "id": t.id,
+                    "account_num": t.account_num,
+                    "total": t.total,
+                    "status": t.status,
+                    "created_at": t.created_at,
+                    "session_id": t.session_id,
+                    "cash_session_id": t.cash_session_id,
+                    "captured_by_id": t.captured_by_id,
+                    "cashed_by_id": t.cashed_by_id,
+                    "terminal_id": t.session.terminal_id if t.session else "UNKNOWN",
+                    "captured_by_name": t.captured_by.name if t.captured_by else "SISTEMA",
+                    "cashed_by_name": t.cashed_by.name if t.cashed_by else "SISTEMA/AUTO",
+                    "items": [
+                        {
+                            "id": item.id,
+                            "product_id": item.product_id,
+                            "quantity": item.quantity,
+                            "unit_price": item.unit_price,
+                            "subtotal": item.subtotal,
+                            "product": {
+                                "id": item.product.id,
+                                "sku": item.product.sku,
+                                "name": item.product.name,
+                                "price": item.product.price,
+                                "category_id": item.product.category_id
+                            } if item.product else None
+                        }
+                        for item in t.items
+                    ]
+                }
+                response_data.append(ticket_dict)
+            except Exception as e:
+                print(f"CRITICAL: Error serializing ticket {t.account_num}: {e}")
+                continue # Omitir ticket corrupto para no tumbar toda la lista
+                
+        return response_data
 
     async def reserve_ticket(self, db: AsyncSession, terminal_id: str):
         import uuid
@@ -196,7 +224,6 @@ class POSService:
         tickets = result.scalars().all()
         for t in tickets:
             if len(t.items) == 0:
-                # Limpiar rastro de auditoría previo por seguridad
                 t.captured_by_id = None
                 t.cashed_by_id = None
                 t.payment_details = None
@@ -239,13 +266,9 @@ class POSService:
         import time
         from pathlib import Path
         
-        # 1. Crear subdirectorio para el SKU si no existe
-        # Nota: La carpeta apps/api/static/training ya fue creada por el agente
         base_dir = Path("apps/api/static/training")
-        # Aseguramos que la carpeta base exista por si acaso
         base_dir.mkdir(parents=True, exist_ok=True)
         
-        # Normalizar SKU para usarlo como nombre de carpeta
         safe_sku = "".join(c for c in payload.sku if c.isalnum() or c in ("-", "_")).rstrip()
         sku_dir = base_dir / safe_sku
         sku_dir.mkdir(parents=True, exist_ok=True)
@@ -253,13 +276,10 @@ class POSService:
         saved_files = []
         for i, b64_str in enumerate(payload.images):
             try:
-                # Limpiar prefijo base64 si existe (ej. data:image/jpeg;base64,...)
                 if "," in b64_str:
                     b64_str = b64_str.split(",")[1]
                 
-                # 2. Decodificar y Guardar
                 img_data = base64.b64decode(b64_str)
-                # Formato: train_timestamp_index.jpg
                 filename = f"train_{int(time.time())}_{i}.jpg"
                 file_path = sku_dir / filename
                 
@@ -270,7 +290,6 @@ class POSService:
             except Exception as e:
                 print(f"Error guardando imagen {i} para SKU {payload.sku}: {e}")
             
-        print(f"VISION: Guardadas {len(saved_files)} imágenes para SKU {payload.sku} en {sku_dir}")
         return {"sku": payload.sku, "count": len(saved_files), "path": str(sku_dir)}
 
 pos_service = POSService()

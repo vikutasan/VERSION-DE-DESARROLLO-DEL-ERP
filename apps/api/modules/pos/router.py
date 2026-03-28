@@ -43,7 +43,7 @@ async def get_tickets(
     limit: int = 100, 
     db: AsyncSession = Depends(get_db)
 ):
-    return await pos_service.get_tickets(db, terminal_id, status, search, limit)
+    return await pos_service.get_tickets(db=db, terminal_id=terminal_id, status=status, search=search, limit=limit)
 
 @router.get("/tickets/open", response_model=List[schemas.TicketResponse])
 async def get_open_tickets(db: AsyncSession = Depends(get_db)):
@@ -103,23 +103,22 @@ async def release_terminal_lock(terminal_id: str, req: LockRequest):
     return {"status": "unlocked", "terminal_id": tid}
 
 @router.post("/terminals/{terminal_id}/force_unlock")
-async def force_terminal_unlock(terminal_id: str, db: AsyncSession = Depends(get_db)):
+async def force_terminal_unlock(terminal_id: str, req: LockRequest, db: AsyncSession = Depends(get_db)):
     from .occupancy import force_unlock
     from modules.cash.models import CashSession
-    from sqlalchemy import update
-    from datetime import datetime
+    from sqlalchemy import update, func
     
-    # 1. Limpiar bloqueo en memoria
+    # 1. Limpiar bloqueo en memoria para permitir acceso a la UI
     tid = terminal_id.strip()
     force_unlock(tid)
     
-    # 2. Forzar cierre de cualquier sesión de caja abierta en esta terminal
-    # Usamos TRIM para manejar posibles espacios en blanco si es CHAR(N)
-    from sqlalchemy import func
+    # IMPORTANTE: Transferimos la propiedad de la CashSession al administrador
+    # De este modo, la interfaz detectará que la terminal es SUYA y le permitirá entrar,
+    # manteniendo los fondos originales intactos.
     await db.execute(
         update(CashSession)
-        .where(func.trim(CashSession.terminal_id) == terminal_id.strip(), CashSession.status == "OPEN")
-        .values(status="CLOSED", closed_at=datetime.utcnow())
+        .where(func.trim(CashSession.terminal_id) == tid, CashSession.status == "OPEN")
+        .values(employee_id=req.occupier_id, employee_name=req.occupier_name)
     )
     await db.commit()
     

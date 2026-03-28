@@ -7,7 +7,7 @@ import modules.production.models
 from sqlalchemy import select
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static", "catalog")
-BASE_URL = "http://localhost:3002/static/catalog"
+BASE_URL = "/static/catalog"
 
 async def sync():
     async with AsyncSessionLocal() as session:

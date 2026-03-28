@@ -7,6 +7,8 @@ from modules.security.router import router as security_router
 from modules.cash.router import router as cash_router
 from modules.settings.router import router as settings_router
 from modules.production.router import router as production_router
+from core.database import AsyncSessionLocal
+from modules.catalog.models import Category
 
 app = FastAPI(
     title="R de Rico ERP API",
@@ -14,24 +16,46 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configurar CORS (Permitir requests desde React)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3001",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://192.168.1.117:3000",
-        "http://192.168.1.117:3001",
-        "http://192.168.1.117:5173"
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def ensure_system_categories():
+    """Asegura que la categoría 'DESCONTINUADOS' exista como categoría de sistema."""
+    async with AsyncSessionLocal() as db:
+        try:
+            from sqlalchemy import select
+            # Verificar si existe
+            stmt = select(Category).where(Category.name == "DESCONTINUADOS")
+            result = await db.execute(stmt)
+            category = result.scalar_one_or_none()
+
+            if not category:
+                new_cat = Category(
+                    name="DESCONTINUADOS",
+                    icon="🗑️",
+                    position=999,
+                    vision_enabled=False,
+                    is_system=True
+                )
+                db.add(new_cat)
+                await db.commit()
+                print("Categoría 'DESCONTINUADOS' creada como sistema.")
+            else:
+                # Asegurar que sea de sistema
+                if not category.is_system:
+                    category.is_system = True
+                    category.vision_enabled = False
+                    await db.commit()
+                    print("Categoría 'DESCONTINUADOS' actualizada como sistema.")
+        except Exception as e:
+            print(f"Error asegurando categorías de sistema: {e}")
+            await db.rollback()
 
 @app.get("/health")
 async def health_check():

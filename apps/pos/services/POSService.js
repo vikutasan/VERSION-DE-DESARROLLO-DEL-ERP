@@ -89,9 +89,11 @@ class POSService {
         return res.json();
     }
 
-    async forceUnlockTerminal(terminalId) {
+    async forceUnlockTerminal(terminalId, occupierId, occupierName) {
         const res = await fetch(`${CONFIG.API_BASE_URL}/pos/terminals/${terminalId}/force_unlock`, {
-            method: 'POST'
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ occupier_id: occupierId, occupier_name: occupierName })
         });
         if (!res.ok) throw new Error("Error forzando liberación");
         return res.json();

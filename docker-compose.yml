@@ -19,7 +19,7 @@ services:
     container_name: rderico-api-dev
     restart: always
     ports:
-      - "3002:3001"
+      - "5001:3001"
     volumes:
       - ./apps/api:/app
       - ./CATALOGO DE PRODUCTOS NUMERADOS:/app/static/catalog
@@ -30,17 +30,15 @@ services:
       - db
 
   pos:
-    image: node:18-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: rderico-pos-dev
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: npm run dev -- --host 0.0.0.0
     restart: always
     ports:
-      - "5173:5173"
+      - "5000:3000"
     environment:
-      - VITE_API_URL=http://localhost:3002
+      - VITE_API_URL=http://192.168.1.117:5001
 
 volumes:
   pgdata:

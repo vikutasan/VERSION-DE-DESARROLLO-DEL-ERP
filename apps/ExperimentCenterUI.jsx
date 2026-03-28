@@ -17,10 +17,10 @@ import { PurchasingHubUI } from './inventory/PurchasingHubUI';
 import { TableServicePOS } from './pos/TableServicePOS';
 import { RetailVisionPOS } from './pos/RetailVisionPOS';
 import { VisionTrainingUI } from './pos/VisionTrainingUI';
-import { ProductMasterUI } from './inventory/ProductMasterUI';
+import { ProductMasterUI as ProductCatalogUI } from './inventory/ProductCatalogUI';
 import { WarehouseManagerUI } from './inventory/WarehouseManagerUI';
 import { PurchaseManagerUI } from './inventory/PurchaseManagerUI';
-import { AuditoriaUI } from './AuditoriaUI';
+import { AuditoriaUI as AuditoriaControlUI } from './AuditoriaControlUI';
 import { SystemSettingsUI } from './settings/SystemSettingsUI';
 import REAL_PRODUCTS from '../importar_productos_AQUI.json';
 
@@ -280,7 +280,7 @@ export const ExperimentCenterUI = () => {
                         {activeModule === 'ecommerce' && <CakeConfiguratorUI />}
                         {activeModule === 'production' && <ProductionManagementUI dailyPlan={mockData.dailyPlan} />}
                         {activeModule === 'b2b' && <B2BManagerUI clients={mockData.clients} products={[]} />}
-                        {activeModule === 'inventory' && <ProductMasterUI userPermissions={userPermissions} />}
+                        {activeModule === 'inventory' && <ProductCatalogUI userPermissions={userPermissions} />}
                         {activeModule === 'warehouse' && <WarehouseManagerUI />}
                         {activeModule === 'purchasing' && <PurchaseManagerUI />}
                         { activeModule === 'procurement' && <PurchasingHubUI /> }
@@ -289,7 +289,7 @@ export const ExperimentCenterUI = () => {
                         {activeModule === 'seguridad_acceso' && (
                             <SeguridadAccesoUI onPermissionsUpdate={handleUpdatePermissions} />
                         )}
-                        {activeModule === 'auditoria' && <AuditoriaUI />}
+                        {activeModule === 'auditoria' && <AuditoriaControlUI />}
                         {activeModule === 'settings' && <SystemSettingsUI />}
                     </div>
 

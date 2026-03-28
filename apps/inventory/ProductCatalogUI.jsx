@@ -44,7 +44,18 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
     const [draggedCatIndex, setDraggedCatIndex] = useState(null);
     const [draggedProdIndex, setDraggedProdIndex] = useState(null);
 
-    const API_BASE = "http://127.0.0.1:3002/api/v1/catalog";
+    const API_BASE = `http://${window.location.hostname}:5001/api/v1/catalog`;
+
+    // Sistema inteligente de de-hardcoding de imágenes para red local
+    const resolveImageUrl = (url) => {
+        if (!url) return null;
+        if (url.startsWith('http')) {
+            return url.replace(/localhost:\d+/g, `${window.location.hostname}:5001`)
+                      .replace(/127\.0\.0\.1:\d+/g, `${window.location.hostname}:5001`)
+                      .replace(/192\.168\.\d+\.\d+:\d+/g, `${window.location.hostname}:5001`);
+        }
+        return `http://${window.location.hostname}:5001${url.startsWith('/') ? '' : '/'}${url}`;
+    };
 
     // Carga inicial de datos desde la API
     useEffect(() => {
@@ -648,7 +659,7 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
                     <div className="relative w-full max-w-xl bg-gray-900 border border-indigo-900/30 rounded-[40px] p-10 shadow-2xl">
                         <header className="mb-8 border-b border-gray-800 pb-6 flex gap-6 items-center">
                             {editingProduct.image_url ? (
-                                <img src={editingProduct.image_url} alt="Preview" className="w-24 h-24 object-cover rounded-2xl border-2 border-indigo-500/50 shadow-xl shadow-indigo-500/10" />
+                                <img src={resolveImageUrl(editingProduct.image_url)} alt="Preview" className="w-24 h-24 object-cover rounded-2xl border-2 border-indigo-500/50 shadow-xl shadow-indigo-500/10" />
                             ) : (
                                 <div className="w-24 h-24 bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-700 flex items-center justify-center text-gray-500 text-3xl">📷</div>
                             )}
@@ -1175,7 +1186,7 @@ export const ProductMasterUI = ({ userPermissions = {} }) => {
                             >
                                 {product.image_url ? (
                                     <div className="h-32 w-full mb-4 rounded-xl overflow-hidden border border-gray-800 relative z-0">
-                                        <img src={product.image_url} alt={product.name} className="w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
+                                        <img src={resolveImageUrl(product.image_url)} alt={product.name} className="w-full h-full object-cover opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
                                     </div>
                                 ) : (
                                     <div className="text-4xl mb-4 opacity-30 group-hover:opacity-100 transition-opacity">

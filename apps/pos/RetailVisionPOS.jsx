@@ -300,7 +300,7 @@ export const RetailVisionPOS = ({ currentUser, onForceLogout }) => {
         return () => clearInterval(interval);
     }, [showCorkboard]);
 
-    const visibleAccounts = selectedTerminal === 'CAJA' ? allOpenAccounts : allOpenAccounts.filter(a => a.terminal === selectedTerminal);
+    const visibleAccounts = allOpenAccounts;
 
     // --- Renderizado de Pantalla Inicial ---
     if (!selectedTerminal) {
@@ -389,7 +389,10 @@ export const RetailVisionPOS = ({ currentUser, onForceLogout }) => {
 
     const ProductGrid = ({ category }) => {
         const filtered = PRODUCTS
-            .filter(p => p.category === category)
+            .filter(p => {
+                const pCat = p.category ? (typeof p.category === 'string' ? p.category : p.category.name) : 'OTROS';
+                return pCat === category;
+            })
             .sort((a, b) => {
                 const posA = a.position !== null && a.position !== undefined ? a.position : 9999;
                 const posB = b.position !== null && b.position !== undefined ? b.position : 9999;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { generateTicketHTML } from './pos/utils/ticketGenerator';
 
-const API_BASE = `http://${window.location.hostname}:3002/api/v1`;
+const API_BASE = `http://${window.location.hostname}:5001/api/v1`;
 
 export const AuditoriaUI = () => {
     const [activeTab, setActiveTab] = useState('ventas'); // 'ventas' o 'cortes'
