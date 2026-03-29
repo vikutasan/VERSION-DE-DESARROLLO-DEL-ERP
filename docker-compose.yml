@@ -10,7 +10,7 @@ services:
     ports:
       - "${DB_PORT:-5433}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - "${DB_DATA_PATH:-./data/postgres}:/var/lib/postgresql/data"
 
   api:
     build:
@@ -22,7 +22,7 @@ services:
       - "${API_PORT:-5001}:3001"
     volumes:
       - ./apps/api:/app
-      - ./CATALOGO DE PRODUCTOS NUMERADOS:/app/static/catalog
+      - "${IMAGES_DATA_PATH:-./data/images}:/app/static/catalog"
     environment:
       - DATABASE_URL=postgresql+asyncpg://user:password@db:5432/rderico
       - PORT=3001
@@ -43,5 +43,4 @@ services:
     environment:
       - VITE_API_URL=http://192.168.1.117:5001
 
-volumes:
-  pgdata:
+# Volúmenes eliminados como named volumes para usar rutas de host directas
