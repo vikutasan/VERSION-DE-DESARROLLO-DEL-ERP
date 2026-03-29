@@ -1,39 +1,27 @@
-# GUIA DE ACTUALIZACIÓN SEGURA (R de Rico ERP)
+# GUIA DE ACTUALIZACIÓN SEGURA (Instancia Única)
 
-Esta guía te ayudará a actualizar el ERP en tu servidor de producción sin riesgo de perder tickets, usuarios o productos.
+Esta guía te ayudará a actualizar tu ERP en el servidor de forma limpia, asegurando que tus datos (tickets, usuarios, etc.) se mantengan intactos.
 
-## 1. Configuración de Seguridad (Hacer una sola vez)
-Asegúrate de que tu archivo `.env` en el servidor tenga configuradas las rutas de datos **fuera** de la carpeta del código:
-```env
-# Ejemplo de rutas seguras fuera del código
-DB_DATA_PATH="C:\ERP_DATA\postgres"
-IMAGES_DATA_PATH="C:\ERP_DATA\imagenes"
-```
+## 1. El Concepto Clave: Separación de Datos
+Para que la actualización sea segura, tus datos viven en una carpeta externa (ej: `C:\ERP_DATA`) y el código en otra. Así, puedes cambiar el código sin tocar los datos.
 
-## 2. Proceso de Actualización Paso a Paso
+## 2. Proceso de Actualización
 
-### Paso A: Respaldo Preventivo
-Antes de cualquier cambio, haz una copia de tu carpeta de datos:
-- Copia `C:\ERP_DATA` a una ubicación externa o un disco de respaldo.
-
-### Paso B: Obtener la Nueva Versión
-Desde la terminal en la carpeta del ERP:
+### Paso A: Obtener el Nuevo Código
+En la carpeta de tu ERP:
 ```powershell
 git pull origin main
 ```
-*Nota: Esto actualizará el código, pero **no borrará** tu archivo `.env` ni tu carpeta `C:\ERP_DATA`.*
+*Tus datos no corren riesgo porque el código ahora sabe buscarlos en la carpeta externa configurada en tu `.env`.*
 
-### Paso C: Reiniciar el Sistema
-Para aplicar los cambios de código manteniendo tus datos:
+### Paso B: Reiniciar con el Nuevo Código
 ```powershell
 docker-compose down
 docker-compose up -d --build
 ```
 
-## 3. ¿Qué hacer si "desaparece" algo?
-Si tras actualizar no ves tus productos:
-1. **Revisa el .env:** Asegúrate de que `DB_DATA_PATH` y `IMAGES_DATA_PATH` apunten a la carpeta correcta donde están tus datos.
-2. **Nombres de Proyecto:** No cambies el nombre de la carpeta principal del ERP, ya que Docker lo usa para identificar los volúmenes.
+## 3. Seguridad de Puertos
+Si en tu servidor necesitas un puerto específico, asegúrate de que esté definido en tu archivo `.env`. Al actualizar con `git pull`, tu archivo `.env` **no se borrará**, manteniendo tu configuración de red intacta.
 
 > [!IMPORTANT]
-> **NUNCA** uses el comando `docker-compose down -v`, ya que la opción `-v` borra los volúmenes de datos de Docker.
+> Nunca borres la carpeta externa de datos (ej: `C:\ERP_DATA`). Esa es la memoria de tu empresa.
